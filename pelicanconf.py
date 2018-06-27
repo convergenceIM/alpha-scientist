@@ -8,7 +8,7 @@ SITEURL = ''
 
 PATH = 'content'
 
-TIMEZONE = 'Europe/Paris'
+TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
 
@@ -20,10 +20,7 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('Pelican', 'http://getpelican.com/'), )
 
 # Social widget
 SOCIAL = (('You can add links in your config file', '#'),
@@ -35,3 +32,14 @@ DEFAULT_PAGINATION = False
 #RELATIVE_URLS = True
 
 OUTPUT_PATH = 'docs/'
+
+MARKUP = ('md', 'ipynb')
+
+PLUGIN_PATHS = ['./plugins']
+PLUGINS = ['ipynb.markup']
+
+STATIC_PATHS = ['images']
+
+THEME = 'themes/pelican-alchemy/alchemy'
+SITEIMAGE = '/images/profile.jpg width=200 height=200'
+SITESUBTITLE = 'Alpha scientist blog'
