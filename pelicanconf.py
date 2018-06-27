@@ -43,3 +43,5 @@ STATIC_PATHS = ['images']
 THEME = 'themes/pelican-alchemy/alchemy'
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
 SITESUBTITLE = 'Alpha scientist blog'
+
+HIDE_AUTHORS = True
