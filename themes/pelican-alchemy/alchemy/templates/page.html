@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {{ super() }}
+  <meta name="description" content="{{ page.summary|striptags }}">
+{% endblock %}
+
+{% block title %}
+  {{ page.title|striptags }} {{ super() }}
+{% endblock %}
+
+{% block page_header %}
+  {{ page.title }}
+{% endblock %}
+
+{% block content %}
+  <article class="article">
+    <div class="content">
+      {{ page.content }}
+    </div>
+  </article>
+{% endblock %}
