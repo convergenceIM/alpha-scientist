@@ -45,3 +45,5 @@ SITEIMAGE = '/images/profile.jpg width=400 height=250'
 SITESUBTITLE = 'Alpha scientist blog'
 
 HIDE_AUTHORS = True
+
+DISQUS_SITENAME = 'alphascientist-com'
