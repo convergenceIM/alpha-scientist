@@ -105,6 +105,25 @@ hr {
   text-decoration: underline
 }
 
+.article .content div.cell {
+  padding: 0px;
+  padding-left: 0px;
+}
+
+.article .content div.input_prompt {
+  color: white;
+  border: none;
+}
+
+.article .content div.text_cell_render {
+  padding: 0px;
+}
+
+.article .content .prompt {
+  min-width: 0px;
+  padding: 0px;
+}
+
 @media (min-width: 576px) {
   .header .title {
     font-size: 3rem;
