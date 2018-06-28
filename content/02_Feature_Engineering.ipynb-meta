@@ -1,6 +1,6 @@
-Title: How-To Guide into Feature Engineering
+Title: ML for Stock Market Prediction (part 2): Feature Engineering
 Slug: feature_engineering
 Date: 2018-04-30 20:01
 Category: Blog
-Tags: python
-Summary: My first post, read it to find out.
+Tags: tutorial
+Summary: This post is going to delve into the mechanics of feature engineering for the sorts of time series data that you may use as part of a stock price prediction modeling system. I'll cover the basic concept, then offer some useful python code "recipes" for transforming your raw source data into features which can be fed directly into a ML algorithm or ML pipeline.

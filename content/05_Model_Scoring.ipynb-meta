@@ -1,6 +1,6 @@
-Title: Ensemble modeling for fun and profit
-Slug: A unique framework for combining the outputs of multiple machine learning prediction models
-Date: 2018-07-01 20:04
-Tags: Tutorial
+Title: ML for Stock Market Prediction (part 5): Model Evaluation
+Slug: model_evaluation
+Date: 2018-06-15 20:04
+Tags: tutorial
 Category: Blog
-Summary: The stock market is a highly complex system and multi-dimensional system which is extraordinarily difficult to represent in a single model.  What is possible, however, is to identify many smaller irregularities and non-random patterns in market prices which - taken together - help to gain an edge of the market.
+Summary: This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.  The overriding objective of the methods described here is to overcome the issues inherent in traditional cross validation approachs.

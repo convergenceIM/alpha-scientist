@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Chad'
 SITENAME = 'The Alpha Scientist'
-SITEURL = 'alphascientist.com'
+SITEURL = ''
 
 PATH = 'content'
 
@@ -40,7 +40,7 @@ PLUGINS = ['ipynb.markup']
 
 STATIC_PATHS = ['images']
 
-THEME = 'themes/nikhil-theme'
+THEME = 'themes/nikhil-theme' #nikhil-theme
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
 SITESUBTITLE = 'Alpha scientist blog'
 

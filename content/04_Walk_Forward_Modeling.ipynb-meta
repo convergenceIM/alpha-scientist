@@ -1,6 +1,6 @@
-Title: Walk-forward Model Building
+Title: ML for Stock Market Prediction (part 4): Walk-forward Modeling
 Slug: walk_forward_model_building
-Date: 2018-04-30 20:04
+Date: 2018-05-30 20:04
 Category: Blog
-Tags: python
-Summary: My first post, read it to find out.
+Tags: tutorial
+Summary: This is the fourth in a series on transforming data into alpha.  This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.
