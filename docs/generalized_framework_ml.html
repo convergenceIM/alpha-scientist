@@ -51,7 +51,7 @@
       <ul class="list-inline">
         <li class="list-inline-item text-muted" title="2018-04-30T20:00:00-07:00">
           <i class="fa fa-clock-o"></i>
-          Пн 30 Апрель 2018
+          Mon 30 April 2018
         </li>
         <li class="list-inline-item">
           <i class="fa fa-folder-open-o"></i>
@@ -1039,7 +1039,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">A Generalized Framework for Machine Learning applied to Stock Prediction<a class="anchor-link" href="#A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">&#182;</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
+<h1 id="A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">A Generalized Framework for Machine Learning applied to Stock Prediction<a class="anchor-link" href="#A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
 <p>However, usage of machine learning in stock market prediction requires much more than a good grasp of the concepts and techniques for supervised machine learning.  As I describe further in [this post], stock prediction is a challenging domain which requires some special techniques to overcome issues like non-stationarity, collinearity, and low signal-to-noise.</p>
 <p>In this and following posts, I'll present the design of an end-to-end system for developing, testing, and applying machine learning models in a way which addresses each of these problems in a very practical way.  These postings <em>will not</em> offer any "secret sauce" or strategies which I use in live trading, but will offer a more valuable and more generalized set of techniques which will allow you to create your own strategies in a <em>robust manner</em>.</p>
 <p>Within other posts in this series, I plan to cover:</p>
@@ -1055,7 +1055,6 @@ h6:hover .anchor-link {
 ... and more </li>
 </ul>
 <p>In this first post - before covering these specifics - I will present a high-level framework which sets the stage for modeling.  For this, I will assume readers have a good working knowledge of [pandas DataFrames] and of basic supervised machine learning concepts.</p>
-
 </div>
 </div>
 </div>
@@ -1063,13 +1062,13 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Types-of-Data-Structures">Types of Data Structures<a class="anchor-link" href="#Types-of-Data-Structures">&#182;</a></h2><p>As will become clear as I build out examples, it's crucial that our framework uses a smartly designed set of conventions for how to organize and use data.  My system makes heavy use of three distinct types of data:</p>
+<h2 id="Types-of-Data-Structures">Types of Data Structures<a class="anchor-link" href="#Types-of-Data-Structures">¶</a></h2><p>As will become clear as I build out examples, it's crucial that our framework uses a smartly designed set of conventions for how to organize and use data.  My system makes heavy use of three distinct types of data:</p>
 <ul>
 <li><strong>features:</strong> This is a dataframe which contains all <em>features</em> or values which we will allow models to use in the course of learning relationships - and later making predictions.  All features must be values which would have been known <strong>at the point in time when the model needed to make predictions</strong>.  In other words, <code>next_12_months_returns</code> would be a bad feature since it would not become known at the time needed.  The <code>features</code> dataframe has a multi-index of date/symbol and column names unique to each feature.  More on this later.   </li>
 <li><strong>outcomes:</strong> This is a dataframe of all possible <strong>future</strong> outcomes which we may be interested in predicting, magically shifted back in time to T-zero.  For instance, we may want to predict the total_return for a symbol over the year following T=0 (the time of prediction).  We would look ahead into the future, calculate what ultimately did happen to this metric, and log it onto time T=0.  I'll explain why in a minute.  Just like <code>features</code>, this dataframe has rows indexed by date/symbol and columns named with a convention which describes the feature.  </li>
 <li><strong>master:</strong> The final data structure type is the <code>master</code> dataframe.  This contains any <em>static</em> information about each symbol in the universe, such as the SIC code, the number of shares outstanding, beta factors, etc...  In practice, things in the master may change over time (SIC codes and shares out can both change...) but I've found it sufficient for my purposes to take the current static values for the current point in time.  This dataframe uses row index of symbol only.  You could, of course, add a date/symbol index if you wanted to reflect changing values over time.  </li>
 </ul>
-<h2 id="Why-this-data-structure-scheme?">Why this data structure scheme?<a class="anchor-link" href="#Why-this-data-structure-scheme?">&#182;</a></h2><p>It may seem odd to split the features and outcomes into distinct dataframes, and odd to create a dataframe of several different possible "outcomes".  It may seem odd to record on t=0 what will happen in the <em>next</em> year or whatever.  There are two reasons for this:</p>
+<h2 id="Why-this-data-structure-scheme?">Why this data structure scheme?<a class="anchor-link" href="#Why-this-data-structure-scheme?">¶</a></h2><p>It may seem odd to split the features and outcomes into distinct dataframes, and odd to create a dataframe of several different possible "outcomes".  It may seem odd to record on t=0 what will happen in the <em>next</em> year or whatever.  There are two reasons for this:</p>
 <ol>
 <li>This makes it trivial to extract the X's and y's when training models.  We only ever use one or more columns of <code>features</code> in the X and one column of <code>outcomes</code> in y.  </li>
 <li>This makes it trivial to toggle between various time horizons - just change the column of <code>outcomes</code> used for y.</li>
@@ -1079,77 +1078,65 @@ h6:hover .anchor-link {
 <p>This will save you untold grey hairs and hours of debugging.</p>
 <p>Before going further, let's create simple toy examples of each dataframe using free data from <a href="https://www.quandl.com/">quandl</a>:</p>
 <p>First, we'll make a utility function which downloads one or more symbols from quandl and returns the adjusted OHLC data (I generally find adjusted data to be best).</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In [77]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="k">def</span> <span class="nf">get_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">data_source</span><span class="p">,</span> <span class="n">begin_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">&#39;AdjOpen&#39;</span><span class="p">,</span><span class="s1">&#39;AdjHigh&#39;</span><span class="p">,</span><span class="s1">&#39;AdjLow&#39;</span><span class="p">,</span><span class="s1">&#39;AdjClose&#39;</span><span class="p">,</span><span class="s1">&#39;AdjVolume&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">'AdjOpen'</span><span class="p">,</span><span class="s1">'AdjHigh'</span><span class="p">,</span><span class="s1">'AdjLow'</span><span class="p">,</span><span class="s1">'AdjClose'</span><span class="p">,</span><span class="s1">'AdjVolume'</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'open'</span><span class="p">,</span><span class="s1">'high'</span><span class="p">,</span><span class="s1">'low'</span><span class="p">,</span><span class="s1">'close'</span><span class="p">,</span><span class="s1">'volume'</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">'symbol'</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out</span><span class="p">,</span><span class="n">df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#stacks on top of previously collected data</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
         
-<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;CSCO&#39;</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">&#39;quandl&#39;</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;2017-01-01&#39;</span><span class="p">)</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">'AAPL'</span><span class="p">,</span><span class="s1">'CSCO'</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">'quandl'</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2015-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="s1">'2017-01-01'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we will create some toy features:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="prompt input_prompt">In [85]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;volume_change_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;momentum_5_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> 
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;intraday_chg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">/</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">weekday</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;day_of_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">day</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'volume_change_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'momentum_5_day'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> 
+<span class="n">features</span><span class="p">[</span><span class="s1">'intraday_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">/</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'day_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">weekday</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'day_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">day</span>
 <span class="n">features</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">features</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[85]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1163,122 +1150,119 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>volume_change_ratio</th>
-      <th>momentum_5_day</th>
-      <th>intraday_chg</th>
-      <th>day_of_week</th>
-      <th>day_of_month</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-23</th>
-      <th>AAPL</th>
-      <td>-0.453747</td>
-      <td>0.004743</td>
-      <td>0.008046</td>
-      <td>4</td>
-      <td>23</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.291298</td>
-      <td>-0.001961</td>
-      <td>-0.000327</td>
-      <td>4</td>
-      <td>23</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-27</th>
-      <th>AAPL</th>
-      <td>0.284036</td>
-      <td>0.005316</td>
-      <td>0.006351</td>
-      <td>1</td>
-      <td>27</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.546260</td>
-      <td>-0.002276</td>
-      <td>0.001305</td>
-      <td>1</td>
-      <td>27</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-28</th>
-      <th>AAPL</th>
-      <td>0.142595</td>
-      <td>-0.001625</td>
-      <td>-0.006467</td>
-      <td>2</td>
-      <td>28</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.151900</td>
-      <td>-0.004581</td>
-      <td>-0.009121</td>
-      <td>2</td>
-      <td>28</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-29</th>
-      <th>AAPL</th>
-      <td>-0.280609</td>
-      <td>-0.002819</td>
-      <td>0.002404</td>
-      <td>3</td>
-      <td>29</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.085396</td>
-      <td>0.001315</td>
-      <td>0.002963</td>
-      <td>3</td>
-      <td>29</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-30</th>
-      <th>AAPL</th>
-      <td>1.033726</td>
-      <td>-0.004042</td>
-      <td>-0.007115</td>
-      <td>4</td>
-      <td>30</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.836194</td>
-      <td>-0.007879</td>
-      <td>-0.011126</td>
-      <td>4</td>
-      <td>30</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>volume_change_ratio</th>
+<th>momentum_5_day</th>
+<th>intraday_chg</th>
+<th>day_of_week</th>
+<th>day_of_month</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th rowspan="2" valign="top">2016-12-23</th>
+<th>AAPL</th>
+<td>-0.453747</td>
+<td>0.004743</td>
+<td>0.008046</td>
+<td>4</td>
+<td>23</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.291298</td>
+<td>-0.001961</td>
+<td>-0.000327</td>
+<td>4</td>
+<td>23</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-27</th>
+<th>AAPL</th>
+<td>0.284036</td>
+<td>0.005316</td>
+<td>0.006351</td>
+<td>1</td>
+<td>27</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.546260</td>
+<td>-0.002276</td>
+<td>0.001305</td>
+<td>1</td>
+<td>27</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-28</th>
+<th>AAPL</th>
+<td>0.142595</td>
+<td>-0.001625</td>
+<td>-0.006467</td>
+<td>2</td>
+<td>28</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.151900</td>
+<td>-0.004581</td>
+<td>-0.009121</td>
+<td>2</td>
+<td>28</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-29</th>
+<th>AAPL</th>
+<td>-0.280609</td>
+<td>-0.002819</td>
+<td>0.002404</td>
+<td>3</td>
+<td>29</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.085396</td>
+<td>0.001315</td>
+<td>0.002963</td>
+<td>3</td>
+<td>29</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-30</th>
+<th>AAPL</th>
+<td>1.033726</td>
+<td>-0.004042</td>
+<td>-0.007115</td>
+<td>4</td>
+<td>30</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.836194</td>
+<td>-0.007879</td>
+<td>-0.011126</td>
+<td>4</td>
+<td>30</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1287,42 +1271,33 @@ h6:hover .anchor-link {
 <p>If the syntax or logic of the features isn't immediately clear, I'll cover that in more depth in [the next post].  For now, just note that we've created five features for both symbols using only data that would be available <em>as of the end of day T</em>.</p>
 <p>Also note that I've dropped any rows which contain any nulls for simplicity, since scikit-learn can't handle those out of the box.</p>
 <p>Next, we'll create outcomes:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="prompt input_prompt">In [86]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="c1"># next day&#39;s opening change</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;open_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
-<span class="c1"># next day&#39;s closing change</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_5&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># next day's opening change</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'open_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+<span class="c1"># next day's closing change</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_5'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="p">(</span><span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[86]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1336,131 +1311,128 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>open_1</th>
-      <th>close_1</th>
-      <th>close_5</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2016-12-20</th>
-      <th>CSCO</th>
-      <td>0.004254</td>
-      <td>0.004602</td>
-      <td>0.004602</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-21</th>
-      <th>AAPL</th>
-      <td>-0.006065</td>
-      <td>0.006621</td>
-      <td>0.002827</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.000657</td>
-      <td>-0.001313</td>
-      <td>-0.001313</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-22</th>
-      <th>AAPL</th>
-      <td>-0.006019</td>
-      <td>-0.001974</td>
-      <td>0.004058</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.002626</td>
-      <td>-0.002293</td>
-      <td>0.007942</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-23</th>
-      <th>AAPL</th>
-      <td>0.000000</td>
-      <td>-0.006311</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.003603</td>
-      <td>-0.004889</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-27</th>
-      <th>AAPL</th>
-      <td>0.002217</td>
-      <td>0.004282</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.000652</td>
-      <td>0.008547</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-28</th>
-      <th>AAPL</th>
-      <td>-0.002655</td>
-      <td>0.000257</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.001644</td>
-      <td>-0.001313</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-29</th>
-      <th>AAPL</th>
-      <td>-0.000685</td>
-      <td>0.007857</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.003283</td>
-      <td>0.007942</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">2016-12-30</th>
-      <th>AAPL</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>open_1</th>
+<th>close_1</th>
+<th>close_5</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2016-12-20</th>
+<th>CSCO</th>
+<td>0.004254</td>
+<td>0.004602</td>
+<td>0.004602</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-21</th>
+<th>AAPL</th>
+<td>-0.006065</td>
+<td>0.006621</td>
+<td>0.002827</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.000657</td>
+<td>-0.001313</td>
+<td>-0.001313</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-22</th>
+<th>AAPL</th>
+<td>-0.006019</td>
+<td>-0.001974</td>
+<td>0.004058</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.002626</td>
+<td>-0.002293</td>
+<td>0.007942</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-23</th>
+<th>AAPL</th>
+<td>0.000000</td>
+<td>-0.006311</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.003603</td>
+<td>-0.004889</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-27</th>
+<th>AAPL</th>
+<td>0.002217</td>
+<td>0.004282</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.000652</td>
+<td>0.008547</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-28</th>
+<th>AAPL</th>
+<td>-0.002655</td>
+<td>0.000257</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.001644</td>
+<td>-0.001313</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-29</th>
+<th>AAPL</th>
+<td>-0.000685</td>
+<td>0.007857</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>0.003283</td>
+<td>0.007942</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2016-12-30</th>
+<th>AAPL</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1468,15 +1440,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that the shifted periods are negative, which in pandas convention looks <em>ahead</em> in time.  This means that at the ending of our time period we will have nulls - and more nulls in the outcome colums that need to look further into the future.  We don't dropna() here since we may want to use <code>open_1</code> and there's no reason to throw away data from that column just because <em>a different</em> outcome didn't have data.  But I digress.</p>
 <p>Now, to put it together, we'll train a simple linear model in <code>scikit-learn</code>, using all features to predict <code>close_1</code></p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In [80]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first, create y (a series) and X (a dataframe), with only rows where </span>
 <span class="c1"># a valid value exists for both y and X</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">outcomes</span><span class="o">.</span><span class="n">close_1</span>
@@ -1487,82 +1458,59 @@ h6:hover .anchor-link {
 <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(996,)
 (996, 5)
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that all of these slightly tedious steps have left us with properly sized, identically indexed data objects.  At this point, the modeling is dead simple:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In [81]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model RSQ: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Model RSQ: "</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficients: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Coefficients: "</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Model RSQ: 0.01598347165537528
 Coefficients: 
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[81]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>intraday_chg           0.150482
 volume_change_ratio    0.000976
@@ -1571,27 +1519,23 @@ day_of_week           -0.000427
 momentum_5_day        -0.005543
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Clearly, this model isn't very useful but illustrates the point. If we wanted to instead create a random forest to predict tomorrow's open, it'd be mostly copy-paste:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="prompt input_prompt">In [82]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestRegressor</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">outcomes</span><span class="o">.</span><span class="n">open_1</span>
@@ -1604,25 +1548,18 @@ dtype: float64</pre>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model Score: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Model Score: "</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature Importance: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Feature Importance: "</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(996,)
 (996, 5)
@@ -1631,14 +1568,8 @@ Feature Importance:
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[82]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>momentum_5_day         0.269462
 intraday_chg           0.266634
@@ -1647,12 +1578,9 @@ day_of_month           0.129595
 day_of_week            0.076862
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1661,7 +1589,6 @@ dtype: float64</pre>
 <p>This yields a vastly improved RSQ but note that it is almost certainly ridiculously overfitted, as random forests are prone to do.</p>
 <p>We'll cover ways to systematically avoid allowing the model to overfit in future posts, but that requires going a bit further down the rabbit hole.</p>
 <p>One side point: in this example (and often, in real life) we've mixed together all observations from AAPL and CSCO into one dataset.  We could have alternatively trained two different models for the two symbols, which may have achieved better fit, but almost certainly at the cost of worse generalization out of sample.  The bias-variance trade-off in action!</p>
-
 </div>
 </div>
 </div>
@@ -1669,34 +1596,24 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Prediction">Prediction<a class="anchor-link" href="#Prediction">&#182;</a></h2><p>Once the model is trained, it becomes a one-liner to make predictions from a set of feature values.  In this case, we'll simply feed the same X values used to train the model, but in live usage, of course, we'd want to apply the trained model to <em>new</em> X values.</p>
-
+<h2 id="Prediction">Prediction<a class="anchor-link" href="#Prediction">¶</a></h2><p>Once the model is trained, it becomes a one-liner to make predictions from a set of feature values.  In this case, we'll simply feed the same X values used to train the model, but in live usage, of course, we'd want to apply the trained model to <em>new</em> X values.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="prompt input_prompt">In [89]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[89]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>date        symbol
 2016-12-22  AAPL     -0.001943
@@ -1711,12 +1628,9 @@ dtype: float64</pre>
             CSCO      0.002967
 dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1726,7 +1640,6 @@ dtype: float64</pre>
 <p>The date of a feature row represents the day when a value would be known <em>after that day's trading</em>, using the feature value date as T=0.  The date of an outcome row represents what will happen in the n days <em>following</em> that date.</p>
 <p><strong> Predictions are indexed to the date of the <em>evening</em> when the model could have been run</strong>, <em>not</em> on the day when it could have been traded.</p>
 <p>In other words, on 2016-12-23, the prediction value represents what the model believes will happen <em>after</em> 12/23.  In practical usage, we can't start using the trading signal until T+1 (since we can't get predictions until after markets are closed on T+0).</p>
-
 </div>
 </div>
 </div>
@@ -1734,15 +1647,12 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>This post presented the concept of organizing data into a <code>features</code> dataframe and <code>outcome</code> dataframe, and then showed how simple it is to join these two dataframes together to train a model.</p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>This post presented the concept of organizing data into a <code>features</code> dataframe and <code>outcome</code> dataframe, and then showed how simple it is to join these two dataframes together to train a model.</p>
 <p>True, the convention may take a few examples to get used to.  However, after trial and error, I've found this to be the most error-resistant, flexible, and high-performance way to go.</p>
 <p>In the [next post], I will share some methods of feature engineering and feature selection.</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
