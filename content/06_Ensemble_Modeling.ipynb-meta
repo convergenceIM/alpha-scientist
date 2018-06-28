@@ -1,0 +1,6 @@
+Title: Evaluating prediction model performance
+Slug: A framework for evaluating performance of machine learning models in market prediction
+Date: 2018-06-24 20:04
+Tags: Tutorial
+Category: Blog
+Summary: Traditional machine learning metrics (like F1 score or R-squared) fail to give a complete picture of the *usefulness* of models for investment decision-making.  This post presents a framework for creating your own standard "scorecard" of metrics which give a more complete picture of model usefulness.
