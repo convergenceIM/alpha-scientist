@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block title %}{{ SITENAME }} - {{ category }}{% endblock %}
+{% block navclass %}{%endblock%}
+{% block archclass %} class="active"{%endblock%}
+{% block content_title %}
+      <ol class="breadcrumb">
+        <li><a href="{{SITEURL}}"><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
+        <li><a href="{{SITEURL}}/categories.html"><div class="fa fa-lg fa-folder-open"></div> Categories <span class="badge">{{ categories|count }}</span></a></li>
+        <li class="active"><div class="fa fa-lg fa-folder-open"></div> {{ category }} <span class="badge">{{ articles|count }}</span></li>
+      </ol>
+{% endblock %}
+

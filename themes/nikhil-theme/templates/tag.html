@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
+{% block navclass %}{%endblock%}
+{% block archclass %}active{%endblock%}
+{% block content_title %}
+      <ol class="breadcrumb">
+        <li><a href="{{SITEURL}}"><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
+        <li><a href="{{SITEURL}}/tags.html"><div class="fa fa-lg fa-tags"></div> Tags <span class="badge">{{ tags|count }}</span></a></li>
+        <li class="active"><div class="fa fa-lg fa-tag"></div> {{ tag }} <span class="badge">{{ articles|count }}</span></li>
+      </ol>
+{% endblock %}

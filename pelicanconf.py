@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'Chad'
-SITENAME = 'Alpha scientist'
-SITEURL = ''
+SITENAME = 'The Alpha Scientist'
+SITEURL = 'alphascientist.com'
 
 PATH = 'content'
 
@@ -40,10 +40,11 @@ PLUGINS = ['ipynb.markup']
 
 STATIC_PATHS = ['images']
 
-THEME = 'themes/pelican-alchemy/alchemy'
+THEME = 'themes/nikhil-theme'
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
 SITESUBTITLE = 'Alpha scientist blog'
 
 HIDE_AUTHORS = True
 
 DISQUS_SITENAME = 'alphascientist-com'
+

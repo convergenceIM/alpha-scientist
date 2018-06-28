@@ -1,69 +1,59 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>  A Generalized Framework for Machine Learning applied to Stock Prediction | Alpha scientist
-</title>
-  <link rel="canonical" href="/generalized_framework_ml.html">
-
-
-  <link rel="stylesheet" href="/theme/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/theme/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/theme/css/pygments/default.min.css">
-  <link rel="stylesheet" href="/theme/css/theme.css">
-
-  
-  <meta name="description" content="My first post, read it to find out.">
-
-
-</head>
-
-<body>
-  <header class="header">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>Machine Learning applied to Stock Market Prediction (part 1 of 6) - Alpha scientist</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/theme/style.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body id="index" class="archive">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Alpha scientist</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/tags.html">tags</a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
     <div class="container">
-<div class="row">
-    <div class="col-sm-4">
-      <a href="/">
-        <img class="img-fluid rounded" src=/images/profile.jpg width=400 height=250 alt="Alpha scientist">
-      </a>
-    </div>
-  <div class="col-sm-8">
-    <h1 class="title"><a href="/">Alpha scientist</a></h1>
-      <p class="text-muted">Alpha scientist blog</p>
-      <ul class="list-inline">
-            <li class="list-inline-item"><a href="/pages/about.html">About</a></li>
-      </ul>
-  </div>
-</div>    </div>
-  </header>
-
-  <div class="main">
-    <div class="container">
-      <h1>  A Generalized Framework for Machine Learning applied to Stock Prediction
-</h1>
-      <hr>
-  <article class="article">
-    <header>
-      <ul class="list-inline">
-        <li class="list-inline-item text-muted" title="2018-04-30T20:00:00-07:00">
-          <i class="fa fa-clock-o"></i>
-          Mon 30 April 2018
-        </li>
-        <li class="list-inline-item">
-          <i class="fa fa-folder-open-o"></i>
-          <a href="/category/blog.html">Blog</a>
-        </li>
-          <li class="list-inline-item">
-            <i class="fa fa-files-o"></i>
-              <a href="/tag/python.html">#python</a>          </li>
-      </ul>
-    </header>
-    <div class="content">
-      <style type="text/css">/*!
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          Machine Learning applied to Stock Market Prediction (part 1 of 6)
+        </h2>
+        
+        <div class="text-muted">Mon 30 April 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1039,22 +1029,28 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">A Generalized Framework for Machine Learning applied to Stock Prediction<a class="anchor-link" href="#A-Generalized-Framework-for-Machine-Learning-applied-to-Stock-Prediction">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
+<h2 id="About-this-tutorial">About this tutorial<a class="anchor-link" href="#About-this-tutorial">¶</a></h2><p>This is the first in a six-part series on the mechanics of applying machine learning techniques to the unique domain of stock market price prediction.</p>
+<p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
 <p>However, usage of machine learning in stock market prediction requires much more than a good grasp of the concepts and techniques for supervised machine learning.  As I describe further in [this post], stock prediction is a challenging domain which requires some special techniques to overcome issues like non-stationarity, collinearity, and low signal-to-noise.</p>
-<p>In this and following posts, I'll present the design of an end-to-end system for developing, testing, and applying machine learning models in a way which addresses each of these problems in a very practical way.  These postings <em>will not</em> offer any "secret sauce" or strategies which I use in live trading, but will offer a more valuable and more generalized set of techniques which will allow you to create your own strategies in a <em>robust manner</em>.</p>
+<p>In this and following posts, I'll present the design of an end-to-end system for developing, testing, and applying machine learning models in a way which addresses each of these problems in a very practical way.</p>
+<p>These tutorials <em>are not intended</em> offer any "secret sauce" or strategies which I use in live trading, but will offer a more valuable and more generalized set of techniques which will allow you to create your own strategies in a <em>robust manner</em>.</p>
 <p>Within other posts in this series, I plan to cover:</p>
 <ul>
-<li>Feature engineering / target engineering</li>
-<li>Feature selection</li>
-<li>Evaluating and comparing model performance (hint: not backtesting)</li>
-<li>Walk-forward out-of-sample training/testing</li>
-<li>Building ensemble models to combine many distinct, weak signals</li>
+<li>Part 2: Feature engineering</li>
+<li>Part 3: Feature selection</li>
+<li>Part 4: A walk-forward approach to modeling and out-of-sample testing</li>
+<li>Part 5: Evaluating model performance (hint: not backtesting)</li>
+<li>Part 6: Building ensemble models to combine many models and factors into an overall prediction</li>
+</ul>
+<p>In future, I also plan to make tutorials on:</p>
+<ul>
 <li>Using Pandas, scikit-learn, and pandas plus scikit-learn</li>
 <li>Techniques for improving model predictive power</li>
 <li>Techniques for improving model robustness out-of-sample
-... and more </li>
+... and probably others (please feel free to suggest in below comments) </li>
 </ul>
-<p>In this first post - before covering these specifics - I will present a high-level framework which sets the stage for modeling.  For this, I will assume readers have a good working knowledge of [pandas DataFrames] and of basic supervised machine learning concepts.</p>
+<p>In this first post, I will present a framework for organizing and working with data.  Perhaps not the most electrifying of topics, but it's a precondition for later modeling tutorials.  It's also, as any practitioner of the field will agree, of critical significance and importance.  I've heard it said that 90% of time in real-world quant finance is spent on data rather than models.  That may be a bit of an exagggeration, but not far off.</p>
+<p>For this, I will assume readers have a good working knowledge of python and <code>pandas</code> as well as basic supervised machine learning concepts.</p>
 </div>
 </div>
 </div>
@@ -1064,11 +1060,21 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Types-of-Data-Structures">Types of Data Structures<a class="anchor-link" href="#Types-of-Data-Structures">¶</a></h2><p>As will become clear as I build out examples, it's crucial that our framework uses a smartly designed set of conventions for how to organize and use data.  My system makes heavy use of three distinct types of data:</p>
 <ul>
-<li><strong>features:</strong> This is a dataframe which contains all <em>features</em> or values which we will allow models to use in the course of learning relationships - and later making predictions.  All features must be values which would have been known <strong>at the point in time when the model needed to make predictions</strong>.  In other words, <code>next_12_months_returns</code> would be a bad feature since it would not become known at the time needed.  The <code>features</code> dataframe has a multi-index of date/symbol and column names unique to each feature.  More on this later.   </li>
-<li><strong>outcomes:</strong> This is a dataframe of all possible <strong>future</strong> outcomes which we may be interested in predicting, magically shifted back in time to T-zero.  For instance, we may want to predict the total_return for a symbol over the year following T=0 (the time of prediction).  We would look ahead into the future, calculate what ultimately did happen to this metric, and log it onto time T=0.  I'll explain why in a minute.  Just like <code>features</code>, this dataframe has rows indexed by date/symbol and columns named with a convention which describes the feature.  </li>
-<li><strong>master:</strong> The final data structure type is the <code>master</code> dataframe.  This contains any <em>static</em> information about each symbol in the universe, such as the SIC code, the number of shares outstanding, beta factors, etc...  In practice, things in the master may change over time (SIC codes and shares out can both change...) but I've found it sufficient for my purposes to take the current static values for the current point in time.  This dataframe uses row index of symbol only.  You could, of course, add a date/symbol index if you wanted to reflect changing values over time.  </li>
+<li><p><strong><code>features</code>:</strong> This is a dataframe which contains all <em>features</em> or values which we will allow models to use in the course of learning relationships - and later making predictions.  All features must be values which would have been known <strong>at the point in time when the model needed to make predictions</strong>.</p>
+<p>In other words, <code>next_12_months_returns</code> would be a bad feature since it would not become known at the time needed.  The <code>features</code> dataframe has a multi-index of date/symbol and column names unique to each feature.  More on this later.</p>
+</li>
 </ul>
-<h2 id="Why-this-data-structure-scheme?">Why this data structure scheme?<a class="anchor-link" href="#Why-this-data-structure-scheme?">¶</a></h2><p>It may seem odd to split the features and outcomes into distinct dataframes, and odd to create a dataframe of several different possible "outcomes".  It may seem odd to record on t=0 what will happen in the <em>next</em> year or whatever.  There are two reasons for this:</p>
+<ul>
+<li><p><strong><code>outcomes</code>:</strong> This is a dataframe of all possible <strong>future</strong> outcomes which we may be interested in predicting, magically shifted back in time to T-zero.  For instance, we may want to predict the total_return for a symbol over the year following T=0 (the time of prediction).  We would look ahead into the future, calculate what ultimately did happen to this metric, and log it onto time T=0.  I'll explain why in a minute.</p>
+<p>Just like <code>features</code>, this dataframe has rows indexed by date/symbol and columns named with a convention which describes the feature.</p>
+</li>
+</ul>
+<ul>
+<li><strong><code>master</code>:</strong> The final data structure type is the <code>master</code> dataframe.  This contains any <em>static</em> information about each symbol in the universe, such as the SIC code, the number of shares outstanding, beta factors, etc...  In practice, things in the master may change over time (SIC codes and shares out can both change...) but I've found it sufficient for my purposes to take the current static values for the current point in time.  </li>
+</ul>
+<p>This dataframe uses row index of symbol only.  You could, of course, add a date/symbol index if you wanted to reflect changing values over time.</p>
+<h2 id="Why-this-data-structure-scheme?">Why this data structure scheme?<a class="anchor-link" href="#Why-this-data-structure-scheme?">¶</a></h2><p>It may seem odd to split the features and outcomes into distinct dataframes, and odd to create a dataframe of several different possible "outcomes".  Most important, it may seem odd to record on t=0 what will happen in the <em>next</em> year or whatever.</p>
+<p>There are several reasons for this approach:</p>
 <ol>
 <li>This makes it trivial to extract the X's and y's when training models.  We only ever use one or more columns of <code>features</code> in the X and one column of <code>outcomes</code> in y.  </li>
 <li>This makes it trivial to toggle between various time horizons - just change the column of <code>outcomes</code> used for y.</li>
@@ -1076,14 +1082,14 @@ h6:hover .anchor-link {
 <li>This allows us to use the incredibly efficient pandas <code>join</code>, <code>merge</code>, and <code>concat</code> methods to quickly align data for purposes of training models.  Trust me.  </li>
 </ol>
 <p>This will save you untold grey hairs and hours of debugging.</p>
-<p>Before going further, let's create simple toy examples of each dataframe using free data from <a href="https://www.quandl.com/">quandl</a>:</p>
+<h2 id="An-example">An example<a class="anchor-link" href="#An-example">¶</a></h2><p>Before going further, let's create simple toy examples of each dataframe using free data from <a href="https://www.quandl.com/">quandl</a>:</p>
 <p>First, we'll make a utility function which downloads one or more symbols from quandl and returns the adjusted OHLC data (I generally find adjusted data to be best).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [77]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
@@ -1115,7 +1121,94 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [85]:</div>
+<div class="prompt input_prompt">In [24]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">CSS</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">body {</span>
+<span class="s2">    margin: 0;</span>
+<span class="s2">    font-family: Helvetica</span>
+<span class="s2">    ;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe {</span>
+<span class="s2">    border-collapse: collapse;</span>
+<span class="s2">    border: none;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe tr {</span>
+<span class="s2">    border: none;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe td, table.dataframe th {</span>
+<span class="s2">    margin: 0;</span>
+<span class="s2">    border: 2px solid #B0ACAC;</span>
+<span class="s2">    padding-left: 0.25em;</span>
+<span class="s2">    padding-right: 0.25em;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe th:not(:empty) {</span>
+<span class="s2">    background-color: #EFEDED;</span>
+<span class="s2">    text-align: left;</span>
+<span class="s2">    font-weight: normal;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe tr:nth-child(2) th:empty {</span>
+<span class="s2">    border-left: none;</span>
+<span class="s2">    border-right: 1px dashed #888;</span>
+<span class="s2">}</span>
+<span class="s2">table.dataframe td {</span>
+<span class="s2">    border: 1px solid #B0ACAC;</span>
+<span class="s2">    background-color: #F7FBFC;</span>
+<span class="s2">}</span>
+<span class="s2">"""</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'&lt;style&gt;</span><span class="si">{}</span><span class="s1">&lt;/style&gt;'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CSS</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[24]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<style>
+body {
+    margin: 0;
+    font-family: Helvetica
+    font-size: Large;
+}
+table.dataframe {
+    border-collapse: collapse;
+    border: none;
+}
+table.dataframe tr {
+    border: none;
+}
+table.dataframe td, table.dataframe th {
+    margin: 0;
+    border: 2px solid #B0ACAC;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+table.dataframe th:not(:empty) {
+    background-color: #EFEDED;
+    text-align: left;
+    font-weight: normal;
+}
+table.dataframe tr:nth-child(2) th:empty {
+    border-left: none;
+    border-right: 1px dashed #888;
+}
+table.dataframe td {
+    border: 1px solid #B0ACAC;
+    background-color: #F7FBFC;
+}
+</style>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -1133,20 +1226,20 @@ h6:hover .anchor-link {
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[85]:</div>
+<div class="prompt output_prompt">Out[13]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -1596,7 +1689,7 @@ dtype: float64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Prediction">Prediction<a class="anchor-link" href="#Prediction">¶</a></h2><p>Once the model is trained, it becomes a one-liner to make predictions from a set of feature values.  In this case, we'll simply feed the same X values used to train the model, but in live usage, of course, we'd want to apply the trained model to <em>new</em> X values.</p>
+<h3 id="Prediction">Prediction<a class="anchor-link" href="#Prediction">¶</a></h3><p>Once the model is trained, it becomes a one-liner to make predictions from a set of feature values.  In this case, we'll simply feed the same X values used to train the model, but in live usage, of course, we'd want to apply the trained model to <em>new</em> X values.</p>
 </div>
 </div>
 </div>
@@ -1683,43 +1776,37 @@ dtype: float64</pre>
 }
 </script>
 
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="/category/blog.html"><div class="fa fa-lg fa-folder-open"></div> Blog</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="/tag/python.html"><div class="fa fa-lg fa-tag"></div> python</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'alphascientist-com';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
     </div>
-  </article>
-  <hr>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_config = function() {
-      this.page.url = '/generalized_framework_ml.html';
-      this.page.identifier = 'generalized_framework_ml';
-    };
-    (function() {
-      var d = document;
-      var s = d.createElement('script');
-      s.src = '//alphascientist-com.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
-  <noscript class="text-muted">
-    Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
-  </noscript>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="container">
-<div class="row">
-  <ul class="col-sm-6 list-inline">
-    <li class="list-inline-item"><a href="/archives.html">Archives</a></li>
-    <li class="list-inline-item"><a href="/categories.html">Categories</a></li>
-      <li class="list-inline-item"><a href="/tags.html">Tags</a></li>
-  </ul>
-  <p class="col-sm-6 text-sm-right text-muted">
-    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
-    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
-  </p>
-</div>    </div>
-  </footer>
-</body>
-
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-text">&copy; <a href="">Alpha scientist</a> powered by <a href="http://getpelican.com/">pelican</a> and <a href="http://nodotcom.org">nikhil</a></p>
+      </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
 </html>
