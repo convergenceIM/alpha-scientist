@@ -47,3 +47,5 @@ SITESUBTITLE = 'Alpha scientist blog'
 HIDE_AUTHORS = True
 
 DISQUS_SITENAME = 'alphascientist-com'
+
+GOOGLE_ANALYTICS = 'UA-121434821-1'

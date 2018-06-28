@@ -18,6 +18,21 @@
 
   
   <meta name="description" content="My first post, read it to find out.">
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      a.async = 1;
+      a.src = g;
+      m = s.getElementsByTagName(o)[0];
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-121434821-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 
 
 </head>
@@ -51,7 +66,7 @@
       <ul class="list-inline">
         <li class="list-inline-item text-muted" title="2018-04-30T20:04:00-07:00">
           <i class="fa fa-clock-o"></i>
-          Mon 30 April 2018
+          Пн 30 Апрель 2018
         </li>
         <li class="list-inline-item">
           <i class="fa fa-folder-open-o"></i>
@@ -1039,9 +1054,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Walk-forward-Model-Building">Walk-forward Model Building<a class="anchor-link" href="#Walk-forward-Model-Building">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>This is the fourth post in my series on transforming data into alpha.  If you haven't yet see the <a href="">framework overview</a>, <a href="">feature engineering guide</a>, or <a href="">feature_selection_guide</a>, please take a minute to read those first.  This post will build on the framework and philosophy presented there.</p>
+<h1 id="Walk-forward-Model-Building">Walk-forward Model Building<a class="anchor-link" href="#Walk-forward-Model-Building">&#182;</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>This is the fourth post in my series on transforming data into alpha.  If you haven't yet see the <a href="">framework overview</a>, <a href="">feature engineering guide</a>, or <a href="">feature_selection_guide</a>, please take a minute to read those first.  This post will build on the framework and philosophy presented there.</p>
 <p>This post is going to delve into the mechanics of <em>walk-forward modeling</em> which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.</p>
-<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h2><p>The domain of market prediction presents several unique challenges for machine learning practitioners which do not exist in spam detection, natural language processing, image recognition, or other common areas of machine learning success.  In the future, I will write a longer treatise on these core challenges, but at the moment I'll just bullet-point them:</p>
+<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">&#182;</a></h2><p>The domain of market prediction presents several unique challenges for machine learning practitioners which do not exist in spam detection, natural language processing, image recognition, or other common areas of machine learning success.  In the future, I will write a longer treatise on these core challenges, but at the moment I'll just bullet-point them:</p>
 <ul>
 <li><strong>Low signal-to-noise ratio:</strong>  adsfdfas</li>
 <li><strong>Non-stationarity (aka regime switching):</strong>  adsfdfas</li>
@@ -1051,7 +1066,7 @@ h6:hover .anchor-link {
 <p>This is a flawed conclusion.  Instead, we should conclude that it's imperative to follow a modeling process which (1) avoids the trap of overfitting models to noise, (2) takes into account the sequential dimension of time series data, and (3) allows us to get an accurate view about how various models would have performed in the past <em>given the information we would have had at that time</em>.</p>
 <p>"But wait!" I hear you saying, "Overfitting is not unique to market prediction!".  True, but the commonly used techniques of <em>train-test split</em> and <em>cross-validation</em> each have major flaws when applied to an inherently sequential set of financial time series data.</p>
 <p>The overriding objective of the methods described here is to <strong>overcome the issues inherent in traditional cross validation approachs</strong>.</p>
-<h3 id="Issues-with-train-test-split-approach">Issues with train-test split approach<a class="anchor-link" href="#Issues-with-train-test-split-approach">¶</a></h3><p>One frequently recommended approach in finance ML tutorials is to split the data (commonly, by time) and to train on the first chunk of data and test out-of-sample on the second.  This is not wrong per se, but creates two problems:</p>
+<h3 id="Issues-with-train-test-split-approach">Issues with train-test split approach<a class="anchor-link" href="#Issues-with-train-test-split-approach">&#182;</a></h3><p>One frequently recommended approach in finance ML tutorials is to split the data (commonly, by time) and to train on the first chunk of data and test out-of-sample on the second.  This is not wrong per se, but creates two problems:</p>
 <ol>
 <li><p>Only a fraction of data can be used to generate out-of-sample performance of the model.  If you split 80/20, then you only get results for 2 of every 10 years of data.  Yuck.</p>
 </li>
@@ -1059,9 +1074,10 @@ h6:hover .anchor-link {
 </li>
 </ol>
 <p>You might consider train/test split with random (or non-random) sampling but this creates other fairly obvious issues with peeking into the future.</p>
-<h3 id="Issues-with-cross-validation">Issues with cross-validation<a class="anchor-link" href="#Issues-with-cross-validation">¶</a></h3><p>In normal ML usage, cross-validation methods, such as the <a href="scikit">K-fold cross validation</a>, provide an elegant way to have our digital cake and eat it too.  However, with inherently sequential datasets, it's really not kosher to train a model on 2016 and 2018 to predict 2017.</p>
+<h3 id="Issues-with-cross-validation">Issues with cross-validation<a class="anchor-link" href="#Issues-with-cross-validation">&#182;</a></h3><p>In normal ML usage, cross-validation methods, such as the <a href="scikit">K-fold cross validation</a>, provide an elegant way to have our digital cake and eat it too.  However, with inherently sequential datasets, it's really not kosher to train a model on 2016 and 2018 to predict 2017.</p>
 <p>It's even less kosher to use all days except for June 23, 2017 to predict that day (i.e, <a href="scikit">leave one out cross-validation</a>.</p>
 <p><em>These issues are especially intolerable if your model predicts values multiple bars in the future</em>, which results in your models being trained on data which significantly overlaps with your test data.</p>
+
 </div>
 </div>
 </div>
@@ -1069,8 +1085,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Solution:-Walk-forward-Train/Test">The Solution: Walk-forward Train/Test<a class="anchor-link" href="#The-Solution:-Walk-forward-Train/Test">¶</a></h2><p>But we are not stuck with either of these problematic approaches.  The better - and I think much more intuitive - approach is to simulate models in a "walk-forward" sequence, periodically re-training the model to incorporate all data available at that point in time.</p>
+<h2 id="The-Solution:-Walk-forward-Train/Test">The Solution: Walk-forward Train/Test<a class="anchor-link" href="#The-Solution:-Walk-forward-Train/Test">&#182;</a></h2><p>But we are not stuck with either of these problematic approaches.  The better - and I think much more intuitive - approach is to simulate models in a "walk-forward" sequence, periodically re-training the model to incorporate all data available at that point in time.</p>
 <p>The below picture is worth at least 1000 words.  Say we have six years of data to train + test.  At the end of the first year (T=1) we could have built model M1, which was trained on the first year's data (the grey bar).  After the 5th year, we could use up to five years of data to train model M5.</p>
+
 </div>
 </div>
 </div>
@@ -1078,7 +1095,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Foo" src="walkforward.png" title="Title"/></p>
+<p><img src="walkforward.png" alt="Foo" title="Title"></p>
+
 </div>
 </div>
 </div>
@@ -1086,15 +1104,16 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">¶</a></h2><p>As in prior posts, we'll begin by fetching some real stock price data and then generating from it a synthetic dataset which will make it easier to follow the principles of this tutorial.  Please refer to the previous post <a href="">Feature Selection</a> for further explanation of the how/why of this synthetic data step...</p>
+<h2 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">&#182;</a></h2><p>As in prior posts, we'll begin by fetching some real stock price data and then generating from it a synthetic dataset which will make it easier to follow the principles of this tutorial.  Please refer to the previous post <a href="">Feature Selection</a> for further explanation of the how/why of this synthetic data step...</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [170]:</div>
+<div class="prompt input_prompt">In&nbsp;[170]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> <span class="c1"># remove once updated pandas-datareader issue is fixed</span>
@@ -1105,19 +1124,21 @@ h6:hover .anchor-link {
 <span class="k">def</span> <span class="nf">get_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">data_source</span><span class="p">,</span> <span class="n">begin_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">'AdjOpen'</span><span class="p">,</span><span class="s1">'AdjHigh'</span><span class="p">,</span><span class="s1">'AdjLow'</span><span class="p">,</span><span class="s1">'AdjClose'</span><span class="p">,</span><span class="s1">'AdjVolume'</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'open'</span><span class="p">,</span><span class="s1">'high'</span><span class="p">,</span><span class="s1">'low'</span><span class="p">,</span><span class="s1">'close'</span><span class="p">,</span><span class="s1">'volume'</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">'symbol'</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">&#39;AdjOpen&#39;</span><span class="p">,</span><span class="s1">&#39;AdjHigh&#39;</span><span class="p">,</span><span class="s1">&#39;AdjLow&#39;</span><span class="p">,</span><span class="s1">&#39;AdjClose&#39;</span><span class="p">,</span><span class="s1">&#39;AdjVolume&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">])</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out</span><span class="p">,</span><span class="n">df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#stacks on top of previously collected data</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
         
-<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">'AAPL'</span><span class="p">,</span><span class="s1">'CSCO'</span><span class="p">,</span><span class="s1">'AMZN'</span><span class="p">,</span><span class="s1">'YHOO'</span><span class="p">,</span><span class="s1">'MSFT'</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">'quandl'</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2012-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="c1"># note, we're only using real price data to get an accurate date/symbol index set.  </span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;CSCO&#39;</span><span class="p">,</span><span class="s1">&#39;AMZN&#39;</span><span class="p">,</span><span class="s1">&#39;YHOO&#39;</span><span class="p">,</span><span class="s1">&#39;MSFT&#39;</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">&#39;quandl&#39;</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;2012-01-01&#39;</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="c1"># note, we&#39;re only using real price data to get an accurate date/symbol index set.  </span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1132,20 +1153,21 @@ h6:hover .anchor-link {
 <li>Feature <code>f03</code> is oscillating between very important and unimportant (using a sine wave pattern)</li>
 <li>Feature <code>f04</code> is not changing</li>
 </ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [434]:</div>
+<div class="prompt input_prompt">In&nbsp;[434]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">add_memory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">n_days</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">memory_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-    <span class="sd">''' adds autoregressive behavior to series of data'''</span>
+    <span class="sd">&#39;&#39;&#39; adds autoregressive behavior to series of data&#39;&#39;&#39;</span>
     <span class="n">add_ewm</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">memory_strength</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">memory_strength</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add_ewm</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add_ewm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
 
 <span class="c1"># generate feature data</span>
@@ -1167,34 +1189,45 @@ h6:hover .anchor-link {
             <span class="n">f03</span> <span class="o">*</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_obs</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">f03</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> \
             <span class="n">f04</span> <span class="o">+</span> \
             <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> 
-<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'outcome'</span>
+<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;outcome&#39;</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [432]:</div>
+<div class="prompt input_prompt">In&nbsp;[432]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[0.00000000e+00 1.30924326e-04 2.61848651e-04 ... 9.99738151e-01
  9.99869076e-01 1.00000000e+00]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1202,37 +1235,47 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, we've now got four features which contain random and non-random elements, and we have an <code>outcome</code> target variable which can be partially explained by these features.</p>
 <p>Let's run a quick linear model to verify that this worked as expected:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [208]:</div>
+<div class="prompt input_prompt">In&nbsp;[208]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">f01</span><span class="p">,</span><span class="n">f02</span><span class="p">,</span><span class="n">f03</span><span class="p">,</span><span class="n">f04</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">features</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'f01'</span><span class="p">,</span><span class="s1">'f02'</span><span class="p">,</span><span class="s1">'f03'</span><span class="p">,</span><span class="s1">'f04'</span><span class="p">]</span>
+<span class="n">features</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f01&#39;</span><span class="p">,</span><span class="s1">&#39;f02&#39;</span><span class="p">,</span><span class="s1">&#39;f03&#39;</span><span class="p">,</span><span class="s1">&#39;f04&#39;</span><span class="p">]</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">features</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">outcome</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'RSQ: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">features</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">outcome</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'Regression Coefficients: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RSQ: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">features</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">outcome</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Regression Coefficients: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>RSQ: 0.26938944003973686
 Regression Coefficients: [0.97842315 1.04320047 1.03708915 1.01329728]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1241,14 +1284,15 @@ Regression Coefficients: [0.97842315 1.04320047 1.03708915 1.01329728]
 <p>Indeed.  A simple, linear model run on the entire dataset shows a remarkable (for this domain) RSQ of &gt;0.25 and approximately equal coefficients for each of the features, suggesting that they're all contributing strongly to the model.</p>
 <p>However, this overlooks the very important reality that our data is non-stationary and what matters is how the model will <em>generalize</em> to future, unseen data.</p>
 <p>To illustrate, I'll re-run the same model after splitting the data into train/test sets, with the first 80% used to train and the last 20% used to test.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [209]:</div>
+<div class="prompt input_prompt">In&nbsp;[209]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">split_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcome</span><span class="p">))</span>
 
 <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">split_point</span><span class="p">,:]</span> 
@@ -1259,17 +1303,24 @@ Regression Coefficients: [0.97842315 1.04320047 1.03708915 1.01329728]
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">'RSQ in sample: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'RSQ out of sample: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'Regression Coefficients: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RSQ in sample: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RSQ out of sample: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Regression Coefficients: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>RSQ in sample: 0.29204993809396096
 RSQ out of sample: 0.14714713925603085
@@ -1277,8 +1328,10 @@ Regression Coefficients: [0.89689467 1.14213245 1.2243406  0.97863658]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1286,6 +1339,7 @@ Regression Coefficients: [0.89689467 1.14213245 1.2243406  0.97863658]
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, the results tell a different story.  We see that the model's RSQ on the unseen test data degraded to only about half of the value on the training data.  Even if we were still satisfied with the degraded RSQ value, we would carry concern that perhaps the next period of time the models would degrade even further.</p>
 <p>This is where our walk-forward process comes in.</p>
+
 </div>
 </div>
 </div>
@@ -1293,8 +1347,8 @@ Regression Coefficients: [0.89689467 1.14213245 1.2243406  0.97863658]
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-walk-forward-approach">The walk-forward approach<a class="anchor-link" href="#The-walk-forward-approach">¶</a></h2><p>Here, I'll outline the basic design pattern for a robust approach to walk-forward modeling.  This is simplified.  In real-world usage, we'd likely add many enhancements but this will illustrate the concept.</p>
-<h3 id="Training-models">Training models<a class="anchor-link" href="#Training-models">¶</a></h3><p>The first step of the walk-forward approach is to train our model <em>using only the data available at any given point in time</em>.  Theoretically, we have new data every bar so could retrain the model daily if we wished.  However, for simplicity we'll retrain much less frequently - at the end of each calendar year.</p>
+<h2 id="The-walk-forward-approach">The walk-forward approach<a class="anchor-link" href="#The-walk-forward-approach">&#182;</a></h2><p>Here, I'll outline the basic design pattern for a robust approach to walk-forward modeling.  This is simplified.  In real-world usage, we'd likely add many enhancements but this will illustrate the concept.</p>
+<h3 id="Training-models">Training models<a class="anchor-link" href="#Training-models">&#182;</a></h3><p>The first step of the walk-forward approach is to train our model <em>using only the data available at any given point in time</em>.  Theoretically, we have new data every bar so could retrain the model daily if we wished.  However, for simplicity we'll retrain much less frequently - at the end of each calendar year.</p>
 <p>We'll first create a list of timestamps for all end-of-year dates in our dataset.  These will become our days on which to retrain models.  Then, on each of the recalculation dates, we'll follow a simple procedure:</p>
 <ol>
 <li>slice out only the data which has happened up until that point</li>
@@ -1302,54 +1356,62 @@ Regression Coefficients: [0.89689467 1.14213245 1.2243406  0.97863658]
 <li>save a copy of that fitted model object in a pandas Series called <code>models</code> which is indexed by the recalculation date.  </li>
 </ol>
 <p>We could just as easily have used a dict or other data structure, but I find that pandas Series works well for this purpose.  Pandas is not just for numbers, after all...</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [313]:</div>
+<div class="prompt input_prompt">In&nbsp;[313]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'recalc_dates:'</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recalc_dates:&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
     
     
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Training on the first </span><span class="si">{}</span><span class="s2"> records"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
-    <span class="c1">#print("Coefficients: {}".format((model.coef_)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training on the first </span><span class="si">{}</span><span class="s2"> records&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+    <span class="c1">#print(&quot;Coefficients: {}&quot;.format((model.coef_)))</span>
     <span class="c1">#print()</span>
     
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>recalc_dates:
-['2012-03-31T00:00:00.000000000' '2012-06-30T00:00:00.000000000'
- '2012-09-30T00:00:00.000000000' '2012-12-31T00:00:00.000000000'
- '2013-03-31T00:00:00.000000000' '2013-06-30T00:00:00.000000000'
- '2013-09-30T00:00:00.000000000' '2013-12-31T00:00:00.000000000'
- '2014-03-31T00:00:00.000000000' '2014-06-30T00:00:00.000000000'
- '2014-09-30T00:00:00.000000000' '2014-12-31T00:00:00.000000000'
- '2015-03-31T00:00:00.000000000' '2015-06-30T00:00:00.000000000'
- '2015-09-30T00:00:00.000000000' '2015-12-31T00:00:00.000000000'
- '2016-03-31T00:00:00.000000000' '2016-06-30T00:00:00.000000000'
- '2016-09-30T00:00:00.000000000' '2016-12-31T00:00:00.000000000'
- '2017-03-31T00:00:00.000000000' '2017-06-30T00:00:00.000000000'
- '2017-09-30T00:00:00.000000000' '2017-12-31T00:00:00.000000000']
+[&#39;2012-03-31T00:00:00.000000000&#39; &#39;2012-06-30T00:00:00.000000000&#39;
+ &#39;2012-09-30T00:00:00.000000000&#39; &#39;2012-12-31T00:00:00.000000000&#39;
+ &#39;2013-03-31T00:00:00.000000000&#39; &#39;2013-06-30T00:00:00.000000000&#39;
+ &#39;2013-09-30T00:00:00.000000000&#39; &#39;2013-12-31T00:00:00.000000000&#39;
+ &#39;2014-03-31T00:00:00.000000000&#39; &#39;2014-06-30T00:00:00.000000000&#39;
+ &#39;2014-09-30T00:00:00.000000000&#39; &#39;2014-12-31T00:00:00.000000000&#39;
+ &#39;2015-03-31T00:00:00.000000000&#39; &#39;2015-06-30T00:00:00.000000000&#39;
+ &#39;2015-09-30T00:00:00.000000000&#39; &#39;2015-12-31T00:00:00.000000000&#39;
+ &#39;2016-03-31T00:00:00.000000000&#39; &#39;2016-06-30T00:00:00.000000000&#39;
+ &#39;2016-09-30T00:00:00.000000000&#39; &#39;2016-12-31T00:00:00.000000000&#39;
+ &#39;2017-03-31T00:00:00.000000000&#39; &#39;2017-06-30T00:00:00.000000000&#39;
+ &#39;2017-09-30T00:00:00.000000000&#39; &#39;2017-12-31T00:00:00.000000000&#39;]
 
 Training on the first 310 records
 Training on the first 625 records
@@ -1378,44 +1440,63 @@ Training on the first 7403 records
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To visualize how the model is changing over time, I'll create a simple plotting function of coefficients:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [306]:</div>
+<div class="prompt input_prompt">In&nbsp;[306]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
     <span class="n">coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
-        <span class="n">model_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'f01'</span><span class="p">,</span><span class="s1">'f02'</span><span class="p">,</span><span class="s1">'f03'</span><span class="p">,</span><span class="s1">'f04'</span><span class="p">])</span> <span class="c1">#extract coefficients for model</span>
+        <span class="n">model_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;f01&#39;</span><span class="p">,</span><span class="s1">&#39;f02&#39;</span><span class="p">,</span><span class="s1">&#39;f03&#39;</span><span class="p">,</span><span class="s1">&#39;f04&#39;</span><span class="p">])</span> <span class="c1">#extract coefficients for model</span>
         <span class="n">model_coefs</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># name it with the recalc date</span>
         <span class="n">coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">coefs</span><span class="p">,</span><span class="n">model_coefs</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">coefs</span><span class="o">.</span><span class="n">T</span>
-<span class="n">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Coefficients for Expanding Window Model'</span><span class="p">)</span>
+<span class="n">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Coefficients for Expanding Window Model&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[306]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1461d198&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEICAYAAABYoZ8gAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1810,11 +1891,15 @@ LgaSgb8D+/1/k/zt0/HtjRzDN3FRGTDmZP0M8ZxmA9v8/ewE7hjqr1OnPj9HaI/qcep1mgDs8C+7
 gB8M9Zz8z80B8v19vQIkDoOcYoBqID5Ur1EQcrob3w7hTuBXwMjutm1TNhhjTJgZFEM9xhhjBo4V
 fmOMCTNW+I0xJsxY4TfGmDBjhd8YY8KMFX5jjAkzVviNMSbM/D/fErygBcJZgQAAAABJRU5ErkJg
 gg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1827,6 +1912,7 @@ gg==
 <li>the third feature oscillates before converging on a relatively lower endpoint, and </li>
 <li>the fourth feature is mostly unchanged</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -1836,36 +1922,44 @@ gg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>But, in a world of constantly shifting regimes, we can do better.</p>
 <p>We know that, by the end fo the dataset, <code>f01</code> is actually much superior to <code>f02</code> however they end at about equal weights.  This is because in our final model building instance, we are using <em>all</em> of our data to train, and this entire set of data correctly shows that <em>on average</em> f02 is as useful as <code>f01</code>, ignoring that <code>f02</code>'s best days are long past.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [430]:</div>
+<div class="prompt input_prompt">In&nbsp;[430]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'90 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'90 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;90 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;90 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
     
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Training on the most recent </span><span class="si">{}</span><span class="s2"> records"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
-    <span class="c1">#print("Coefficients: {}".format((model.coef_)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training on the most recent </span><span class="si">{}</span><span class="s2"> records&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+    <span class="c1">#print(&quot;Coefficients: {}&quot;.format((model.coef_)))</span>
     
-<span class="n">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Coefficients for Rolling Window Model'</span><span class="p">)</span>
+<span class="n">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Coefficients for Rolling Window Model&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Training on the most recent 310 records
 Training on the most recent 315 records
@@ -1894,14 +1988,27 @@ Training on the most recent 248 records
 </pre>
 </div>
 </div>
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[430]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x161dea20&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEICAYAAABYoZ8gAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2517,17 +2624,22 @@ OAM7gPjKf50qj3dHXo3kIQsXpQB29Y3TwefUEzhcOc5x4MWO/jldMeZwjJvVY6jPyR84WvkTAzzf
 0edU+Vo4cKByrLWA4zUwJysgC7A31mfUBnNaiLwgPA58C5g3dG1FskFBQUHhOsMkQj0KCgoKCu2H
 4vgVFBQUrjMUx6+goKBwnaE4fgUFBYXrDMXxKygoKFxnKI5fQUFB4TpDcfwKCgoK1xn/D7bmwJPX
 akjiAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This approach of only considering the 90 days' data prior to each model re-training has had a big impact.  We now see that <code>f01</code> has overtaken <code>f02</code> in significance by the end of the time period, as we'd hope.  The on-again, off-again feature <code>f03</code> has risen and fallen in prominence over time, again just as we'd hope.</p>
+
 </div>
 </div>
 </div>
@@ -2535,42 +2647,55 @@ akjiAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Using-models">Using models<a class="anchor-link" href="#Using-models">¶</a></h3><p>The second stage of the process is <em>using</em> these walk-forward models.  The process is similar and equally simple.</p>
+<h3 id="Using-models">Using models<a class="anchor-link" href="#Using-models">&#182;</a></h3><p>The second stage of the process is <em>using</em> these walk-forward models.  The process is similar and equally simple.</p>
 <p>First, we create two arrays, <code>begin_dates</code> and <code>end_dates</code>, which contain the dates on which each model is used.  For instance, for the first model (i=0), we will apply this model to features beginning on the date we trained the model (<code>recalc_date</code>) until the day the next model is trained.  The <code>end_dates</code> array therefore drops the 0th element and appends to the end a far-off date (in the year 2099).</p>
 <p>We can equally easily use this pattern to apply the models to true out of sample features.  As long as it's not later than the year 2099, we'll simply apply the latest and greatest model we have.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [354]:</div>
+<div class="prompt input_prompt">In&nbsp;[354]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">begin_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span>
-<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">'2099-12-31'</span><span class="p">]))</span>
+<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">&#39;2099-12-31&#39;</span><span class="p">]))</span>
 
 <span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="p">):</span> <span class="c1">#loop thru each models object in collection</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">predictions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
 
 <span class="n">predictions</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[354]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>(7639,)</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2578,84 +2703,97 @@ akjiAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, this looped through each of the models we had trained at various points in time and, for each, used that model to predict the period of time until the next model became available.  It runs!</p>
 <p>Now we can confirm that the rolling model is, in fact, better than the "expanding" model by making predictions with each and comparing to truth.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [427]:</div>
+<div class="prompt input_prompt">In&nbsp;[427]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">models_expanding_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models_expanding_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
     
 <span class="n">models_rolling_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'90 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'90 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;90 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;90 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models_rolling_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
     
 <span class="n">begin_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span>
-<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">'2099-12-31'</span><span class="p">]))</span>
+<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">&#39;2099-12-31&#39;</span><span class="p">]))</span>
 
 <span class="n">predictions_expanding_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models_expanding_window</span><span class="p">):</span> <span class="c1">#loop thru each models object in collection</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">predictions_expanding_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
     
 <span class="n">predictions_rolling_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models_rolling_window</span><span class="p">):</span> <span class="c1">#loop thru each models object in collection</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">predictions_rolling_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [428]:</div>
+<div class="prompt input_prompt">In&nbsp;[428]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">r2_score</span>
 
 <span class="n">common_idx</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">predictions_expanding_window</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">rsq_expanding</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span> <span class="o">=</span> <span class="n">outcome</span><span class="p">[</span><span class="n">common_idx</span><span class="p">],</span><span class="n">y_pred</span><span class="o">=</span><span class="n">predictions_expanding_window</span><span class="p">[</span><span class="n">common_idx</span><span class="p">])</span>
 <span class="n">rsq_rolling</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span> <span class="o">=</span> <span class="n">outcome</span><span class="p">[</span><span class="n">common_idx</span><span class="p">],</span><span class="n">y_pred</span><span class="o">=</span><span class="n">predictions_rolling_window</span><span class="p">[</span><span class="n">common_idx</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Expanding Window RSQ: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_expanding</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Rolling Window RSQ: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_rolling</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expanding Window RSQ: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_expanding</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rolling Window RSQ: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_rolling</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Expanding Window RSQ: 0.262
 Rolling Window RSQ: 0.286
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Great!  All of that work added about 2.4 points of RSQ, which is certainly worth the effort.</p>
+
 </div>
 </div>
 </div>
@@ -2663,16 +2801,17 @@ Rolling Window RSQ: 0.286
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Avoiding-complexity">Avoiding complexity<a class="anchor-link" href="#Avoiding-complexity">¶</a></h3><p>The value of this walk-forward methodology is greatest when it helps you to avoid the scourge of overfitting.  The linear regression model used up to this point is relatively resistant to overfit, since it has few parameters.</p>
+<h3 id="Avoiding-complexity">Avoiding complexity<a class="anchor-link" href="#Avoiding-complexity">&#182;</a></h3><p>The value of this walk-forward methodology is greatest when it helps you to avoid the scourge of overfitting.  The linear regression model used up to this point is relatively resistant to overfit, since it has few parameters.</p>
 <p>Let's say that, instead of a simple linear regression, we used the much more overfit-prone DecisionTree, which has tendency to "memorize the past" rather than to recognize patterns in it.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [424]:</div>
+<div class="prompt input_prompt">In&nbsp;[424]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeRegressor</span>
 
 <span class="n">split_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcome</span><span class="p">))</span>
@@ -2685,78 +2824,98 @@ Rolling Window RSQ: 0.286
 <span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">'RSQ in sample: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">),</span><span class="mi">3</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'RSQ out of sample: '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">),</span><span class="mi">3</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RSQ in sample: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">),</span><span class="mi">3</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RSQ out of sample: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">),</span><span class="mi">3</span><span class="p">)))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>RSQ in sample: 0.177
 RSQ out of sample: 0.018
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This leads to overfit disaster!  Now, we'll do the same with our walk-forward framework:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [425]:</div>
+<div class="prompt input_prompt">In&nbsp;[425]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">models_rolling_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'365 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">'365 days'</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;365 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;365 days&#39;</span><span class="p">),</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models_rolling_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
     
 <span class="n">predictions_rolling_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models_rolling_window</span><span class="p">):</span> <span class="c1">#loop thru each models object in collection</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">predictions_rolling_window</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
 
 <span class="n">common_idx</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">predictions_rolling_window</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">rsq_rolling</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">common_idx</span><span class="p">],</span><span class="n">y_pred</span><span class="o">=</span><span class="n">predictions_rolling_window</span><span class="p">[</span><span class="n">common_idx</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"RSQ out of sample): </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_rolling</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RSQ out of sample): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rsq_rolling</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>RSQ out of sample): 0.082
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Much, much better.  While the RSQ result ain't great (much worse than the linear regression model), that's much preferred to being fooled by an extraordinarily overfitted result like above.  We could have guessed that <code>DecisionTree</code> would be a silly model type to try in this situation but it illustrates the point.</p>
+
 </div>
 </div>
 </div>
@@ -2764,7 +2923,7 @@ RSQ out of sample: 0.018
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h2><p>That, in a nutshell, is the walk-forward modeling framework.  The key points to keep in mind are:</p>
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h2><p>That, in a nutshell, is the walk-forward modeling framework.  The key points to keep in mind are:</p>
 <ul>
 <li>Traditional methods of validation and cross-validation are problematic for time series prediction problems</li>
 <li>The solution is to use a "walk-forward" approach which incorporates new information as it becomes available.</li>
@@ -2772,9 +2931,12 @@ RSQ out of sample: 0.018
 <li>In addition to excluding any future data from the training process, it's often important to exclude data which is too far in the past.  </li>
 </ul>
 <p>In the <a href="">next post</a> of this series, I will present a framework for scoring and comparing models which is more complete and useful than generic machine learning methods.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
