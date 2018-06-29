@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>The Alpha Scientist - Chad</title>
+    <title>The Alpha Scientist - ML for Stock Market Prediction (part 5): Model Evaluation</title>
     <meta name="description" content="">
     <meta name="author" content="Chad">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,23 +53,17 @@
     <div class="row">
 
         <div class="span9">
-        
-
-        
-
-
     <div class='article'>
         <div class="content-title">
-            <a href="http://www.alphascientist.com/ensemble_modeling.html"><h1>ML for Stock Market Prediction (part 6): Ensemble Modeling</h1></a>
-Sat 30 June 2018
+            <h1>ML for Stock Market Prediction (part 5): Model Evaluation</h1>
+Fri 15 June 2018
 
 by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
  
 
 
- 
         </div>
-        
+	
         <div><style type="text/css">/*!
 *
 * IPython notebook
@@ -1046,7 +1040,12 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Ensemble-Modeling-for-Fun-and-Profit">Ensemble Modeling for Fun and Profit<a class="anchor-link" href="#Ensemble-Modeling-for-Fun-and-Profit">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>...</p>
+<h1 id="Evaluating-machine-learning-model-performance">Evaluating machine learning model performance<a class="anchor-link" href="#Evaluating-machine-learning-model-performance">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
+<p>These financial ML explorers are learning that there are many ways in which using ML to predict financial time series differs greatly from labeling cat pictures or flagging spam.  Application of machine learning to financial time series prediction is made especially difficult due to (1) non-stationarity, (2) low signal-to-noise, and (3) strong feature collinearity within financial data.</p>
+<p>As a consequence, even the most expertly designed ML models will achieve accuracy levels which would seem wholly inadequate in other domains.  It's hard to get excited about an RSQ of 0.10 or a classification accuracy of 0.60, but that is often the reality of well-built models in the domain of asset price prediction.</p>
+<p>In my view, the generic model performance metrics (RSQ, MSE, accuracy, F1, etc...) are not tremendously useful when working in this domain.  Similarly, the traditional quantitative finance metrics (CAGR, sharpe, maxDD, etc...) do not provide as much insight into the models themselves as they do into the particular time period of data used.</p>
+<p>Over the years, I've developed a set of metrics which have proved useful for comparing and optimizing models.  These metrics attempt to measure model performance in terms of <em>predictive power</em> but also in terms of <em>practicality</em>, a critically important dimension for those who actually intend to <em>use</em> their models in the real world.</p>
+<p>In this post, I will present a general outline of my approach and will demonstrate a few of the most useful metrics I've added to my standard "scorecard".  I look forward to hearing how others may think to extend the concept.</p>
 <h2 id="Philosophy">Philosophy<a class="anchor-link" href="#Philosophy">¶</a></h2>
 </div>
 </div>
@@ -4427,111 +4426,23 @@ dtype: float64</pre>
 }
 </script>
 </div>
-        <hr />
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'alphascientist-com'; 
+    var disqus_title = 'ML for Stock Market Prediction (part 5): Model Evaluation';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-		
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.alphascientist.com/model_evaluation.html"><h2>ML for Stock Market Prediction (part 5): Model Evaluation</h2></a>
-        <div class= "well small"> Fri 15 June 2018
-
-by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
- 
-
-
- </div>
-        <div class="summary"><p>This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.  The overriding objective of the methods described here is to overcome the issues inherent in traditional cross validation approachs.</p> <a class="btn btn-info xsmall" href="http://www.alphascientist.com/model_evaluation.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.alphascientist.com/walk_forward_model_building.html"><h2>ML for Stock Market Prediction (part 4): Walk-forward Modeling</h2></a>
-        <div class= "well small"> Wed 30 May 2018
-
-by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
- 
-
-
- </div>
-        <div class="summary"><p>This is the fourth in a series on transforming data into alpha.  This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.</p> <a class="btn btn-info xsmall" href="http://www.alphascientist.com/walk_forward_model_building.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.alphascientist.com/feature_selection.html"><h2>ML for Stock Market Prediction (part 3): Feature Selection</h2></a>
-        <div class= "well small"> Wed 16 May 2018
-
-by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
- 
-
-
- </div>
-        <div class="summary"><p>This is the third post in my series on transforming data into alpha. If you haven't yet see the framework overview or feature engineering guide, please take a minute to read that first...  This post is going to delve into the mechanics of feature selection, in other words choosing between the many variations of features you've created in the feature engineering stage.</p> <a class="btn btn-info xsmall" href="http://www.alphascientist.com/feature_selection.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.alphascientist.com/feature_engineering.html"><h2>ML for Stock Market Prediction (part 2): Feature Engineering</h2></a>
-        <div class= "well small"> Mon 30 April 2018
-
-by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
- 
-
-
- </div>
-        <div class="summary"><p>This post is going to delve into the mechanics of feature engineering for the sorts of time series data that you may use as part of a stock price prediction modeling system. I'll cover the basic concept, then offer some useful python code "recipes" for transforming your raw source data into features which can be fed directly into a ML algorithm or ML pipeline.</p> <a class="btn btn-info xsmall" href="http://www.alphascientist.com/feature_engineering.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.alphascientist.com/ML_data_management.html"><h2>ML for Stock Market Prediction (part 1): Data Management</h2></a>
-        <div class= "well small"> Mon 30 April 2018
-
-by <a class="url fn" href="http://www.alphascientist.com/author/chad.html">Chad</a>
- 
-
-
- </div>
-        <div class="summary"><p>In this first post, I will present a framework for organizing and working with data. Perhaps not the most electrifying of topics, but it's a precondition for later modeling tutorials. It's also, as any practitioner of the field will agree, of critical significance and importance. I've heard it said that 90% of time in real-world quant finance is spent on data rather than models.</p> <a class="btn btn-info xsmall" href="http://www.alphascientist.com/ML_data_management.html">read more</a></div>
-    </div>	
-				
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="http://www.alphascientist.com/author/chad.html">1</a></li>
-
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
-
-</ul>
-</div>
- 
-  
         </div>
         
         <div class="span3">
