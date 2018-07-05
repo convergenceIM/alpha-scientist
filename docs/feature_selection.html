@@ -1,60 +1,59 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <title>ML for Stock Market Prediction (part 3): Feature Selection - The Alpha Scientist</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
-    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />-->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://alphascientist.com/theme/style.css" rel="stylesheet" />
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://alphascientist.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="The Alpha Scientist Full Atom Feed" />
-    <link href="https://alphascientist.com/feeds/blog.atom.xml" type="application/atom+xml" rel="alternate" title="The Alpha Scientist Categories Atom Feed" />
-  </head>
-  <body id="index" class="archive">
-    <!--[if lt IE 7]>
-        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="https://alphascientist.com">The Alpha Scientist</a>
-        </div>
-        <div class="collapse navbar-collapse navbar-right">
-          <ul class="nav navbar-nav">
-            <li><a href="https://alphascientist.com/tags.html">tags</a></li>
-          </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-      </div>
-    </nav>
-    <div class="container">
-    <section id="content" class="article content">
-      <header>
-        <h2 class="entry-title">
-          ML for Stock Market Prediction (part 3): Feature Selection
-        </h2>
-        
-        <div class="text-muted">Wed 16 May 2018</div>
-      </header>
-<!-- .entry-content -->
-      <div class="entry-content">
-        <style type="text/css">/*!
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ML for Stock Market Prediction (part 3): Feature Selection &mdash; The Alpha Scientist</title>
+  <meta name="author" content="Chad">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="/favicon.png" rel="icon">
+
+  <link href="/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="/">The Alpha Scientist</a></h1>
+    <h2>Alpha scientist blog</h2>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+      <li class="active">
+        <a href="/category/blog.html">Blog</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">ML for Stock Market Prediction (part 3): Feature Selection</h1>
+    <p class="meta">
+<time datetime="2018-05-16T20:03:00-07:00" pubdate>Ср 16 Май 2018</time>    </p>
+</header>
+
+  <div class="entry-content"><style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1030,10 +1029,11 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="How-To-Guide-into-Feature-Selection">How-To Guide into Feature Selection<a class="anchor-link" href="#How-To-Guide-into-Feature-Selection">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>This is the third post in my series on transforming data into alpha.  If you haven't yet see the <a href="">framework overview</a> or <a href="">feature engineering guide</a>, please take a minute to read that first...</p>
+<h1 id="How-To-Guide-into-Feature-Selection">How-To Guide into Feature Selection<a class="anchor-link" href="#How-To-Guide-into-Feature-Selection">&#182;</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>This is the third post in my series on transforming data into alpha.  If you haven't yet see the <a href="">framework overview</a> or <a href="">feature engineering guide</a>, please take a minute to read that first...</p>
 <p>This post is going to delve into the mechanics of <em>feature selection</em>, in other words choosing between the many variations of features you've created in the feature engineering stage.   By design, many of the features you've created will be very similar to each other (aka "collinear") because you've derived them from the same underlying dataset.</p>
-<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h2><p>The previous step of the process, feature engineering, is intended to be a creative, loose process akin to a brainstorming session.  The result should be tens (or hundreds) of variations of features to evaluate.  However, most models will <em>generalize</em> better (i.e., work well on data they haven't seen) with fewer features.  They will also be much more interpretable.</p>
+<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">&#182;</a></h2><p>The previous step of the process, feature engineering, is intended to be a creative, loose process akin to a brainstorming session.  The result should be tens (or hundreds) of variations of features to evaluate.  However, most models will <em>generalize</em> better (i.e., work well on data they haven't seen) with fewer features.  They will also be much more interpretable.</p>
 <p>Therefore, we need a systematic approach to deciding which of the many posible features to use.  That's where the <em>feature selection</em> process comes in.</p>
+
 </div>
 </div>
 </div>
@@ -1041,21 +1041,22 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Philosophy">Philosophy<a class="anchor-link" href="#Philosophy">¶</a></h2><p>In feature selection, we strive to meet two goals:</p>
+<h2 id="Philosophy">Philosophy<a class="anchor-link" href="#Philosophy">&#182;</a></h2><p>In feature selection, we strive to meet two goals:</p>
 <ol>
 <li><strong>Strength</strong>:  Choose the features with the strongest, most persistent relationships to the target outcome variable.  The reasons for this are obvious.</li>
 <li><strong>Orthogonality</strong>:  Minimize the amount of overlap or collinearity in your selected features.  The importance of orthogonality (non-overlap) of features is much greater than you might guess.  </li>
 </ol>
 <p>I am biased towards making feature selection a relatively mechanical process.  The "art" should mainly be encapsulated within the prior step (feature engineering) and the subsequent step (modeling).  Feature selection should, in my view, follow a heuristic and can be encoded into an algorithm if desired.  For purposes of this tutorial, I'll keep things relatively manual.</p>
-<h2 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">¶</a></h2><p>Let's dive in.  I will begin by loading the feature set created in the prior step.  I'm also going to create the <em>outcomes</em> <code>DataFrame</code> as done in the Framework Overview post.  Please refer to those if you haven't already.</p>
+<h2 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">&#182;</a></h2><p>Let's dive in.  I will begin by loading the feature set created in the prior step.  I'm also going to create the <em>outcomes</em> <code>DataFrame</code> as done in the Framework Overview post.  Please refer to those if you haven't already.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> <span class="c1"># remove once updated pandas-datareader issue is fixed</span>
@@ -1067,27 +1068,35 @@ h6:hover .anchor-link {
 <span class="k">def</span> <span class="nf">get_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">data_source</span><span class="p">,</span> <span class="n">begin_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">'AdjOpen'</span><span class="p">,</span><span class="s1">'AdjHigh'</span><span class="p">,</span><span class="s1">'AdjLow'</span><span class="p">,</span><span class="s1">'AdjClose'</span><span class="p">,</span><span class="s1">'AdjVolume'</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'open'</span><span class="p">,</span><span class="s1">'high'</span><span class="p">,</span><span class="s1">'low'</span><span class="p">,</span><span class="s1">'close'</span><span class="p">,</span><span class="s1">'volume'</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">'symbol'</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">&#39;AdjOpen&#39;</span><span class="p">,</span><span class="s1">&#39;AdjHigh&#39;</span><span class="p">,</span><span class="s1">&#39;AdjLow&#39;</span><span class="p">,</span><span class="s1">&#39;AdjClose&#39;</span><span class="p">,</span><span class="s1">&#39;AdjVolume&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">])</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out</span><span class="p">,</span><span class="n">df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#stacks on top of previously collected data</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
         
-<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">'AAPL'</span><span class="p">,</span><span class="s1">'CSCO'</span><span class="p">,</span><span class="s1">'AMZN'</span><span class="p">,</span><span class="s1">'YHOO'</span><span class="p">,</span><span class="s1">'MSFT'</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">'quandl'</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2012-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;CSCO&#39;</span><span class="p">,</span><span class="s1">&#39;AMZN&#39;</span><span class="p">,</span><span class="s1">&#39;YHOO&#39;</span><span class="p">,</span><span class="s1">&#39;MSFT&#39;</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">&#39;quandl&#39;</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;2012-01-01&#39;</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="n">prices</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[3]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped="">
+<style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1101,101 +1110,112 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>open</th>
-<th>high</th>
-<th>low</th>
-<th>close</th>
-<th>volume</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2018-03-26</th>
-<th>MSFT</th>
-<td>90.61</td>
-<td>94.000</td>
-<td>90.40</td>
-<td>93.78</td>
-<td>55031149.0</td>
-</tr>
-<tr>
-<th rowspan="4" valign="top">2018-03-27</th>
-<th>AAPL</th>
-<td>173.68</td>
-<td>175.150</td>
-<td>166.92</td>
-<td>168.34</td>
-<td>38962839.0</td>
-</tr>
-<tr>
-<th>AMZN</th>
-<td>1572.40</td>
-<td>1575.960</td>
-<td>1482.32</td>
-<td>1497.05</td>
-<td>6793279.0</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>44.49</td>
-<td>44.520</td>
-<td>42.24</td>
-<td>42.68</td>
-<td>30088447.0</td>
-</tr>
-<tr>
-<th>MSFT</th>
-<td>94.94</td>
-<td>95.139</td>
-<td>88.51</td>
-<td>89.47</td>
-<td>53704562.0</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>open</th>
+      <th>high</th>
+      <th>low</th>
+      <th>close</th>
+      <th>volume</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th>symbol</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-03-26</th>
+      <th>MSFT</th>
+      <td>90.61</td>
+      <td>94.000</td>
+      <td>90.40</td>
+      <td>93.78</td>
+      <td>55031149.0</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">2018-03-27</th>
+      <th>AAPL</th>
+      <td>173.68</td>
+      <td>175.150</td>
+      <td>166.92</td>
+      <td>168.34</td>
+      <td>38962839.0</td>
+    </tr>
+    <tr>
+      <th>AMZN</th>
+      <td>1572.40</td>
+      <td>1575.960</td>
+      <td>1482.32</td>
+      <td>1497.05</td>
+      <td>6793279.0</td>
+    </tr>
+    <tr>
+      <th>CSCO</th>
+      <td>44.49</td>
+      <td>44.520</td>
+      <td>42.24</td>
+      <td>42.68</td>
+      <td>30088447.0</td>
+    </tr>
+    <tr>
+      <th>MSFT</th>
+      <td>94.94</td>
+      <td>95.139</td>
+      <td>88.51</td>
+      <td>89.47</td>
+      <td>53704562.0</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="c1"># next day's opening change</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># next day's returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_5'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># next week's returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_10'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># next two weeks' returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_20'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># next month's (approx) returns</span>
+<span class="c1"># next day&#39;s opening change</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># next day&#39;s returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_5&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># next week&#39;s returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_10&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># next two weeks&#39; returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_20&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># next month&#39;s (approx) returns</span>
 
 <span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[4]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped="">
+<style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1209,69 +1229,72 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>close_1</th>
-<th>close_5</th>
-<th>close_10</th>
-<th>close_20</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2018-03-26</th>
-<th>MSFT</th>
-<td>0.048173</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th rowspan="4" valign="top">2018-03-27</th>
-<th>AAPL</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>AMZN</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>MSFT</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>close_1</th>
+      <th>close_5</th>
+      <th>close_10</th>
+      <th>close_20</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th>symbol</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-03-26</th>
+      <th>MSFT</th>
+      <td>0.048173</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">2018-03-27</th>
+      <th>AAPL</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>AMZN</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>CSCO</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>MSFT</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1279,29 +1302,39 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For purposes of illustration, we'll engineer some features to contain some signal buried within the noise.  Clearly, this is not something we'd do in real usage but will help to demonstrate the concept more clearly.</p>
 <p>Assume we have a target variable called <code>outcome</code> which can be (partially) predicted with three factors, <code>factor_1</code>, <code>factor_2</code> and <code>factor_3</code>.  There's also an unpredictble noise component.  We will "cheat" and create the overall target variable from these factors.  All data will follow the same index as the market data we pulled from quandl.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="n">factor_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">factor_2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">factor_3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">outcome</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">3.</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">5.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'outcome'</span>
+<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;outcome&#39;</span>
 <span class="n">outcome</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>date        symbol
 2018-03-26  MSFT     -10.095753
@@ -1311,9 +1344,12 @@ h6:hover .anchor-link {
             MSFT       0.713697
 Name: outcome, dtype: float64</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1321,47 +1357,56 @@ Name: outcome, dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we will engineer several variations on features which each contain some information about the three factors, plus a few which contain some interaction effects, and some which do not contain any useful data.</p>
 <p>Note that we are, again, "cheating" here for illustration purposes.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">outcome</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f11'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f12'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f13'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f13&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">'f21'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f22'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f23'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f21&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f22&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f23&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">'f31'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f32'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f33'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f31&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f32&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f33&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">'f41'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f42'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f43'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f41&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f42&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f43&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">'f51'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f52'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f53'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f51&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f52&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f53&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
 <span class="n">features</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[6]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped="">
+<style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1375,160 +1420,164 @@ Name: outcome, dtype: float64</pre>
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>f11</th>
-<th>f12</th>
-<th>f13</th>
-<th>f21</th>
-<th>f22</th>
-<th>f23</th>
-<th>f31</th>
-<th>f32</th>
-<th>f33</th>
-<th>f41</th>
-<th>f42</th>
-<th>f43</th>
-<th>f51</th>
-<th>f52</th>
-<th>f53</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2018-03-26</th>
-<th>MSFT</th>
-<td>0.270354</td>
-<td>0.640479</td>
-<td>0.312507</td>
-<td>1.076263</td>
-<td>-1.140330</td>
-<td>0.125225</td>
-<td>-0.480357</td>
-<td>-0.484713</td>
-<td>-0.888125</td>
-<td>0.483008</td>
-<td>-0.084135</td>
-<td>-0.797154</td>
-<td>-0.088401</td>
-<td>0.904657</td>
-<td>-0.076851</td>
-</tr>
-<tr>
-<th rowspan="4" valign="top">2018-03-27</th>
-<th>AAPL</th>
-<td>1.356990</td>
-<td>-0.063781</td>
-<td>0.364178</td>
-<td>1.060267</td>
-<td>0.785495</td>
-<td>0.685358</td>
-<td>0.006471</td>
-<td>-0.198058</td>
-<td>-1.225844</td>
-<td>1.271360</td>
-<td>-1.088801</td>
-<td>0.518321</td>
-<td>0.775822</td>
-<td>0.509112</td>
-<td>-0.854521</td>
-</tr>
-<tr>
-<th>AMZN</th>
-<td>-1.509850</td>
-<td>0.337900</td>
-<td>-0.907325</td>
-<td>1.483814</td>
-<td>1.534616</td>
-<td>0.895938</td>
-<td>0.660212</td>
-<td>-0.405371</td>
-<td>1.435133</td>
-<td>-0.424031</td>
-<td>1.241517</td>
-<td>0.320264</td>
-<td>-0.797960</td>
-<td>-0.310141</td>
-<td>0.066523</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.219328</td>
-<td>0.170100</td>
-<td>0.238389</td>
-<td>-0.051780</td>
-<td>-0.777215</td>
-<td>0.056822</td>
-<td>0.277272</td>
-<td>-0.633173</td>
-<td>0.579801</td>
-<td>1.066081</td>
-<td>0.753961</td>
-<td>0.553908</td>
-<td>-1.059631</td>
-<td>-2.462920</td>
-<td>-0.041167</td>
-</tr>
-<tr>
-<th>MSFT</th>
-<td>0.843976</td>
-<td>-0.175080</td>
-<td>-0.382519</td>
-<td>0.231769</td>
-<td>-0.641720</td>
-<td>0.151481</td>
-<td>-0.776813</td>
-<td>0.068307</td>
-<td>0.462349</td>
-<td>-0.193042</td>
-<td>-1.152931</td>
-<td>-0.637286</td>
-<td>-2.544443</td>
-<td>0.301099</td>
-<td>-1.518330</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>f11</th>
+      <th>f12</th>
+      <th>f13</th>
+      <th>f21</th>
+      <th>f22</th>
+      <th>f23</th>
+      <th>f31</th>
+      <th>f32</th>
+      <th>f33</th>
+      <th>f41</th>
+      <th>f42</th>
+      <th>f43</th>
+      <th>f51</th>
+      <th>f52</th>
+      <th>f53</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th>symbol</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-03-26</th>
+      <th>MSFT</th>
+      <td>0.270354</td>
+      <td>0.640479</td>
+      <td>0.312507</td>
+      <td>1.076263</td>
+      <td>-1.140330</td>
+      <td>0.125225</td>
+      <td>-0.480357</td>
+      <td>-0.484713</td>
+      <td>-0.888125</td>
+      <td>0.483008</td>
+      <td>-0.084135</td>
+      <td>-0.797154</td>
+      <td>-0.088401</td>
+      <td>0.904657</td>
+      <td>-0.076851</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">2018-03-27</th>
+      <th>AAPL</th>
+      <td>1.356990</td>
+      <td>-0.063781</td>
+      <td>0.364178</td>
+      <td>1.060267</td>
+      <td>0.785495</td>
+      <td>0.685358</td>
+      <td>0.006471</td>
+      <td>-0.198058</td>
+      <td>-1.225844</td>
+      <td>1.271360</td>
+      <td>-1.088801</td>
+      <td>0.518321</td>
+      <td>0.775822</td>
+      <td>0.509112</td>
+      <td>-0.854521</td>
+    </tr>
+    <tr>
+      <th>AMZN</th>
+      <td>-1.509850</td>
+      <td>0.337900</td>
+      <td>-0.907325</td>
+      <td>1.483814</td>
+      <td>1.534616</td>
+      <td>0.895938</td>
+      <td>0.660212</td>
+      <td>-0.405371</td>
+      <td>1.435133</td>
+      <td>-0.424031</td>
+      <td>1.241517</td>
+      <td>0.320264</td>
+      <td>-0.797960</td>
+      <td>-0.310141</td>
+      <td>0.066523</td>
+    </tr>
+    <tr>
+      <th>CSCO</th>
+      <td>0.219328</td>
+      <td>0.170100</td>
+      <td>0.238389</td>
+      <td>-0.051780</td>
+      <td>-0.777215</td>
+      <td>0.056822</td>
+      <td>0.277272</td>
+      <td>-0.633173</td>
+      <td>0.579801</td>
+      <td>1.066081</td>
+      <td>0.753961</td>
+      <td>0.553908</td>
+      <td>-1.059631</td>
+      <td>-2.462920</td>
+      <td>-0.041167</td>
+    </tr>
+    <tr>
+      <th>MSFT</th>
+      <td>0.843976</td>
+      <td>-0.175080</td>
+      <td>-0.382519</td>
+      <td>0.231769</td>
+      <td>-0.641720</td>
+      <td>0.151481</td>
+      <td>-0.776813</td>
+      <td>0.068307</td>
+      <td>0.462349</td>
+      <td>-0.193042</td>
+      <td>-1.152931</td>
+      <td>-0.637286</td>
+      <td>-2.544443</td>
+      <td>0.301099</td>
+      <td>-1.518330</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, we'll import the required packages and modules for the feature selection:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1540,9 +1589,11 @@ Name: outcome, dtype: float64</pre>
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span><span class="p">,</span><span class="n">Normalizer</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1550,14 +1601,15 @@ Name: outcome, dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Before evaluating the features for predictive strength and orthogonality, we'll do a quick data preparation stage. It is sometimes vital to "standardize" or "normalize" data so that we get fair comparisons between features of differing scale.  Strictly speaking, since all of the doctored outcome and feature data is already drawn from normal distribution (using the numpy function <code>random.rnorm()</code>) we don't really need this step, but good practice to include.</p>
 <p>Here, I'll use the scikit-learn <code>StandardizeScaler()</code> method and some pandas magic to transform the data.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#f = features.dropna() #optional - to compare apples to apples</span>
 
 <span class="c1"># standardize or normalize data </span>
@@ -1575,23 +1627,35 @@ Name: outcome, dtype: float64</pre>
 <span class="n">outcome_scaled</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">outcome_df</span><span class="o">.</span><span class="n">columns</span>
 <span class="n">outcome_scaled</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(7639, 15)
 </pre>
 </div>
 </div>
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[8]:</div>
+
+
+
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped="">
+<style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1605,70 +1669,89 @@ Name: outcome, dtype: float64</pre>
     }
 </style>
 <table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>outcome</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2018-03-26</th>
-<th>MSFT</th>
-<td>-1.602176</td>
-</tr>
-<tr>
-<th rowspan="4" valign="top">2018-03-27</th>
-<th>AAPL</th>
-<td>0.129031</td>
-</tr>
-<tr>
-<th>AMZN</th>
-<td>-0.103342</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.059526</td>
-</tr>
-<tr>
-<th>MSFT</th>
-<td>0.119836</td>
-</tr>
-</tbody>
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>outcome</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th>symbol</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-03-26</th>
+      <th>MSFT</th>
+      <td>-1.602176</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">2018-03-27</th>
+      <th>AAPL</th>
+      <td>0.129031</td>
+    </tr>
+    <tr>
+      <th>AMZN</th>
+      <td>-0.103342</td>
+    </tr>
+    <tr>
+      <th>CSCO</th>
+      <td>-0.059526</td>
+    </tr>
+    <tr>
+      <th>MSFT</th>
+      <td>0.119836</td>
+    </tr>
+  </tbody>
 </table>
 </div>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
-<span class="n">corr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">,</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'Strength of Correlation'</span><span class="p">)</span>
+<span class="n">corr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Strength of Correlation&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xc2df9b0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEICAYAAABVv+9nAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1789,46 +1872,60 @@ ybh9ZftZ2/NtL3bxwKUVFH9bQ3UP1LoEX15T/xhwK7AWuM72GkmflfSestklwDxJDwN/Aow5TKmt
 qvSTpIMkPQb8IfA1SWv6F3F/VPx7+gKwI/DNcgjgrPugrNhPH5O0RtIqin93J42xu1ar2FeNSKmC
 iIiWat0ZfEREFJLgIyJaKgk+IqKlkuAjIloqCT4ioqWS4CMiWioJPiKipf4/CF+ogvhdG9sAAAAA
 SUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Pretend for a minute that we don't know which features are going to be stronger and weaker, and which are going to tend to cluster together.  We've got an idea that there are some quite strong features, some weaker, and some useless.<br/>
+<p>Pretend for a minute that we don't know which features are going to be stronger and weaker, and which are going to tend to cluster together.  We've got an idea that there are some quite strong features, some weaker, and some useless.<br>
 Next, we'll take advantage of a very handy seaborn chart type called a "clustermap" which plots a heatmap representation of a correlation matrix and runs a clustering algorithm to group together the most closely related features.</p>
 <p>Of course, the diagonal of dark green represents each feature being perfectly correlated with itself.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
-<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
+<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>\
-                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
+                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlcAAAJDCAYAAAAmfDEJAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2047,11 +2144,15 @@ GngucEy3j8+vqhsa1p7vecBvJCnmvv3061X1hYb9L7itSX6SuW/QPS3JeV3b86rqtkX6aVFz0tt6
 KfA05kZxAPZV1Uth4p9PC5nk/l3SBH+GF9u/L2eCnxNL1J3050RTXqFdkiSpIQ8LSpIkNWS4kiRJ
 ashwJUmS1JDhSpIkqSHDlSRJUkOGK0mSpIYMV5IkSQ0ZriRJkhr6/wF0U/P3e4f6swAAAABJRU5E
 rkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2059,36 +2160,46 @@ rkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The algorithm has done a good job of finding the groupings of features.  The cluster in the upper left captures <code>factor_1</code> (including some of the interaction effects).  <code>factor_3</code> is fairly well isolated in the lower right corner, and in the middle we can see <code>factor_2</code> as well as some of the noise features.</p>
 <p>Let's next focus in only on those features with correlations of greater than 0.1 to exclude the noise and weak features.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">correlated_features</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="n">corr</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">correlated_features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
-<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
+<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>\
-                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
+                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Correlation Strength:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation Strength:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">corr</span><span class="p">[</span><span class="n">corr</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAFpCAYAAACWFzOYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2221,11 +2332,17 @@ x3XvIUlOYv6Dv3/2D+mkLfJa1wJXAh+oqo9MsuaeXus0aw6pO7X3dRocwfcsyeeA5wLrk9wGnFtV
 5E3A8dOuu4jnAe9MUsxfyfN7VfXFCbX9auB1SR4FHgTOqm5yeMq/T3vyGuClwKFJzun2nVNV2/b8
 IyPb7WtNMs2ai9Wd5vs6cd7JKkmNcopGkhplwEtSowx4SWqUAS9JjTLgJalRBrwkNcqAl6RGGfCS
 1Kj/D4ZsQJEq6oHmAAAAAElFTkSuQmCC
-"/>
+"
+>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Correlation Strength:
 f33    0.392217
@@ -2241,8 +2358,10 @@ dtype: float64
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2255,52 +2374,65 @@ dtype: float64
 <li>Repeat this process until either (1) we've reached the target feature count, or (2) we've run out strongly correlated features.  </li>
 </ol>
 <p>Following that heuristic, I get:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'f33'</span><span class="p">,</span><span class="s1">'f23'</span><span class="p">,</span><span class="s1">'f42'</span><span class="p">,</span><span class="s1">'f41'</span><span class="p">,</span><span class="s1">'f31'</span><span class="p">]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f33&#39;</span><span class="p">,</span><span class="s1">&#39;f23&#39;</span><span class="p">,</span><span class="s1">&#39;f42&#39;</span><span class="p">,</span><span class="s1">&#39;f41&#39;</span><span class="p">,</span><span class="s1">&#39;f31&#39;</span><span class="p">]</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that this list of features is not simply the highest correlated features.  Let's run the clustermap one more time to see if we've missed any major clusters.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
-<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
+<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>\
-                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
+                   <span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAFpCAYAAABnHGgVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2401,33 +2533,53 @@ YE9yZrrESPJS5r50/IE/xqvJQteU5JTu944kzwZeDnx+uErHt9DvX5KNwJ3ArVV1x6BFTpg999n0
 duA5wB91/409VVXnAScD702yjrk/zLdX1aq4zW4xST4JnA1sSXIIuLqq7hm4rHG9DrgyyXeBbwNX
 VDeAu4qv65jXlORFwLuSFHN3bv1eVf3tkIVOwOuBVwLPSXJVt+2qqnpouJImwxmqktQgh2UkqUGG
 uyQ1yHCXpAYZ7pLUIMNdkhpkuEtSgwx3SWqQ4S5JDfp/ktiHon+yGkoAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;seaborn.axisgrid.PairGrid at 0xfa92fd0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIUCAYAAABYRlVrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4809,11 +4961,15 @@ SwihkCR1F1JKd7bkjbYRPAEgGcDf5TEboJQOhNRd8rpchyFAqtRuFa1flzDGA7gOQDIh5C75vbso
 pSUtd0ttG4SQrwFcAcBJCDkG4DeU0jUtfFuXOjTXEKD12UNvU9WhQ4cOHTp0xBx6ikSHDh06dOjQ
 EXPoDoYOHTp06NChI+bQHQwdOnTo0KFDR8yhOxg6dOjQoUOHjphDdzB06NChQ4cOHTGH7mDo0KFD
 hw4dOmIO3cHQoUOHDh06dMQcuoOhQ4cOHTp06Ig5/j9e9oJpdv/gfQAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4821,31 +4977,48 @@ hw4dOmIO3cHQoUOHDh06dMQcuoOhQ4cOHTp06Ig5/j9e9oJpdv/gfQAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Looks generally pretty good.  This can be a bit subjective to determine what's "too close" and what's "too weak", but that's the basic idea.</p>
 <p>Thus far, we've only taken a simple correlation statistic to be representative of predictive power.  In my opinion, that's a good place to start but because financial time series data suffers from <a href="">non-stationarity</a> and <a href="">regime change</a>, we'll plot the rolling correlation of these selected features to see if any is either (1) less correlated now than in times past or (2) very "hot-and-cold".</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [147]:</div>
+<div class="prompt input_prompt">In&nbsp;[147]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outcome_scaled</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
-<span class="n">tmp</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outcome_scaled</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="c1"># shows time stability</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[147]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a2004f080&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEKCAYAAADpfBXhAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsvXd4VdeVv//uc25R7xKSEKiBKBKiGGPAmGpsMBjj7rjH
@@ -5580,17 +5753,22 @@ lFL7ReR2bPo3XTEBVcomwazRDHn0hqpmJLENuFZE/OzKjqvtx4OAYrtk65c7nV9rfw5l0+Y+JSI3
 gk0FUESmuM50jaZ/6DV3zYii04ZqHjYlvmxsjSoesB87CAQppW4XkfnA74Em4AZsXaR+i61fpjfw
 mlLqUZc7odE4gA7uGo1G44HoZRmNRqPxQHRw12g0Gg9EB3eNRqPxQHRw12g0Gg9EB3eNRqPxQHRw
 12g0Gg9EB3eNRqPxQHRw12g0Gg/k/wFQEwg3JuushwAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As expected, since the data wasn't modeled with any non-stationarity, our features all appear to be robust over time.</p>
+
 </div>
 </div>
 </div>
@@ -5598,32 +5776,49 @@ mlLqUZc7odE4gA7uGo1G44HoZRmNRqPxQHRw12g0Gg9EB3eNRqPxQHRw12g0Gg9EB3eNRqPxQHRw
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Z-Scores">Z-Scores<a class="anchor-link" href="#Z-Scores">¶</a></h3><p>A very popular/useful transformation for financial time series data is the <a href="http://stattrek.com/statistics/dictionary.aspx?definition=z-score">z-score</a>.  We can easily define a generalized lambda function for this, which we can use whenever needed.  Importantly, it allows us to mix together very different symbols (some high-beta, some low-beta) in a way that considers the statistical significance of any movement.</p>
+<h3 id="Z-Scores">Z-Scores<a class="anchor-link" href="#Z-Scores">&#182;</a></h3><p>A very popular/useful transformation for financial time series data is the <a href="http://stattrek.com/statistics/dictionary.aspx?definition=z-score">z-score</a>.  We can easily define a generalized lambda function for this, which we can use whenever needed.  Importantly, it allows us to mix together very different symbols (some high-beta, some low-beta) in a way that considers the statistical significance of any movement.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">zscore_fxn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f09'</span><span class="p">]</span> <span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">zscore_fxn</span><span class="p">)</span>
-<span class="n">features</span><span class="o">.</span><span class="n">f09</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Z-Scores (not quite accurate)'</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f09&#39;</span><span class="p">]</span> <span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">zscore_fxn</span><span class="p">)</span>
+<span class="n">features</span><span class="o">.</span><span class="n">f09</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Z-Scores (not quite accurate)&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x10e6759b0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYUAAAEICAYAAACwDehOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl4lOW5+PHvPdkTspCFQEiAJOwQ1ggi4IbgvmC1RUut
@@ -5945,11 +6140,15 @@ J4FlwHJJ79l+tiJMbl4rIOkssM72IJ8MKWkr8AbwqO2L1Xn6JGkp3cX1TcAF4GvgGdunSoP1TN3R
 0bvAn7b3VOeZFKOVwl7bM1UZck0hKrwN3AMck3RC0sHqQH0ZXWB/Efic7uLqB0MrhJENwHPAY6P/
 gROjI+UolpVCREQ0WSlERESTUoiIiCalEBERTUohIiKalEJERDQphYiIaFIKERHRXAVSuC0HdiAx
 mwAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -5957,31 +6156,48 @@ mwAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, the above example has a subtle but important bug.  It uses the mean <em>of the whole time frame</em> and the standard deviation <em>of the whole time frame</em> to calculate each datapoint.  This means we are peeking ahead into the future and the feature is potentially very danger-prone (it'll work famously well in sample and fail to work out of sample...).</p>
 <p>Fixing this is cumbersome, but necessary.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">zscore_fun_improved</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f10'</span><span class="p">]</span> <span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">zscore_fun_improved</span><span class="p">)</span>
-<span class="n">features</span><span class="o">.</span><span class="n">f10</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Z-Scores (Correct)'</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f10&#39;</span><span class="p">]</span> <span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">zscore_fun_improved</span><span class="p">)</span>
+<span class="n">features</span><span class="o">.</span><span class="n">f10</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Z-Scores (Correct)&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x114ba6208&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYsAAAEICAYAAACuxNj9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl4VdW5+PHvm5mEzATISEIYwxgIiIKi4gDOOLRoabXV
@@ -6296,82 +6512,96 @@ aQbNGvRvVm6alJqjhReAEdtP1e4psb3R9px2v70d+HDABwXt/9UhSRe1m1YA31RMAnJmUcswMCzp
 a2AMWDOgR7599ixwBrCzPRvaZfveukknsn1U0v3Ae8AQMGx7f+WskuXAXcA+SV+22zbZfrti06lo
 HbCtPYg4CNxduSe3+4iIiLJchoqIiKIMi4iIKMqwiIiIogyLiIgoyrCIiIiiDIuIiCjKsIiIiKK/
 AWgsDyPrTEasAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Percentile">Percentile<a class="anchor-link" href="#Percentile">¶</a></h3><p>Less commonly used - but equally useful - is the percentile transformation.  Getting this done properly in pandas (with groupby and rolling) is possible but tricky.  The below example returns the percentile rank (from 0.00 to 1.00) of traded volume for each value as compared to a trailing 200 day period.</p>
+<h3 id="Percentile">Percentile<a class="anchor-link" href="#Percentile">&#182;</a></h3><p>Less commonly used - but equally useful - is the percentile transformation.  Getting this done properly in pandas (with groupby and rolling) is possible but tricky.  The below example returns the percentile rank (from 0.00 to 1.00) of traded volume for each value as compared to a trailing 200 day period.</p>
 <p>Note that we need to use <em>a lambda within a lambda</em> to make this work properly.  We're on the bleeding edge.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rollrank_fxn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f11'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">rollrank_fxn</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">rollrank_fxn</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another interesting application of this same pattern is to rank each stock <em>cross-sectionally</em> rather than <em>longitudinally</em> as above.  In other words, where does this stock rank within all of the stocks on that day, not for all prior days of that stock.  The below example isn't very meaningful with only two stocks, but quite useful when using a realistic universe.  In this example, we're also making use of an earlier feature (relative volume) to compare which symbol is most heavily traded <em>for that stock's normal range</em> in a given day.  Also note that we need to <code>dropna()</code> prior to ranking because <code>rank</code> doesn't handle nulls very gracefully.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s1">'f12'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">'f07'</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;f12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;f07&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Technical-Analysis">Technical Analysis<a class="anchor-link" href="#Technical-Analysis">¶</a></h3><p>Those with a taste for technical analysis may find it difficult to let go of your favored TA techniques.  While this is not <em>my</em> favored approach, you'll have no problem engineering features using these methods.  From my cursory googling, it looked as though the <code>ta</code> package would be a good place to start.  Very new and only one contributor but it looks fairly complete and well documented.  If you find that it's missing your favorite indicators, consider contributing to the package.  If you know of better such packages, please post in the comments below...</p>
+<h3 id="Technical-Analysis">Technical Analysis<a class="anchor-link" href="#Technical-Analysis">&#182;</a></h3><p>Those with a taste for technical analysis may find it difficult to let go of your favored TA techniques.  While this is not <em>my</em> favored approach, you'll have no problem engineering features using these methods.  From my cursory googling, it looked as though the <code>ta</code> package would be a good place to start.  Very new and only one contributor but it looks fairly complete and well documented.  If you find that it's missing your favorite indicators, consider contributing to the package.  If you know of better such packages, please post in the comments below...</p>
 <p>You may consider mean-centering a technical indicator so that machine learning methods can make better use of the data (or make sure to include that in the pre-processing pipeline when you start modeling).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">ta</span> <span class="c1"># technical analysis library: https://technical-analysis-library-in-python.readthedocs.io/en/latest/</span>
 <span class="c1"># money flow index (14 day)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f13'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">money_flow_index</span><span class="p">(</span><span class="n">prices</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fillna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f13&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">money_flow_index</span><span class="p">(</span><span class="n">prices</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="n">prices</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fillna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># mean-centered money flow index</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f14'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">'f13'</span><span class="p">]</span> <span class="o">-</span> <span class="n">features</span><span class="p">[</span><span class="s1">'f13'</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f14&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;f13&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;f13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Alternative-Representations">Alternative Representations<a class="anchor-link" href="#Alternative-Representations">¶</a></h2><p>A bit different than transforms are "representations", i.e., other ways to represent continuous values.  All of the transforms above returned continuous values rather than "labels", and that's often a good place to start - especally for early prototypes.</p>
+<h2 id="Alternative-Representations">Alternative Representations<a class="anchor-link" href="#Alternative-Representations">&#182;</a></h2><p>A bit different than transforms are "representations", i.e., other ways to represent continuous values.  All of the transforms above returned continuous values rather than "labels", and that's often a good place to start - especally for early prototypes.</p>
 <p>However, you may want to represent the data in different ways, especially if using classification-based approaches or worried about the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">curse of dimensionality</a> due to large numbers of features.</p>
+
 </div>
 </div>
 </div>
@@ -6379,108 +6609,121 @@ AWgsDyPrTEasAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Binning">Binning<a class="anchor-link" href="#Binning">¶</a></h3><p>We can easily convert a continous variable to discrete "bins" (like 1 to 10).  This loses information, of course, but sometimes loss of information is a good thing if you are removing more noise than signal.</p>
+<h3 id="Binning">Binning<a class="anchor-link" href="#Binning">&#182;</a></h3><p>We can easily convert a continous variable to discrete "bins" (like 1 to 10).  This loses information, of course, but sometimes loss of information is a good thing if you are removing more noise than signal.</p>
 <p>The below example shows volumes converted into ten equally sized buckets.  In other words, we've converted a continuous variable into a discrete one.</p>
 <p>NOTE: this example is not applied in a rolling fashion, so it <strong>does suffer from some data peeking</strong>, a cardinal sin.  At the moment, I'm failing in my efforts to implement it in a rolling way.  I'd be grateful for code snippets if anyone knows how to do this offhand.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_bins</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">bin_fxn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n_bins</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f15'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">bin_fxn</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f15&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">bin_fxn</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Sign">Sign<a class="anchor-link" href="#Sign">¶</a></h3><p>Very simply, you may wish to convert continuous variables into positive or negative (1 or -1) values, depending on input.  For instance, was volume increasing or decreasing today?</p>
+<h3 id="Sign">Sign<a class="anchor-link" href="#Sign">&#182;</a></h3><p>Very simply, you may wish to convert continuous variables into positive or negative (1 or -1) values, depending on input.  For instance, was volume increasing or decreasing today?</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s1">'f16'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">'f05'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;f16&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;f05&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Plus-Minus">Plus-Minus<a class="anchor-link" href="#Plus-Minus">¶</a></h3><p>You may be interested in how many days in a row a value has increased (or decreased).  Below is a simple pattern to do just that - it calculates the number of up-days minus the number of down days.</p>
+<h3 id="Plus-Minus">Plus-Minus<a class="anchor-link" href="#Plus-Minus">&#182;</a></h3><p>You may be interested in how many days in a row a value has increased (or decreased).  Below is a simple pattern to do just that - it calculates the number of up-days minus the number of down days.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plus_minus_fxn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">'f17'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">'f16'</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">plus_minus_fxn</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f17&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;f16&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">plus_minus_fxn</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="One-Hot-Encoding">One-Hot Encoding<a class="anchor-link" href="#One-Hot-Encoding">¶</a></h3><p>Possibly the most frequently used alternative representation is "one-hot encoding" where a categorical variable is represented as a binary.  For instance, month_of_year would be represented as twelve different columns, each of which was either 0 or 1.  January would be [1,0,0,0,...0] etc...</p>
+<h3 id="One-Hot-Encoding">One-Hot Encoding<a class="anchor-link" href="#One-Hot-Encoding">&#182;</a></h3><p>Possibly the most frequently used alternative representation is "one-hot encoding" where a categorical variable is represented as a binary.  For instance, month_of_year would be represented as twelve different columns, each of which was either 0 or 1.  January would be [1,0,0,0,...0] etc...</p>
 <p>This is absolutely crucial in a few circumstances.  The first is where there is false meaning in the "ordinality" of values.  If we were looking to test the "santa claus effect" hypothesis, it wouldn't be helpful to use a month_of_year feature where January was "the least" and December was "the most".</p>
 <p>The second is in cases where we are representing events or "states".  Does the word "lawsuit" appear within the 10-Q footnotes?  Is the company in the blackout period for share buybacks?</p>
 <p>Finally, the particular machine learning algorithm (tree-based, neural networks) may find it easier to use binary representations than continuous or discrete ones.</p>
 <p>The below example creates twelve one-hot features, one for each month, and names them automatically</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">month_of_year</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">month</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">month_of_year</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">month</span>
 <span class="n">one_hot_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">month_of_year</span><span class="p">))</span>
 <span class="n">one_hot_frame</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">index</span> <span class="c1"># Careful!  This is forcing index values without usual pandas alignments!</span>
 
 <span class="c1"># create column names </span>
 <span class="n">begin_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1">#first available feature</span>
-<span class="n">feat_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'f'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">begin_num</span><span class="p">,</span><span class="n">begin_num</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
+<span class="n">feat_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">begin_num</span><span class="p">,</span><span class="n">begin_num</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">))]</span>
 
 <span class="c1"># rename columns and merge</span>
 <span class="n">one_hot_frame</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">feat_names</span>
 <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">one_hot_frame</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Data-Cleansing">Data Cleansing<a class="anchor-link" href="#Data-Cleansing">¶</a></h2><p>OK, I've put this off long enough.  It's time to cover the least interesting and possibly most critical aspect of feature engineering... data cleansing!</p>
+<h2 id="Data-Cleansing">Data Cleansing<a class="anchor-link" href="#Data-Cleansing">&#182;</a></h2><p>OK, I've put this off long enough.  It's time to cover the least interesting and possibly most critical aspect of feature engineering... data cleansing!</p>
 <p>Many will include data cleansing as part of the raw data collection pipeline rather than the feature engineering step - and I can't argue with cleansing data as early in the process as possible.  However, your data can never be too clean so I take the "belt and suspenders" approach.  Clean your data on collection, clean on usage.  Clean, clean, clean!</p>
 <p>The motivation for</p>
 <ul>
 <li>to_datetime, to_numeric, astype() (int, string, float...)</li>
 <li>fillna(ffill, 0, mean)</li>
 </ul>
+
 </div>
 </div>
 </div>
@@ -6488,60 +6731,69 @@ AWgsDyPrTEasAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Data-Typing">Data Typing<a class="anchor-link" href="#Data-Typing">¶</a></h3><p>If you've spent any time with data work in python, you're already familiar with the sometimes annoying data typing issues of a "duck typed" language.  Pandas does an admirable job of inferring types from your data but you'll sometimes want to exercise more control to make sure your data is perfect.</p>
+<h3 id="Data-Typing">Data Typing<a class="anchor-link" href="#Data-Typing">&#182;</a></h3><p>If you've spent any time with data work in python, you're already familiar with the sometimes annoying data typing issues of a "duck typed" language.  Pandas does an admirable job of inferring types from your data but you'll sometimes want to exercise more control to make sure your data is perfect.</p>
 <p>The first data typing issue I face is representation of dates and times, which can be represented in several different formats.  I prefer to standardize all datetimes using the pandas pd.to_datetime() method which yields two main benefits: (1) you will be able to align and join multiple datetime values together and (2) you'll be able to take advantage of the many pandas date/time functions.</p>
 <p>Example:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## code of casting to datetime, selecting weekday etc...</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you fail to control your datetime typing, you'll inevitably end up with difficulty in aligning and joining data on date, like this:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># example of a str and a datetime repr which are joined on axis=1 and result in an awkward dataframe</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Among the pandas date/time functions is a very useful resampling method, which allows you to aggregate from a higher frequency (e.g., hourly) to a lower frequency (e.g., daily or weekly or monthly).  Depending on the timeframe of your strategy, you may seek to resample everything to a lower frequency</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## example of resampling</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6549,35 +6801,43 @@ AWgsDyPrTEasAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The other main typing issue I find is with numeric types. Number values are commonly represented as integers, floats, and strings which look like integers or floats.  Pandas attempts to guess the right type for data when it's loaded (via <code>read_csv</code> or <code>read_sql</code> etc..).  Problems arise when there are some values within a column which don't follow the type .</p>
 <p>The below example illustrates how</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [53]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'symbol'</span><span class="p">:[</span><span class="s1">'a'</span><span class="p">,</span><span class="s1">'b'</span><span class="p">,</span><span class="s1">'c'</span><span class="p">,</span><span class="s1">'d'</span><span class="p">,</span><span class="s1">'e'</span><span class="p">],</span><span class="s1">'price'</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="s1">'None'</span><span class="p">]})</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;symbol&#39;</span><span class="p">:[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span><span class="s1">&#39;e&#39;</span><span class="p">],</span><span class="s1">&#39;price&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;None&#39;</span><span class="p">]})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'Average: '</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="c1"># no results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average: &#39;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="c1"># no results</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'######################'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;######################&#39;</span><span class="p">)</span>
 <span class="c1"># retype to numeric</span>
 
 <span class="nb">print</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">price</span><span class="p">,</span><span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">price</span><span class="p">,</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'Average: '</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="c1"># works</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average: &#39;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="c1"># works</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>  symbol price
 0      a     1
@@ -6602,14 +6862,16 @@ dtype: float64
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Handling-Missing-Data">Handling Missing Data<a class="anchor-link" href="#Handling-Missing-Data">¶</a></h3><p>Incomplete data is a reality for us all.  Whether it's because some input sources are of a lower frequency, shorter history (i.e., don't go back as far in time) or have unexplained unavailable data points at times, we need a thoughtful approach for addressing missing data.</p>
+<h3 id="Handling-Missing-Data">Handling Missing Data<a class="anchor-link" href="#Handling-Missing-Data">&#182;</a></h3><p>Incomplete data is a reality for us all.  Whether it's because some input sources are of a lower frequency, shorter history (i.e., don't go back as far in time) or have unexplained unavailable data points at times, we need a thoughtful approach for addressing missing data.</p>
 <p>Most machine learning algorithms require a valid value for each feature at each observation point (or they will fail to run...). If we don't apply some sensible workarounds, we'll end up dropping lots of <em>valid</em> data points because of a single missing feature.</p>
 <p>Before outlining the tactics and code patterns we can apply, my core principles for data cleansing are:</p>
 <ol>
@@ -6617,19 +6879,22 @@ dtype: float64
 <li>Drop valid data only as a last resort (and as late in the process as possible).  </li>
 <li>Questionable data (i.e., extreme outliers) should be treated like missing data.</li>
 </ol>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Formatting</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -6637,38 +6902,46 @@ dtype: float64
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Whew!  That was (much) longer than intended.  Feature engineering is a broad subject of which I've only scratched the surface.  Hopefully this will provide you with a framework and starting point to get your own process up and running so that you can focus on applying your creativity and your expertise on the subject matter of choice.</p>
 <p>In the next post of this series, I will outline a process <a href="">feature selection</a> - the next logical step following feature engineering.  Questions, comments, or suggestions are welcomed below.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [108]:</div>
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">])]</span>
+<span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">])]</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">102</span><span class="p">,</span><span class="mi">103</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">201</span><span class="p">,</span><span class="mi">202</span><span class="p">,</span><span class="mi">203</span><span class="p">]),</span> <span class="n">index</span><span class="o">=</span><span class="n">arrays</span><span class="p">)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">'values'</span>
+<span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;values&#39;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">arrays</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
-<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span><span class="p">[</span><span class="s1">'day'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">diff</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">diff</span><span class="p">())</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">pct_change</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">pct_change</span><span class="p">())</span>
 
 <span class="n">my_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">my_func</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">my_func</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>            values
 day symbol        
@@ -6723,9 +6996,13 @@ Name: values, dtype: float64
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -6755,38 +7032,86 @@ Name: values, dtype: float64
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
+</div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Chad
+    </span>
+  </span>
+<time datetime="2018-05-16T20:03:00-07:00" pubdate>Ср 16 Май 2018</time>  <span class="categories">
+    <a class='category' href='/category/blog.html'>Blog</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="/tag/tutorial.html">tutorial</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
 
-      </div>
-<!-- /.entry-content -->
-      <footer class="post-info text-muted">
-        <button type="button" class="btn btn-default">          
-          <a href="https://alphascientist.com/category/blog.html"><div class="fa fa-lg fa-folder-open"></div> Blog</a>
-        </button>
-        <button type="button" class="btn btn-default">
-          <a href="https://alphascientist.com/tag/tutorial.html"><div class="fa fa-lg fa-tag"></div> tutorial</a>
-        </button>
-      </footer>
-      <!-- /.post-info -->
-    <!-- Comment BEGIN -->
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_shortname = 'alphascientist-com';
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <!-- Comment END -->
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="/ensemble_modeling.html">ML for Stock Market Prediction (part 6): Ensemble Modeling</a>
+      </li>
+      <li class="post">
+          <a href="/model_evaluation.html">ML for Stock Market Prediction (part 5): Model Evaluation</a>
+      </li>
+      <li class="post">
+          <a href="/walk_forward_model_building.html">ML for Stock Market Prediction (part 4): Walk-forward Modeling</a>
+      </li>
+      <li class="post">
+          <a href="/feature_selection.html">ML for Stock Market Prediction (part 3): Feature Selection</a>
+      </li>
+      <li class="post">
+          <a href="/feature_engineering.html">ML for Stock Market Prediction (part 2): Feature Engineering</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="/category/blog.html">Blog</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="/tag/tutorial.html">Tutorial</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="#" target="_blank">You can add links in your config file</a></li>
+            <li><a href="#" target="_blank">Another social link</a></li>
+        </ul>
     </section>
-    </div>
-    <footer class="footer">
-      <div class="container">
-        <p class="footer-text">&copy; <a href="https://alphascientist.com">The Alpha Scientist</a> powered by <a href="http://getpelican.com/">pelican</a> and <a href="http://nodotcom.org">nikhil</a></p>
-      </div>
-    </footer>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  </body>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2018  Chad &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="/theme/js/modernizr-2.0.js"></script>
+  <script src="/theme/js/ender.js"></script>
+  <script src="/theme/js/octopress.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var disqus_shortname = 'alphascientist-com';
+    var disqus_identifier = '/feature_selection.html';
+    var disqus_url = '/feature_selection.html';
+    var disqus_title = 'ML for Stock Market Prediction (part 3): Feature Selection';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+</body>
 </html>

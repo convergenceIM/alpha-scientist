@@ -40,7 +40,7 @@ PLUGINS = ['ipynb.markup']
 
 STATIC_PATHS = ['images']
 
-THEME = 'themes/nikhil-theme' #nikhil-theme
+THEME = 'themes/octopress'
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
 SITESUBTITLE = 'Alpha scientist blog'
 
