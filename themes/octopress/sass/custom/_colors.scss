@@ -16,7 +16,7 @@
 
 
 /* To use the light Solarized highlighting theme uncomment the following line */
-//$solarized: light;
+$solarized: light;
 
 /* If you want to tweak the Solarized colors you can do that here */
 //$base03:          #002b36; //darkest blue
@@ -26,7 +26,7 @@
 //$base0:           #839496; //medium gray
 //$base1:           #93a1a1; //medium light gray
 //$base2:           #eee8d5; //cream
-//$base3:           #fdf6e3; //white
+$base3:           #F5F5F0;
 //$solar-yellow:    #b58900;
 //$solar-orange:    #cb4b16;
 //$solar-red:       #dc322f;
