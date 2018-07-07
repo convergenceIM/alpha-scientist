@@ -23,8 +23,8 @@ AUTHOR_FEED_RSS = None
 #LINKS = (('Pelican', 'http://getpelican.com/'), )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
+          ('Twitter', 'https://twitter.com/data2alpha'),)
 
 DEFAULT_PAGINATION = False
 
