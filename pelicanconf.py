@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Chad'
 SITENAME = 'The Alpha Scientist'
-SITEURL = ''
+SITEURL = 'https://alphascientist.com'
 
 PATH = 'content'
 
@@ -29,7 +29,7 @@ SOCIAL = (('You can add links in your config file', '#'),
 DEFAULT_PAGINATION = False
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 OUTPUT_PATH = 'docs/'
 
