@@ -53,3 +53,5 @@ HIDE_AUTHORS = True
 DISQUS_SITENAME = 'alphascientist-com'
 
 DISPLAY_PAGES_ON_MENU = True
+
+FACEBOOK_LIKE = True
