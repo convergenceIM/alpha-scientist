@@ -12,6 +12,10 @@ TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
 
+LOCALE = ('usa', 'jpn',      # On Windows
+           'en_US', 'ja_JP'   # On Unix/Linux
+)
+
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
