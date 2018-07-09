@@ -4,13 +4,17 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Chad'
 SITENAME = 'The Alpha Scientist'
-SITEURL = ''
+SITEURL = 'https://alphascientist.com'
 
 PATH = 'content'
 
 TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
+
+LOCALE = ('usa', 'jpn',      # On Windows
+           'en_US', 'ja_JP'   # On Unix/Linux
+)
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -23,13 +27,13 @@ AUTHOR_FEED_RSS = None
 #LINKS = (('Pelican', 'http://getpelican.com/'), )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
+          ('Twitter', 'https://twitter.com/data2alpha'),)
 
 DEFAULT_PAGINATION = False
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 OUTPUT_PATH = 'docs/'
 
@@ -48,3 +52,7 @@ HIDE_AUTHORS = True
 
 DISQUS_SITENAME = 'alphascientist-com'
 
+DISPLAY_PAGES_ON_MENU = True
+
+FACEBOOK_LIKE = True
+TWITTER_USER = 'data2alpha'
