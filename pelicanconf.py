@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Chad'
+AUTHOR = 'Chad Gray, CFA'
 SITENAME = 'The Alpha Scientist'
 SITEURL = 'https://alphascientist.com'
 
@@ -46,7 +46,7 @@ STATIC_PATHS = ['images']
 
 THEME = 'themes/octopress'
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
-SITESUBTITLE = 'Alpha scientist blog'
+SITESUBTITLE = 'Generating stock market alpha using data science'
 
 HIDE_AUTHORS = True
 
