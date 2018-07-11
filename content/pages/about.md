@@ -6,7 +6,7 @@ I know I'm not alone in these intersecting passions.  There is a fast-growing co
 
 A bit about me:  I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.
 
-Prior to my tech/finance career, I studied engineering, computer science, and business at Northwestern University and MIT.  I live in the San Francisco Bay Area with my wife and two young kids.  In between kids and markets, I love to ski, surf, kiteboard, sail, eat, and occasionally sleep.
+Prior to my tech/finance career, I studied engineering, computer science, and business at Northwestern University and MIT.  I live in the San Francisco Bay Area with my wife and two young kids.  In between kids and markets, I love to ski, surf, kiteboard, sail, and occasionally sleep.
 
 Chad
 
