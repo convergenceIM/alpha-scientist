@@ -5,6 +5,9 @@
 <section>
   {% if TWITTER_WIDGET_ID %}
   <h1>Latest Tweets</h1>
+  
+  <a class="twitter-timeline" href="https://twitter.com/data2alpha?ref_src={{TWITTER_WIDGET_ID}}">Tweets by data2alpha</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
   <ul id="tweets">
     <li class="loading">Status updating...</li>
   </ul>

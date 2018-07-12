@@ -56,3 +56,10 @@ DISPLAY_PAGES_ON_MENU = True
 
 FACEBOOK_LIKE = True
 TWITTER_USER = 'data2alpha'
+
+TWITTER_WIDGET_ID = ('data2alpha')
+#TWITTER_TWEET_BUTTON: False show twitter tweet button
+#TWITTER_FOLLOW_BUTTON: False show twitter follow button
+#TWITTER_TWEET_COUNT: 3 number of latest tweets to show
+#TWITTER_SHOW_REPLIES: 'false' whether to list replies among latest tweets
+#TWITTER_SHOW_FOLLOWER_COUNT: 'true' show number of followers
