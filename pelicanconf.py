@@ -24,11 +24,20 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-#LINKS = (('Pelican', 'http://getpelican.com/'), )
+LINKS = (('Quantocracy', 'http://quantocracy.com/'),
+         ('Robot Wealth', 'https://robotwealth.com/blog/'),
+         ('QuantStart', 'https://www.quantstart.com/articles'),
+         ('Simon Ouellette', 'http://www.simonouellette.com/'),
+         ('Marcos Lopez de Prado', 'http://www.quantresearch.info/'),
+         ('Financial Hacker', 'http://www.financial-hacker.com'),
+         ('Ex Machina', 'http://www.mov37.com/ex-machina/'),
+         )
 
 # Social widget
 SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
           ('Twitter', 'https://twitter.com/data2alpha'),)
+
+SOCIAL_IMAGE = '/images/profile.jpg'
 
 DEFAULT_PAGINATION = False
 
@@ -46,7 +55,7 @@ STATIC_PATHS = ['images']
 
 THEME = 'themes/octopress'
 SITEIMAGE = '/images/profile.jpg width=400 height=250'
-SITESUBTITLE = 'Generating stock market alpha using data science'
+SITESUBTITLE = 'Discovering alpha in the stock market using data science'
 
 HIDE_AUTHORS = True
 

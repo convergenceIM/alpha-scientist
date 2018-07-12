@@ -1,6 +1,7 @@
 Title: Consulting
 
-If you are looking for help with your investment-related project, please reach out to me at <thealphascientist@gmail.com>.
+If you'd like to accelerate progress with your investment-related project, I'd like to help.
+
 
 Project scopes might include:
 
@@ -13,10 +14,9 @@ Project scopes might include:
 -  Implementing an end-to-end framework for machine learning market predictions
 -  ... or custom requirements
 
-I look forward to connecting with you and discussing your needs.  If it's an area where I believe I can help, I can outline what a sample scope might look like.  If it's outside of my expertise, I will do my best to direct you to the right resources.
+I look forward to connecting with you and discussing your needs.  If it's an area where I believe I can help, I can outline what a scope might look like.  If I'm not the right fit for the project, I will do my best to point you in the right direction.
 
 Chad Gray, CFA
-
 <thealphascientist@gmail.com>
 
 

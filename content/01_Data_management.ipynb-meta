@@ -1,6 +1,6 @@
-Title: ML for Stock Market Prediction (part 1): Data Management
-Slug: ML_data_management
-Date: 2018-04-30 20:00
+Title: Stock Prediction with ML: Data Management
+Slug: data_management
+Date: 2018-07-05 20:00
 Category: Blog
-Tags: tutorial
-Summary: In this first post, I will present a framework for organizing and working with data. Perhaps not the most electrifying of topics, but it's a precondition for later modeling tutorials. It's also, as any practitioner of the field will agree, of critical significance and importance. I've heard it said that 90% of time in real-world quant finance is spent on data rather than models.
+Tags: tutorial,data,pandas
+Summary: This first post of a tutorial on machine learning in finance will present a framework for organizing and working with data. Perhaps not the most electrifying of topics, but it's the foundation for later modeling tutorials. It's also of critical significance and importance. I've heard it said that 90% of time in real-world quant finance is spent on data rather than models.

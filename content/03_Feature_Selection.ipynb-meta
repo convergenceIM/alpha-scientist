@@ -1,6 +1,6 @@
-Title: ML for Stock Market Prediction (part 3): Feature Selection
+Title: Stock Prediction with ML: Feature Selection
 Slug: feature_selection
-Date: 2018-05-16 20:03
+Date: 2018-07-12 20:03
 Category: Blog
-Tags: tutorial
-Summary: This is the third post in my series on transforming data into alpha. If you haven't yet see the framework overview or feature engineering guide, please take a minute to read that first...  This post is going to delve into the mechanics of feature selection, in other words choosing between the many variations of features you've created in the feature engineering stage.
+Tags: tutorial,feature engineering
+Summary: This is the third post in my tutorial series on applying machine learning to stock prediction. This post is going to delve into the mechanics of feature selection - a critical step towards improving model robustness. This will cover a systematic approach for choosing between the many variations of features you've created during the feature engineering stage.

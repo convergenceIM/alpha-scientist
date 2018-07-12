@@ -32,7 +32,7 @@
 <body>
   <header role="banner"><hgroup>
   <h1><a href="https://alphascientist.com/">The Alpha Scientist</a></h1>
-    <h2>Discovering stock market alpha with data science</h2>
+    <h2>Discovering alpha in the stock market using data science</h2>
 </hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
 </ul>
@@ -1034,42 +1034,7 @@ h6:hover .anchor-link {
 <div class="output_area">
 <div class="prompt output_prompt">Out[2]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
-<style>
-body {
-    margin: 0;
-    font-family: Helvetica
-    ;
-}
-table.dataframe {
-    border-collapse: collapse;
-    border: none;
-}
-table.dataframe tr {
-    border: none;
-}
-table.dataframe td, table.dataframe th {
-    margin: 0;
-    border: 2px solid #B0ACAC;
-    padding-left: 0.25em;
-    padding-right: 0.25em;
-}
-table.dataframe th:not(:empty) {
-    background-color: #EFEDED;
-    text-align: left;
-    font-weight: normal;
-}
-table.dataframe tr:nth-child(2) th:empty {
-    border-left: none;
-    border-right: 1px dashed #888;
-}
-table.dataframe td {
-    border: 1px solid #B0ACAC;
-    background-color: #F7FBFC;
-}
-
-
-
-</style>
+<style> </style>
 </div>
 </div>
 </div>
@@ -1089,9 +1054,9 @@ table.dataframe td {
 <ul>
 <li>Part 2: <a href="feature_engineering.html">Feature engineering</a></li>
 <li>Part 3: <a href="feature_selection.html">Feature selection</a></li>
-<li>Part 4: <a href="walk_forward_model_building.html">Walk-forward modeling and out-of-sample testing</a></li>
-<li>Part 5: <a href="model_evaluation.html">Evaluating model performance</a> (hint: not backtesting)</li>
-<li>Part 6: <a href="ensemble_modeling.html">Building ensemble models</a> to combine many models and factors into an overall prediction</li>
+<li>Part 4: Walk-forward modeling and out-of-sample testing</li>
+<li>Part 5: Evaluating model performance</li>
+<li>Part 6: Building ensemble models to combine many models and factors into an overall prediction</li>
 </ul>
 <p>In future, I also plan to make tutorials on:</p>
 <ul>
@@ -1642,7 +1607,7 @@ dtype: float64</pre>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(996,)
 (996, 5)
-Model Score: 0.7887105440180318
+Model Score: 0.7963938902121673
 Feature Importance: 
 </pre>
 </div>
@@ -1650,11 +1615,11 @@ Feature Importance:
 <div class="output_area">
 <div class="prompt output_prompt">Out[8]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre>intraday_chg           0.331955
-momentum_5_day         0.268382
-volume_change_ratio    0.178353
-day_of_month           0.143616
-day_of_week            0.077693
+<pre>intraday_chg           0.285079
+momentum_5_day         0.274290
+volume_change_ratio    0.265878
+day_of_month           0.110968
+day_of_week            0.063785
 dtype: float64</pre>
 </div>
 </div>
@@ -1667,7 +1632,7 @@ dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This yields a vastly improved RSQ but note that it is almost certainly ridiculously overfitted, as random forests are prone to do.</p>
 <p>We'll cover ways to systematically avoid allowing the model to overfit in future posts, but that requires going a bit further down the rabbit hole.</p>
-<blockquote><p><strong>Side point</strong>: in this example (and often, in real life) we've mixed together all observations from AAPL and CSCO into one dataset.  We could have alternatively trained two different models for the two symbols, which may have achieved better fit, but almost certainly at the cost of worse generalization out of sample.  The bias-variance trade-off in action!</p>
+<blockquote><p><strong>Side note</strong>: in this example (and often, in real life) we've mixed together all observations from AAPL and CSCO into one dataset.  We could have alternatively trained two different models for the two symbols, which may have achieved better fit, but almost certainly at the cost of worse generalization out of sample.  The bias-variance trade-off in action!</p>
 </blockquote>
 </div>
 </div>
@@ -1696,16 +1661,16 @@ dtype: float64</pre>
 <div class="prompt output_prompt">Out[9]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>date        symbol
-2016-12-22  AAPL     -0.002032
-            CSCO      0.002339
-2016-12-23  AAPL     -0.000251
-            CSCO      0.001349
-2016-12-27  AAPL      0.002116
-            CSCO     -0.001710
-2016-12-28  AAPL     -0.002639
-            CSCO     -0.001221
-2016-12-29  AAPL     -0.001280
-            CSCO      0.001457
+2016-12-22  AAPL     -0.003580
+            CSCO      0.002147
+2016-12-23  AAPL      0.001546
+            CSCO      0.003360
+2016-12-27  AAPL     -0.001172
+            CSCO     -0.003555
+2016-12-28  AAPL     -0.002217
+            CSCO     -0.001567
+2016-12-29  AAPL      0.003620
+            CSCO      0.000772
 dtype: float64</pre>
 </div>
 </div>
