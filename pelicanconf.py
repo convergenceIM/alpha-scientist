@@ -72,3 +72,6 @@ TWITTER_WIDGET_ID = ('data2alpha')
 #TWITTER_TWEET_COUNT: 3 number of latest tweets to show
 #TWITTER_SHOW_REPLIES: 'false' whether to list replies among latest tweets
 #TWITTER_SHOW_FOLLOWER_COUNT: 'true' show number of followers
+
+#GOOGLE_ANALYTICS = "UA-121434821-1"
+#GOOGLE_UNIVERSAL_ANALYTICS = "UA-121434821-1"
