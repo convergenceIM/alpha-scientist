@@ -63,6 +63,8 @@ DISQUS_SITENAME = 'alphascientist-com'
 
 DISPLAY_PAGES_ON_MENU = True
 
+FAVICON_FILENAME = 'images/favicon.png'
+
 FACEBOOK_LIKE = True
 TWITTER_USER = 'data2alpha'
 
