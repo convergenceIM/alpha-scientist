@@ -7,6 +7,10 @@
   <title>Sell in May and Go Away? &mdash; The Alpha Scientist</title>
   <meta name="author" content="Chad Gray">
 
+  <link href="https://alphascientist.com/feeds/atom.xml" type="application/atom+xml" rel="alternate"
+        title="The Alpha Scientist Atom Feed" />
+  <link href="https://alphascientist.com/feeds/rss.xml" type="application/rss+xml" rel="alternate"
+        title="The Alpha Scientist RSS Feed" />
 
 
 
@@ -18,9 +22,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link href="https://alphascientist.com/images/favicon.png" rel="icon">
+    <link href="./images/favicon.png" rel="icon">
 
-  <link href="https://alphascientist.com/theme/css/main.css" media="screen, projection"
+  <link href="./theme/css/main.css" media="screen, projection"
         rel="stylesheet" type="text/css">
 
   <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
@@ -34,12 +38,12 @@
   <table>
   <tr>
   <td>
-  <a href="https://alphascientist.com/"><img src="https://alphascientist.com/images/logo.png" height="100" width="100"></a>
+  <a href="./"><img src="./images/logo.png" height="100" width="100"></a>
   </td>
   <td>&nbsp;
   </td>
   <td>
-  <h1><a href="https://alphascientist.com/">The Alpha Scientist</a></h1>
+  <h1><a href="./">The Alpha Scientist</a></h1>
     <h2>Discovering alpha in the stock market using data science</h2>
   </td>
   </tr>
@@ -47,14 +51,16 @@
   
 </hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="https://alphascientist.com/feeds/atom.xml" rel="subscribe-atom">Atom</a></li>
+  <li><a href="https://alphascientist.com/feeds/rss.xml" rel="subscribe-rss">RSS</a></li>
 </ul>
 
 
 <ul class="main-navigation">
-      <li><a href="https://alphascientist.com/pages/about.html">About</a></li>
-      <li><a href="https://alphascientist.com/pages/consulting.html">Consulting</a></li>
+      <li><a href="./pages/about.html">About</a></li>
+      <li><a href="./pages/consulting.html">Consulting</a></li>
       <li class="active">
-        <a href="https://alphascientist.com/category/blog.html">Blog</a>
+        <a href="./category/blog.html">Blog</a>
       </li>
 </ul></nav>
   <div id="main">
@@ -1040,23 +1046,44 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#ignore</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;style&gt;</span><span class="si">{}</span><span class="s1">&lt;/style&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">CSS</span><span class="p">))</span>
+
+<span class="c1">##### IMPORTS ######</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/anaconda/&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">config</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">REPO_ROOT</span><span class="o">+</span><span class="s1">&#39;data/&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">prices.eod</span> <span class="k">import</span> <span class="n">read</span>
+</pre></div>
+
+</div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>Most investors have heard the adage "Sell in May and go away" which reflects the common wisdom that markets perform less well during the summer months than during the winter.  This anomaly is well described <a href="https://www.investopedia.com/news/truth-about-sell-may-and-go-away/">here</a>.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>Most investors have heard the adage "Sell in May and go away" which reflects the common wisdom that markets perform less well during the summer months than during the winter.  This anomaly is well described <a href="https://www.investopedia.com/news/truth-about-sell-may-and-go-away/">here</a>.</p>
 <p>Many widely held beliefs go away, precisely because they're widely held and get priced into the market.  I'd like to test the "sell in May" myth to see how well it has held up.</p>
 <p>This is also a great case example to illustrate seasonality analysis - something which I believe gets too little attention because it seems "too simple" to work.  Not nearly enough MACD-stochastic-crossover-descending triangles involved!</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [175]:</div>
+<div class="prompt input_prompt">In&nbsp;[175]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1065,9 +1092,11 @@ h6:hover .anchor-link {
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">display</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1076,29 +1105,37 @@ h6:hover .anchor-link {
 <p>First things first - we'll load returns data.  You'll need to replace this code for your data source of choice, but make sure you use <em>adjusted</em> returns, since unadjusted returns will introduce all sorts of errors related to dividend dates, changes in yield, splits and so forth.</p>
 <p>Also, I'm going to use log returns here since they're additive across time.  In other words, the sum of daily log returns is equal to the monthly log return, which is not (quite) true of simple returns.  Since we are mostly using daily returns, you can more or less think of the log returns as simple returns.</p>
 <p>Our dataset goes back to the beginning of SPY in 1993</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [197]:</div>
+<div class="prompt input_prompt">In&nbsp;[197]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Load Data</span>
-<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SPY'</span><span class="p">]</span>
+<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SPY&#39;</span><span class="p">]</span>
 <span class="n">prices</span> <span class="o">=</span> <span class="n">read</span><span class="o">.</span><span class="n">get_symbols_close</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">adjusted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">returns</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
 <span class="n">log_ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
 <span class="n">spy</span> <span class="o">=</span> <span class="n">log_ret</span><span class="o">.</span><span class="n">SPY</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">spy</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>date
 1993-02-01    0.007087
@@ -1110,47 +1147,66 @@ Name: SPY, dtype: float64
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First things first, we'll look at returns by calendar month.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [198]:</div>
+<div class="prompt input_prompt">In&nbsp;[198]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Sell in May and go away!</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
-<span class="n">by_month</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'BM'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">by_month</span><span class="p">[</span><span class="s1">'month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;pct_chg&#39;</span><span class="p">)</span>
+<span class="n">by_month</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;BM&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">by_month</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span>
 
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Log Return (%): by Calendar Month (1993-present)'</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'month'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span>\
-<span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Log Return (%): by Calendar Month (1993-present)&#39;</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span>\
+<span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[198]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Log Return (%): by Calendar Month (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Log Return (%): by Calendar Month (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEZCAYAAAB/6SUgAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1292,11 +1348,15 @@ RGg2lFzzt9LdFRHz8q8p/hn4TaT3n+eR/mHPHqR/sEFEXAm8pPKvCn8ZEX+PiAeA+2n/TczrImJR
 jjE3L9dstXLyt9JVfzL7+Ur/86Q741ZNNI0vx1TnfY72d9J9nc5syDj5m/Xs98AH4YUmnAca/1Gt
 jcfJ/9XKbE3mGohZz04Azsw/vLWc9C8D24qIB/MD45uBS4Ffdr6IZv3nn3cwMyuQm33MzArk5G9m
 ViAnfzOzAjn5m5kVyMnfzKxATv5mZgVy8jczK5CTv5lZgf4XM4qOQzizQn0AAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1304,36 +1364,53 @@ ViAnfzOzAjn5m5kVyMnfzKxATv5mZgVy8jczK5CTv5lZgf4XM4qOQzizQn0AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Most commonly, the "sell in May and go away" axiom advises selling on May 1st and re-entering the market on November 1st.  From the above chart, it appears than we'd be well advised to sell on June 1st and buy back on September 30th.  However, to follow the common belief, I'll stick with May 1st to Oct 31st.</p>
 <p>I'll group the data into those two periods and calculate the monthly average:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [235]:</div>
+<div class="prompt input_prompt">In&nbsp;[235]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create flag </span>
-<span class="n">by_month</span><span class="p">[</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'may_oct'</span>
-<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'nov_apr'</span>
+<span class="n">by_month</span><span class="p">[</span><span class="s1">&#39;season&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">&#39;season&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;may_oct&#39;</span>
+<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">&#39;season&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nov_apr&#39;</span>
 
-<span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'season'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
-<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%): </span><span class="se">\n</span><span class="s1">May-Oct vs Nov_Apr (1993-present)'</span>\
- <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+<span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;season&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
+<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Monthly Log Return (%): </span><span class="se">\n</span><span class="s1">May-Oct vs Nov_Apr (1993-present)&#39;</span>\
+ <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[235]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x17615d68&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAFFCAYAAAAXcq1YAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1490,11 +1567,15 @@ gdvztwupl82+ULn/Cn5vWYe5z92KI2kU8GxEXAB8A3g3MFLSNnn5MEkb5+arAg9LGgZMrKzjbRFx
 U0QcDzwOrAX8odZG0gbA2qQuGLNljvcurESbAqdKehV4Cfgs8DJweu5/Hwp8izRc8nHATcADpO6c
 VfM6TpW0Pmlv/WrgDuBu4MzcH/8ycFBEvJC7esyWKT6gamZWIHfLmJkVyOFuZlYgh7uZWYEc7mZm
 BXK4m5kVyOFuZlYgh7uZWYH+P9ZMo8tZ4jzxAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1503,35 +1584,52 @@ BXK4m5kVyOFuZlYgh7uZWYH+P9ZMo8tZ4jzxAAAAAElFTkSuQmCC
 <p>Clearly true.  June thru September are about flat on a total returns basis (because we're using dividend adjusted data here...)</p>
 <p>If we were to re-run with the classical May 1 to Oct 31 definition, the summer would become net positive, but still far behind the remaining months.</p>
 <p>But has this anomaly been taken out of the market by genius quants and vampire squid?  Let's look at this breakout by year:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [236]:</div>
+<div class="prompt input_prompt">In&nbsp;[236]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># by year </span>
-<span class="n">by_month</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<span class="n">by_month</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
 
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%): </span><span class="se">\n</span><span class="s1">May-Oct vs Nov-Apr (1993-present)'</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'season'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Monthly Log Return (%): </span><span class="se">\n</span><span class="s1">May-Oct vs Nov-Apr (1993-present)&#39;</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;season&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[236]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Monthly Log Return (%): \nMay-Oct vs Nov-Apr (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Monthly Log Return (%): \nMay-Oct vs Nov-Apr (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAElCAYAAADwRMk8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1995,45 +2093,66 @@ lgZ2FUn+G5iLlT9kGTAF+L/GmN803EmscohXAZcYY6pEZD2QYD9dbYw5010nrFRn6FCMiiRvY1V/
 GoeVofIDYL6d2xsRGWBn/UwDKu2gPgyrdJ5SPYb22FXEMMbUiMg6wG33uv8iIsOBT+1CDSeB24A/
 A3eJSCFWps/PgnXOSnWGZndUEcO+aPoPYKYxZm+wz0eprqJDMSoiiMgIrHzyf9WgrsKd9tiVUirM
 aI9dKaXCjAZ2pZQKMxrYlVIqzGhgV0qpMKOBXSmlwsz/B6WQvNBy57PrAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's a bit noisy, so let's make a four year rolling average (you'll see why I choose four years in a minute...):</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [237]:</div>
+<div class="prompt input_prompt">In&nbsp;[237]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># by year </span>
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%) by Season</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)'</span>
-<span class="n">by_month</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'season'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Monthly Log Return (%) by Season</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)&#39;</span>
+<span class="n">by_month</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;season&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[237]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Monthly Log Return (%) by Season\nFour Year Moving Average (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Monthly Log Return (%) by Season\nFour Year Moving Average (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAElCAYAAADwRMk8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2465,11 +2584,15 @@ DAD+Zox5o+JGYp+m8SbgWmPMMRFZBwRZq48bY067qsJKXQztilG+5CPss07FYM+M+Tkw2cr3jYg0
 t7KRhgKHraDeCft0fEp5DD1jVz7DGHNSRNYCR6yz7i9EpDPwnTV5w1HgLuAz4D4RScaegXSTu+qs
 1MXQ7I7KZ1iDpt8DI40xGe6uj1LOol0xyieISCT2PPZfaVBX3k7P2JVSysvoGbtSSnkZDexKKeVl
 NLArpZSX0cCulFJeRgO7Ukp5mf8HVuiWDP5i5r8AAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2477,40 +2600,57 @@ NLArpZSX0cCulFJeRgO7Ukp5mf8HVuiWDP5i5r8AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It appears that the effect hasn't gone away at all - in fact about middle of the road: more than the late 2000's and less than the early 2000's.</p>
 <p>One theory I've seen floated is that this is predominantly driven by presidential elections - and the market uncertainty thereof.  To test that, I'll group data into election years and non-election years:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [238]:</div>
+<div class="prompt input_prompt">In&nbsp;[238]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># presidential year</span>
 <span class="c1"># theory may be that uncertainty prior to election leads markets to sell off.  Certainty after Election causes end of year rally</span>
 
-<span class="n">election_years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'1996'</span><span class="p">,</span><span class="s1">'2000'</span><span class="p">,</span><span class="s1">'2004'</span><span class="p">,</span><span class="s1">'2008'</span><span class="p">,</span><span class="s1">'2012'</span><span class="p">,</span><span class="s1">'2016'</span><span class="p">]</span>
-<span class="n">by_month</span><span class="p">[</span><span class="s1">'election_year'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">election_years</span><span class="p">),</span><span class="s1">'election_year'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">election_years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1996&#39;</span><span class="p">,</span><span class="s1">&#39;2000&#39;</span><span class="p">,</span><span class="s1">&#39;2004&#39;</span><span class="p">,</span><span class="s1">&#39;2008&#39;</span><span class="p">,</span><span class="s1">&#39;2012&#39;</span><span class="p">,</span><span class="s1">&#39;2016&#39;</span><span class="p">]</span>
+<span class="n">by_month</span><span class="p">[</span><span class="s1">&#39;election_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">election_years</span><span class="p">),</span><span class="s1">&#39;election_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">title</span> <span class="o">=</span> <span class="s1">'Average Monthly Returns (log) for Non-Election Years vs. Election Years'</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'election_year'</span><span class="p">,</span><span class="s1">'season'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>\
+<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Average Monthly Returns (log) for Non-Election Years vs. Election Years&#39;</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;election_year&#39;</span><span class="p">,</span><span class="s1">&#39;season&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>\
       <span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[238]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Average Monthly Returns (log) for Non-Election Years vs. Election Years')</pre>
+<pre>Text(0.5,1,&#39;Average Monthly Returns (log) for Non-Election Years vs. Election Years&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb4AAAEnCAYAAADW5CZiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2726,11 +2866,15 @@ amY9Yv+mhD9s/SJOsyhzZCJppcQnqeTuLwGXAv8ys/nAo0CrysrdfSUwCvibmc0DpsRBpgEnlD3c
 kjG5YYR7b/OB7sA2/Xu4u88BPgRuSfQeDzQA5pvZwtgNcD0wzMyeJzRz6ipPJNJvdYrUEma2NzAD
 6Biv5ERkG+iKT6QWiF+Gf4HwNKaSnsh20BWfSA1iZgOBKzN6v+nuJxQiHpG6SIlPRERSRU2dIiKS
 Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2738,6 +2882,7 @@ Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed, there does appear to be <em>more</em> truth to the axiom in election years, but it remains significantly valid in off years as well.</p>
 <p>Mark Hulbert <a href="https://www.marketwatch.com/story/heres-the-real-story-behind-sell-in-may-and-go-away-2017-04-25">analyzed this theory</a> back to 1897 and sees similar results.</p>
+
 </div>
 </div>
 </div>
@@ -2747,35 +2892,52 @@ Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that we've validated our first pattern, I'd like to test for other calendar patterns.</p>
 <p>Let's first look at days of week, looking at the average return by day of week:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [239]:</div>
+<div class="prompt input_prompt">In&nbsp;[239]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Day of Week, </span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;pct_chg&#39;</span><span class="p">)</span>
 <span class="n">by_day</span> <span class="o">=</span> <span class="n">df</span>
-<span class="n">by_day</span><span class="p">[</span><span class="s1">'day_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">weekday</span><span class="o">+</span> <span class="mi">1</span>
+<span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">weekday</span><span class="o">+</span> <span class="mi">1</span>
 
-<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'day_of_week'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
-<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%): by Day of Week (1993-present)'</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;day_of_week&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
+<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%): by Day of Week (1993-present)&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[239]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x17766a90&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEUCAYAAADN8orUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2933,11 +3095,15 @@ kN79/0jFZL8Gticlgg0ZC/x7fqvsUGBSO0K7FdgZuDMingZWt8SW3zR5EnBlnvddwN4R8SpwLHCe
 pPvzOn2oYn1/Qrq9NFWSP69Wd353kL3lSToWGBURJzY6FrNNjbuY9pYm6Wek/yHM/y2kWRXuCVjp
 SLoQ+KeK4v9o678RldQX+FOVqhER8Wy94jPrSk4CZmYl5gdNZmYl5iRgZlZiTgJmZiXmJGBmVmJO
 AmZmJfa/vOVk081yY7oAAAAASUVORK5CYII=
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2945,41 +3111,58 @@ AmZmJfa/vOVk081yY7oAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems promising.  Monday to Weds seems significantly better than Thurs and Friday.  Anyone care to hypothesize why?</p>
 <p>I'll follow the same code pattern as with the "sell in May" analysis and group the days into these two halves, calculate in total as well as on a four-year-rolling basis.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [240]:</div>
+<div class="prompt input_prompt">In&nbsp;[240]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&lt;=</span><span class="mi">3</span><span class="p">,</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'mon_weds'</span>
-<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'thu_fri'</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;part_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&lt;=</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;part_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mon_weds&#39;</span>
+<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;part_of_week&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;thu_fri&#39;</span>
 
-<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'part_of_week'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
-<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%): </span><span class="se">\n</span><span class="s1">Mon-Wed vs Thu-Fri (1993-present)'</span>\
- <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;part_of_week&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
+<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%): </span><span class="se">\n</span><span class="s1">Mon-Wed vs Thu-Fri (1993-present)&#39;</span>\
+ <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
 
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%) by Part of Week</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)'</span>
-<span class="n">by_day</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'part_of_week'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%) by Part of Week</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)&#39;</span>
+<span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;part_of_week&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[240]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Daily Log Return (%) by Part of Week\nFour Year Moving Average (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Daily Log Return (%) by Part of Week\nFour Year Moving Average (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAFRCAYAAACYF30cAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -3146,11 +3329,19 @@ UM5/At8mjb//BLh9DevOAD7Tw2WXU0gne+8Fdgem9qJtNwKvBm6OiD8Dz+ZpRMRS0rOKv5+3fQuw
 c0Q8T/qiOlvSPcDdwFurG42Ic0nDRdMl+f9b6zOXYbD1iqTRwM/zCVsz6yX3GMzMCuKevhVL0kXA
 2+omnx8R3+lhveGkR1HWGxcRj7eqfWbrgkPfzKwgHt4xMyuIQ9/MrCAOfTOzgjj0zcwK4tA3MyvI
 /wf/xYgteVKdLAAAAABJRU5ErkJggg==
-"/>
+"
+>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAElCAYAAAD3KtVsAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -3655,11 +3846,15 @@ bDA0BrMkZTB4zmfoKoXD0Jl+FwC3WfUWEJHOVnblaKDEUha90WVhDQa/wcwwDAYPUUpViMgS4LA1
 S/hORPoAK6yiPMeAW4BvgTtEZAM6o/JKX8lsMDQGk63WYPAQy9i9BrhOKZXja3kMBm9hlqQMBg8Q
 kb7oOiLfG2VhCHTMDMNgMBgMLmFmGAaDwWBwCaMwDAaDweASRmEYDAaDwSWMwjAYDAaDSxiFYTAY
 DAaX+P8fTabZTxsdCgAAAABJRU5ErkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -3668,37 +3863,54 @@ DAaX+P8fTabZTxsdCgAAAABJRU5ErkJggg==
 <p>The average daily return (log) for Mon to Weds is considerably more than 2x the daily return of Thursdays and Fridays.</p>
 <p>It also appears to be a good bit less stable than the "sell-in-May" results.   I'd be hesitant to say that the anomaly is dead, however.  Just periodically dormant.</p>
 <p>Now let's look at the day of month:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [241]:</div>
+<div class="prompt input_prompt">In&nbsp;[241]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Day of Month</span>
 
-<span class="n">by_day</span><span class="p">[</span><span class="s1">'day_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span> 
+<span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;day_of_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span> 
 
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%): by Day of Month (1993-present)'</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%): by Day of Month (1993-present)&#39;</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'day_of_month'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">31</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;day_of_month&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">31</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[241]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Daily Log Return (%): by Day of Month (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Daily Log Return (%): by Day of Month (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYUAAAEXCAYAAABCjVgAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4074,11 +4286,15 @@ R/ptP0UbxscmaTHwyvvc+OYNqnlF7FH5pBGNUW7UfifV0smLVOWTAa6hKgv9ItWSTfeb6SrgeqrE
 MJklwHJJ+wHP8+6yU12WAbdJehZ4k3fva9CT7VfLxerNwO+B+2seT0RPKZ0drSbpDOAU2+cNeywR
 TZAzhWgtST+jumf2ycMeS0RT5EwhPlAk/Zz3fpXzJtt9rzmU/Q4EHu7x0hdtv1rX+CKGLUkhIiI6
 8u2jiIjoSFKIiIiOJIWIiOhIUoiIiI53AJqR1M9jxeFFAAAAAElFTkSuQmCC
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4086,42 +4302,59 @@ TZAzhWgtST+jumf2ycMeS0RT5EwhPlAk/Zz3fpXzJtt9rzmU/Q4EHu7x0hdtv1rX+CKGLUkhIiI6
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It seems pretty clear that there are some parts of the month which, on average, have much better/worse returns.  By my eye, it appears that the change of month (from about the 28th to the 5th) as well as the early/mid-part of month (say 11th thru 18th) are the "good" days and the rest are not.</p>
 <p>I'll follow the same approach and group the data into the "good days" (28-5, 11-18) and the "other days":</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [242]:</div>
+<div class="prompt input_prompt">In&nbsp;[242]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">good_days</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">]</span>
-<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'good_days'</span>
-<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'other_days'</span>
+<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;good_days&#39;</span>
+<span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;other_days&#39;</span>
 
-<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'part_of_month'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
-<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%): </span><span class="se">\n</span><span class="s1">Days 1-5, 11-18, 28-31 vs Others (1993-present)'</span>\
- <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+<span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span>\
+<span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%): </span><span class="se">\n</span><span class="s1">Days 1-5, 11-18, 28-31 vs Others (1993-present)&#39;</span>\
+ <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
 
-<span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%) by Part of Month</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)'</span>
-<span class="n">by_day</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'part_of_month'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span><span class="o">=</span><span class="s1">&#39;Avg Daily Log Return (%) by Part of Month</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)&#39;</span>
+<span class="n">by_day</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt output_prompt">Out[242]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>Text(0.5,1,'Avg Daily Log Return (%) by Part of Month\nFour Year Moving Average (1993-present)')</pre>
+<pre>Text(0.5,1,&#39;Avg Daily Log Return (%) by Part of Month\nFour Year Moving Average (1993-present)&#39;)</pre>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAFTCAYAAAA9c6t5AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4308,11 +4541,19 @@ E6OWs+4C0g3oa4qI+cA8Se/Nsz4B3FavfCf9GRgLqYcR8HxEvLSc8suN2awrvEdhq4sZwDhJPwEe
 BX5EuunLQ8CTwJTlrHs16e51XySda6jVu2gc8GNJ6wCPA59uYuyQziVcIulB4OW8vboi4oV8Avth
 4EbghibHY23MYyXZKk/SYOD6iNixxaGYrRZ8KMnMzErcYjArkHQ+sHfV7B9ExCUdrNcfuLnGouER
 8UKz4jPrDk4MZmZW4kNJZmZW4sRgZmYlTgxmZlbixGBmZiX/H6k4bwDaWl4sAAAAAElFTkSuQmCC
-"/>
+"
+>
 </div>
+
 </div>
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
+
+
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAElCAYAAADgCEWlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4757,11 +4998,15 @@ E5r30FnvjkYz034EDPVy/SMibb1swM2ADV5QOBSdStSYhGJ3DMaEwDlXLCKfARu9v/o/FpHOwFRv
 4pctwMXAROAqEZmDZgCe5leZjakty65qTAi8Ruc84Fzn3GK/y2NMNFlVkjHVEJEu6DwWky0omGRg
 dwzGGGMqsDsGY4wxFVhgMMYYU4EFBmOMMRVYYDDGGFOBBQZjjDEV/D8RZ02eozQBiAAAAABJRU5E
 rkJggg==
-"/>
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4776,23 +5021,31 @@ rkJggg==
 <li>Window dressing?</li>
 <li>Buybacks?  </li>
 </ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [243]:</div>
+<div class="prompt input_prompt">In&nbsp;[243]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'part_of_month'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;part_of_month&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
+
 </div>
 </div>
 </div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
+
 <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>part_of_month  good_days  other_days
 year                                
@@ -4804,14 +5057,16 @@ year
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>As irrational as it may seem, there are some major seasonality effects remaining in even the most liquid markets.  Quite honestly, this is <strong>much</strong> more significant than I expected to find.  If any of my fellow skeptics want to replicate this on their own datasets, please message me with your results.</p>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>As irrational as it may seem, there are some major seasonality effects remaining in even the most liquid markets.  Quite honestly, this is <strong>much</strong> more significant than I expected to find.  If any of my fellow skeptics want to replicate this on their own datasets, please message me with your results.</p>
 <p>If the future looks anything like the past (insert standard disclaimer about past performance...) then rules of thumb might be:</p>
 <ul>
 <li>Sell on Labor Day and buy on Halloween - especially do this on election years!  This assumes that you've got a productive use for the cash!  </li>
@@ -4820,11 +5075,14 @@ year
 <li>Remember</li>
 </ul>
 <p>PS - I had intended to extend this analysis to other asset classes, but will save that for a future post.  I'd like to expand this to small caps, rest-of-world developed/emerging, fixed income, growth, value, etc...</p>
-<h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
+<h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">&#182;</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
 <p>Finally, take a minute to leave a comment below.  Share your thoughts on this post or to offer an idea for future posts.  Thanks for reading!</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -4863,10 +5121,10 @@ year
     </span>
   </span>
 <time datetime="2018-07-13T20:03:00-07:00" pubdate>Fri 13 July 2018</time>  <span class="categories">
-    <a class='category' href='https://alphascientist.com/category/blog.html'>Blog</a>
+    <a class='category' href='./category/blog.html'>Blog</a>
   </span>
   <span class="categories">
-    <a class="category" href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a class="category" href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a class="category" href="https://alphascientist.com/tag/spy.html">SPY</a>  </span>
+    <a class="category" href="./tag/seasonality.html">seasonality</a>,    <a class="category" href="./tag/market-anomaly.html">market anomaly</a>,    <a class="category" href="./tag/spy.html">SPY</a>  </span>
 </p><div class="sharing">
     <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
 </div>    </footer>
@@ -4882,16 +5140,16 @@ year
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="https://alphascientist.com/sell_in_may.html">Sell in May and Go Away?</a>
+          <a href="./sell_in_may.html">Sell in May and Go Away?</a>
       </li>
       <li class="post">
-          <a href="https://alphascientist.com/feature_selection.html">Stock Prediction with ML: Feature Selection</a>
+          <a href="./feature_selection.html">Stock Prediction with ML: Feature Selection</a>
       </li>
       <li class="post">
-          <a href="https://alphascientist.com/feature_engineering.html">Stock Prediction with ML: Feature Engineering</a>
+          <a href="./feature_engineering.html">Stock Prediction with ML: Feature Engineering</a>
       </li>
       <li class="post">
-          <a href="https://alphascientist.com/data_management.html">Stock Prediction with ML: Data Management</a>
+          <a href="./data_management.html">Stock Prediction with ML: Data Management</a>
       </li>
     </ul>
   </section>
@@ -4899,19 +5157,21 @@ year
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-        <li><a href="https://alphascientist.com/category/blog.html">Blog</a></li>
+        <li><a href="./category/blog.html">Blog</a></li>
     </ul>
   </section>
  
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>  </section>
+    <a href="./tag/seasonality.html">seasonality</a>,    <a href="./tag/market-anomaly.html">market anomaly</a>,    <a href="./tag/spy.html">SPY</a>,    <a href="./tag/tutorial.html">tutorial</a>,    <a href="./tag/feature-engineering.html">feature engineering</a>,    <a href="./tag/pandas.html">pandas</a>,    <a href="./tag/data.html">data</a>  </section>
 
 
     <section>
         <h1>Social</h1>
         <ul>
+            <li><a href="https://alphascientist.com/feeds/rss.xml" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://alphascientist.com/feeds/atom.xml" type="application/atom+xml" rel="alternate">Atom</a></li>
             <li><a href="https://www.linkedin.com/in/chadgraycfa/" target="_blank">Linkedin</a></li>
             <li><a href="https://twitter.com/data2alpha" target="_blank">Twitter</a></li>
         </ul>
@@ -5007,23 +5267,13 @@ year
     Copyright &copy;  2018  Chad Gray &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>
-  <script src="https://alphascientist.com/theme/js/ender.js"></script>
-  <script src="https://alphascientist.com/theme/js/octopress.js" type="text/javascript"></script>
-    <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-121434821-1', 'auto');
-
-    ga('send', 'pageview');
-    </script>
+  <script src="./theme/js/modernizr-2.0.js"></script>
+  <script src="./theme/js/ender.js"></script>
+  <script src="./theme/js/octopress.js" type="text/javascript"></script>
   <script type="text/javascript">
     var disqus_shortname = 'alphascientist-com';
     var disqus_identifier = '/sell_in_may.html';
-    var disqus_url = 'https://alphascientist.com/sell_in_may.html';
+    var disqus_url = './sell_in_may.html';
     var disqus_title = 'Sell in May and Go Away?';
     (function() {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
