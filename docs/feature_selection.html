@@ -18,9 +18,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link href="./images/favicon.png" rel="icon">
+    <link href="https://alphascientist.com/images/favicon.png" rel="icon">
 
-  <link href="./theme/css/main.css" media="screen, projection"
+  <link href="https://alphascientist.com/theme/css/main.css" media="screen, projection"
         rel="stylesheet" type="text/css">
 
   <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
@@ -31,7 +31,7 @@
 
 <body>
   <header role="banner"><hgroup>
-  <h1><a href="./">The Alpha Scientist</a></h1>
+  <h1><a href="https://alphascientist.com/">The Alpha Scientist</a></h1>
     <h2>Discovering alpha in the stock market using data science</h2>
 </hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
@@ -39,10 +39,10 @@
 
 
 <ul class="main-navigation">
-      <li><a href="./pages/about.html">About</a></li>
-      <li><a href="./pages/consulting.html">Consulting</a></li>
+      <li><a href="https://alphascientist.com/pages/about.html">About</a></li>
+      <li><a href="https://alphascientist.com/pages/consulting.html">Consulting</a></li>
       <li class="active">
-        <a href="./category/blog.html">Blog</a>
+        <a href="https://alphascientist.com/category/blog.html">Blog</a>
       </li>
 </ul></nav>
   <div id="main">
@@ -1028,52 +1028,26 @@ h6:hover .anchor-link {
 .ansi-bold { font-weight: bold; }
 </style>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#ignore</span>
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/anaconda/&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">config</span>
-
-<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;style&gt;</span><span class="si">{}</span><span class="s1">&lt;/style&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">CSS</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[1]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <style> </style>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3><p>This is the third post in my series on transforming data into alpha.  If you haven't yet see the <a href="data_management.html">data management</a> and <a href="feature_engineering.html">guide to feature engineering</a>, please take a minute to read those first...</p>
+<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h3><p>This is the third post in my series on transforming data into alpha.  If you haven't yet see the <a href="data_management.html">data management</a> and <a href="feature_engineering.html">guide to feature engineering</a>, please take a minute to read those first...</p>
 <p>This post is going to delve into the mechanics of <em>feature selection</em> to help choose between the many variations of features created in the feature engineering stage.</p>
 <p>By design, many of the features you've created will be very similar to each other (aka "collinear") because you've derived them from the same underlying dataset.  If we were to keep many highly collinear features in our dataset used to train models, it would likely cause the model to "learn" some very funky and dangerous patterns.  I will discuss this in greater depth in a future post.</p>
 <p>The goal of feature selection is to reduce our <em>possible</em> features into <em>the best</em> set of features to learn from data.  This will lead to models which <em>generalize</em> better (i.e., work well on data they haven't seen).  They will also be much more interpretable.</p>
-
 </div>
 </div>
 </div>
@@ -1081,14 +1055,13 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Philosophy">Philosophy<a class="anchor-link" href="#Philosophy">&#182;</a></h3><p>In feature selection, we strive to meet two goals:</p>
+<h3 id="Philosophy">Philosophy<a class="anchor-link" href="#Philosophy">¶</a></h3><p>In feature selection, we strive to meet two goals:</p>
 <ol>
 <li><strong>Strength</strong>:  Choose the features with the strongest, most persistent relationships to the target outcome variable.  The reasons for this are obvious.</li>
 <li><strong>Orthogonality</strong>:  Minimize the amount of overlap or collinearity in your selected features.  The importance of orthogonality (non-overlap) of features is much greater than you might guess.  </li>
 </ol>
 <p>I am biased towards making feature selection a relatively mechanical process.  The "art" should mainly be encapsulated within the prior step (feature engineering) and the subsequent step (modeling).</p>
 <p>Feature selection should, in my view, follow a heuristic and can be encoded into an algorithm if desired.  For purposes of this tutorial, I'll keep things relatively manual.</p>
-
 </div>
 </div>
 </div>
@@ -1096,16 +1069,15 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Preparing-the-data">Preparing the data<a class="anchor-link" href="#Preparing-the-data">&#182;</a></h3><p>Let's dive in.  I will begin by loading prices and creating <em>outcomes</em> <code>DataFrame</code> as done in the <a href="ML_data_management.html">post on data management</a>.</p>
-
+<h3 id="Preparing-the-data">Preparing the data<a class="anchor-link" href="#Preparing-the-data">¶</a></h3><p>Let's dive in.  I will begin by loading prices and creating <em>outcomes</em> <code>DataFrame</code> as done in the <a href="ML_data_management.html">post on data management</a>.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> <span class="c1"># remove once updated pandas-datareader issue is fixed</span>
@@ -1118,36 +1090,28 @@ h6:hover .anchor-link {
     <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>\
-        <span class="p">[[</span><span class="s1">&#39;AdjOpen&#39;</span><span class="p">,</span><span class="s1">&#39;AdjHigh&#39;</span><span class="p">,</span><span class="s1">&#39;AdjLow&#39;</span><span class="p">,</span><span class="s1">&#39;AdjClose&#39;</span><span class="p">,</span><span class="s1">&#39;AdjVolume&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="p">[[</span><span class="s1">'AdjOpen'</span><span class="p">,</span><span class="s1">'AdjHigh'</span><span class="p">,</span><span class="s1">'AdjLow'</span><span class="p">,</span><span class="s1">'AdjClose'</span><span class="p">,</span><span class="s1">'AdjVolume'</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">])</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'open'</span><span class="p">,</span><span class="s1">'high'</span><span class="p">,</span><span class="s1">'low'</span><span class="p">,</span><span class="s1">'close'</span><span class="p">,</span><span class="s1">'volume'</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">'symbol'</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out</span><span class="p">,</span><span class="n">df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#stacks on top of previously collected data</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
         
-<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;CSCO&#39;</span><span class="p">,</span><span class="s1">&#39;AMZN&#39;</span><span class="p">,</span><span class="s1">&#39;YHOO&#39;</span><span class="p">,</span><span class="s1">&#39;MSFT&#39;</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">&#39;quandl&#39;</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;2012-01-01&#39;</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">'AAPL'</span><span class="p">,</span><span class="s1">'CSCO'</span><span class="p">,</span><span class="s1">'AMZN'</span><span class="p">,</span><span class="s1">'YHOO'</span><span class="p">,</span><span class="s1">'MSFT'</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">'quandl'</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2012-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="n">prices</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[2]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1161,112 +1125,101 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>open</th>
-      <th>high</th>
-      <th>low</th>
-      <th>close</th>
-      <th>volume</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-03-26</th>
-      <th>MSFT</th>
-      <td>90.61</td>
-      <td>94.000</td>
-      <td>90.40</td>
-      <td>93.78</td>
-      <td>55031149.0</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2018-03-27</th>
-      <th>AAPL</th>
-      <td>173.68</td>
-      <td>175.150</td>
-      <td>166.92</td>
-      <td>168.34</td>
-      <td>38962839.0</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>1572.40</td>
-      <td>1575.960</td>
-      <td>1482.32</td>
-      <td>1497.05</td>
-      <td>6793279.0</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>44.49</td>
-      <td>44.520</td>
-      <td>42.24</td>
-      <td>42.68</td>
-      <td>30088447.0</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>94.94</td>
-      <td>95.139</td>
-      <td>88.51</td>
-      <td>89.47</td>
-      <td>53704562.0</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>open</th>
+<th>high</th>
+<th>low</th>
+<th>close</th>
+<th>volume</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2018-03-26</th>
+<th>MSFT</th>
+<td>90.61</td>
+<td>94.000</td>
+<td>90.40</td>
+<td>93.78</td>
+<td>55031149.0</td>
+</tr>
+<tr>
+<th rowspan="4" valign="top">2018-03-27</th>
+<th>AAPL</th>
+<td>173.68</td>
+<td>175.150</td>
+<td>166.92</td>
+<td>168.34</td>
+<td>38962839.0</td>
+</tr>
+<tr>
+<th>AMZN</th>
+<td>1572.40</td>
+<td>1575.960</td>
+<td>1482.32</td>
+<td>1497.05</td>
+<td>6793279.0</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>44.49</td>
+<td>44.520</td>
+<td>42.24</td>
+<td>42.68</td>
+<td>30088447.0</td>
+</tr>
+<tr>
+<th>MSFT</th>
+<td>94.94</td>
+<td>95.139</td>
+<td>88.51</td>
+<td>89.47</td>
+<td>53704562.0</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="c1"># next day&#39;s opening change</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># next day&#39;s returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_5&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># next week&#39;s returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_10&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># next two weeks&#39; returns</span>
-<span class="n">outcomes</span><span class="p">[</span><span class="s1">&#39;close_20&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># next month&#39;s (approx) returns</span>
+<span class="c1"># next day's opening change</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># next day's returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_5'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># next week's returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_10'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># next two weeks' returns</span>
+<span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_20'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># next month's (approx) returns</span>
 
 <span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[3]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1280,114 +1233,101 @@ h6:hover .anchor-link {
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>close_1</th>
-      <th>close_5</th>
-      <th>close_10</th>
-      <th>close_20</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-03-26</th>
-      <th>MSFT</th>
-      <td>0.048173</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2018-03-27</th>
-      <th>AAPL</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>close_1</th>
+<th>close_5</th>
+<th>close_10</th>
+<th>close_20</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2018-03-26</th>
+<th>MSFT</th>
+<td>0.048173</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th rowspan="4" valign="top">2018-03-27</th>
+<th>AAPL</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>AMZN</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>MSFT</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, unlike the prior tutorials, we're going to engineer some features which are constructed to contain a relationship to the outcomes along with quite a bit of random noise.  Clearly, this is not something we'd do in real usage but will help to demonstrate the concept more clearly.</p>
-<p><img src="https://i.pinimg.com/736x/cf/27/e3/cf27e3d83d8159e6d950408c4e6a3eb4--statistics-humor-data.jpg" width="400"></p>
+<p><img src="https://i.pinimg.com/736x/cf/27/e3/cf27e3d83d8159e6d950408c4e6a3eb4--statistics-humor-data.jpg" width="400"/></p>
 <p>Assume we have a target variable called <code>outcome</code> which can be (partially) predicted with three factors, <code>factor_1</code>, <code>factor_2</code> and <code>factor_3</code>.  There's also an unpredictble noise component.</p>
 <p>We'll use <code>numpy.random</code> to graft dummy values mapped onto the indices of real price data.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="n">factor_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">factor_2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">factor_3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">outcome</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">3.</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">5.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;outcome&#39;</span>
+<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'outcome'</span>
 <span class="n">outcome</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>date        symbol
 2018-03-26  MSFT      5.954414
@@ -1397,12 +1337,9 @@ h6:hover .anchor-link {
             MSFT     -0.946479
 Name: outcome, dtype: float64</pre>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1410,56 +1347,47 @@ Name: outcome, dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now, we will engineer several variations on features which each contain some information about the three factors, plus a few which contain some interaction effects, and some which do not contain any useful data.</p>
 <p>Note that we are, again, "cheating" here for illustration purposes.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">outcome</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f11&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f12&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f13&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f11'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f12'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f13'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f21&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f22&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f23&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f21'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f22'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f23'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f31&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f32&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f33&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f31'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f32'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f33'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f41&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f42&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f43&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f41'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f42'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_2</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f43'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">factor_3</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">factor_1</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f51&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f52&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[</span><span class="s1">&#39;f53&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f51'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f52'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
+<span class="n">features</span><span class="p">[</span><span class="s1">'f53'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span>
 
 <span class="n">features</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[5]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1473,149 +1401,146 @@ Name: outcome, dtype: float64</pre>
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>f11</th>
-      <th>f12</th>
-      <th>f13</th>
-      <th>f21</th>
-      <th>f22</th>
-      <th>f23</th>
-      <th>f31</th>
-      <th>f32</th>
-      <th>f33</th>
-      <th>f41</th>
-      <th>f42</th>
-      <th>f43</th>
-      <th>f51</th>
-      <th>f52</th>
-      <th>f53</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-03-26</th>
-      <th>MSFT</th>
-      <td>0.239707</td>
-      <td>0.104749</td>
-      <td>0.137255</td>
-      <td>-0.552843</td>
-      <td>0.089196</td>
-      <td>-0.347006</td>
-      <td>-0.664344</td>
-      <td>2.275004</td>
-      <td>1.103680</td>
-      <td>-0.405840</td>
-      <td>1.216248</td>
-      <td>0.435099</td>
-      <td>-0.534771</td>
-      <td>-0.691275</td>
-      <td>-1.798232</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2018-03-27</th>
-      <th>AAPL</th>
-      <td>-0.373912</td>
-      <td>-0.497876</td>
-      <td>-0.025363</td>
-      <td>0.946176</td>
-      <td>-0.574643</td>
-      <td>0.327602</td>
-      <td>-1.382411</td>
-      <td>-0.957307</td>
-      <td>-0.607934</td>
-      <td>-0.049664</td>
-      <td>0.518996</td>
-      <td>1.354015</td>
-      <td>-0.380315</td>
-      <td>0.271055</td>
-      <td>0.104400</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>1.618805</td>
-      <td>0.812482</td>
-      <td>0.701856</td>
-      <td>0.588344</td>
-      <td>-0.543203</td>
-      <td>-0.256369</td>
-      <td>-0.101769</td>
-      <td>-0.451585</td>
-      <td>-0.095172</td>
-      <td>0.229111</td>
-      <td>0.437316</td>
-      <td>-0.468364</td>
-      <td>-1.788829</td>
-      <td>0.720570</td>
-      <td>-0.810893</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-0.170209</td>
-      <td>-2.076364</td>
-      <td>-2.550418</td>
-      <td>-0.274671</td>
-      <td>1.415019</td>
-      <td>0.335678</td>
-      <td>-0.211822</td>
-      <td>-0.773725</td>
-      <td>-0.658311</td>
-      <td>-0.811596</td>
-      <td>-0.965118</td>
-      <td>-1.082615</td>
-      <td>-0.107543</td>
-      <td>0.087869</td>
-      <td>-0.735881</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>1.511921</td>
-      <td>1.370986</td>
-      <td>0.587237</td>
-      <td>1.704130</td>
-      <td>-0.663279</td>
-      <td>-0.645921</td>
-      <td>0.009209</td>
-      <td>-0.433412</td>
-      <td>-0.175698</td>
-      <td>0.050399</td>
-      <td>-0.890027</td>
-      <td>0.518698</td>
-      <td>-2.037177</td>
-      <td>0.847111</td>
-      <td>0.890390</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>f11</th>
+<th>f12</th>
+<th>f13</th>
+<th>f21</th>
+<th>f22</th>
+<th>f23</th>
+<th>f31</th>
+<th>f32</th>
+<th>f33</th>
+<th>f41</th>
+<th>f42</th>
+<th>f43</th>
+<th>f51</th>
+<th>f52</th>
+<th>f53</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2018-03-26</th>
+<th>MSFT</th>
+<td>0.239707</td>
+<td>0.104749</td>
+<td>0.137255</td>
+<td>-0.552843</td>
+<td>0.089196</td>
+<td>-0.347006</td>
+<td>-0.664344</td>
+<td>2.275004</td>
+<td>1.103680</td>
+<td>-0.405840</td>
+<td>1.216248</td>
+<td>0.435099</td>
+<td>-0.534771</td>
+<td>-0.691275</td>
+<td>-1.798232</td>
+</tr>
+<tr>
+<th rowspan="4" valign="top">2018-03-27</th>
+<th>AAPL</th>
+<td>-0.373912</td>
+<td>-0.497876</td>
+<td>-0.025363</td>
+<td>0.946176</td>
+<td>-0.574643</td>
+<td>0.327602</td>
+<td>-1.382411</td>
+<td>-0.957307</td>
+<td>-0.607934</td>
+<td>-0.049664</td>
+<td>0.518996</td>
+<td>1.354015</td>
+<td>-0.380315</td>
+<td>0.271055</td>
+<td>0.104400</td>
+</tr>
+<tr>
+<th>AMZN</th>
+<td>1.618805</td>
+<td>0.812482</td>
+<td>0.701856</td>
+<td>0.588344</td>
+<td>-0.543203</td>
+<td>-0.256369</td>
+<td>-0.101769</td>
+<td>-0.451585</td>
+<td>-0.095172</td>
+<td>0.229111</td>
+<td>0.437316</td>
+<td>-0.468364</td>
+<td>-1.788829</td>
+<td>0.720570</td>
+<td>-0.810893</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-0.170209</td>
+<td>-2.076364</td>
+<td>-2.550418</td>
+<td>-0.274671</td>
+<td>1.415019</td>
+<td>0.335678</td>
+<td>-0.211822</td>
+<td>-0.773725</td>
+<td>-0.658311</td>
+<td>-0.811596</td>
+<td>-0.965118</td>
+<td>-1.082615</td>
+<td>-0.107543</td>
+<td>0.087869</td>
+<td>-0.735881</td>
+</tr>
+<tr>
+<th>MSFT</th>
+<td>1.511921</td>
+<td>1.370986</td>
+<td>0.587237</td>
+<td>1.704130</td>
+<td>-0.663279</td>
+<td>-0.645921</td>
+<td>0.009209</td>
+<td>-0.433412</td>
+<td>-0.175698</td>
+<td>0.050399</td>
+<td>-0.890027</td>
+<td>0.518698</td>
+<td>-2.037177</td>
+<td>0.847111</td>
+<td>0.890390</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1623,15 +1548,14 @@ Name: outcome, dtype: float64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Before evaluating the features for predictive strength and orthogonality, we'll do a quick data preparation stage. It is sometimes vital to "standardize" or "normalize" data so that we get fair comparisons between features of differing scale.  Strictly speaking, since all of the doctored outcome and feature data is already drawn from normal distribution (using the numpy function <code>random.rnorm()</code>) we don't really need this step, but good practice to include.</p>
 <p>Here, I'll use the scikit-learn <code>StandardizeScaler()</code> method and some pandas magic to transform the data.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1661,35 +1585,23 @@ Name: outcome, dtype: float64</pre>
 <span class="n">outcome_scaled</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">outcome_df</span><span class="o">.</span><span class="n">columns</span>
 <span class="n">outcome_scaled</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(7639, 15)
 </pre>
 </div>
 </div>
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[6]:</div>
-
-
-
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1703,89 +1615,70 @@ Name: outcome, dtype: float64</pre>
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>outcome</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-03-26</th>
-      <th>MSFT</th>
-      <td>0.954864</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2018-03-27</th>
-      <th>AAPL</th>
-      <td>0.315910</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>-1.081448</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-1.373987</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>-0.161926</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th></th>
+<th>outcome</th>
+</tr>
+<tr>
+<th>date</th>
+<th>symbol</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2018-03-26</th>
+<th>MSFT</th>
+<td>0.954864</td>
+</tr>
+<tr>
+<th rowspan="4" valign="top">2018-03-27</th>
+<th>AAPL</th>
+<td>0.315910</td>
+</tr>
+<tr>
+<th>AMZN</th>
+<td>-1.081448</td>
+</tr>
+<tr>
+<th>CSCO</th>
+<td>-1.373987</td>
+</tr>
+<tr>
+<th>MSFT</th>
+<td>-0.161926</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
-<span class="n">corr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Strength of Correlation&#39;</span><span class="p">)</span>
+<span class="n">corr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s1">'blue'</span><span class="p">,</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'Strength of Correlation'</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x4e7a940&gt;</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEICAYAAABVv+9nAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -1905,15 +1798,11 @@ NMY3aOP2j+3nbc+zvdDVTZaWU/0drZjKk86aBF/G1D8F3AqsAa6zvVrS5yV9oDS7FJgr6RHgj4Ex
 pzJ1TZ3+kfTOckvGfwV8TdLqwUU8vWr+/XwJ2Bb4VpkKOGveIGv2z6ckrZa0iurf14ljnK5zavZP
 61KqICKio2bNFXxExGyTBB8R0VFJ8BERHZUEHxHRUUnwEREdlQQfEdFRSfARER31/wF1o55CwIOH
 igAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -1922,44 +1811,34 @@ igAAAABJRU5ErkJggg==
 <p>Pretend for a minute that we don't know which features are going to be stronger and weaker, and which are going to tend to cluster together.  We've got an idea that there are some quite strong features, some weaker, and some useless.</p>
 <p>While correlation is not the perfect metric, it gives us a reasonable sense of <strong>strength</strong> of each feature's historical relationship to the outcome variable.</p>
 <p>However, it says nothing about <strong>orthogonality</strong>.  To get an idea about this, we'll take advantage of the very handy seaborn <code>clustermap</code> chart type which plots a heatmap representation of a covariance matrix and runs a hierarchical clustering algorithm to group together the most closely related features.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
 <span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> \
-                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
+                            <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>\
-                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
+                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlcAAAJDCAYAAAAmfDEJAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2179,15 +2058,11 @@ viYZZ93Fao71dU3yNOBm4FhgNslbmftk00NJPsDcuRbHda/rv6+q97SqvcSYxvJ+Wmxfmft05puA
 zyc58Fr+WvcX+potUffpwHuTTDH3y+rKqmry9RPAJcBTmJsRBNhXVS/sxjPO13Wxui9mfM/xYjXH
 +fzC3IzrzyfZx9zP7Dndz+xLGN++LlgTxv66Lrav436Om/Ib2iVJkhrysKAkSVJDhitJkqSGDFeS
 JEkNGa4kSZIaMlxJkiQ1ZLiSJElqyHAlSZLUkOFKkiSpof8f/8UGFmeblLYAAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2196,47 +2071,37 @@ JEkNGa4kSZIaMlxJkiQ1ZLiSJElqyHAlSZLUkOFKkiSpof8f/8UGFmeblLYAAAAASUVORK5CYII=
 <p>The algorithm has done a good job of finding the groupings of features.  Of course, the diagonal of dark green represents each feature being perfectly correlated with itself, but we also see certain clusters of features which are similar to one another.</p>
 <p>The cluster in the upper left captures <code>factor_1</code> (including some of the interaction effects).  <code>factor_3</code> is fairly well isolated in the lower right corner, and in the middle we can see <code>factor_2</code> as well as some of the noise features.</p>
 <p>Let's next focus in only on those features with correlations of greater than 0.1 to exclude the noise and weak features.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">correlated_features</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="n">corr</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">correlated_features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
 <span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> \
-                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
+                            <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>\
-                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
+                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation Strength:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Correlation Strength:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">corr</span><span class="p">[</span><span class="n">corr</span><span class="o">&gt;</span><span class="mf">0.1</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAFpCAYAAACWFzOYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -2369,17 +2234,11 @@ yS7ge8AF1U3mJfkE8EzgiCT3AhdX1c0T7s9JwFuSFLNXBfxpVX1uTG3v97UmeSlwNvD4JBd1515U
 VXdMuO4kXytJngjcBhwJ7E3yKuBZzF7l8c4kK5kdSF1TVWO7dHGe/vTx92mS7+3rgMcDf979/727
 qk5j9j/qlwGfS7Kvzn+oqg+MoeZ8dXt5Xw+Wd7JKUqOcopGkRhnwktQoA16SGmXAS1KjDHhJapQB
 L0mNMuAlqVEGvCQ16v8D6FFPEULSvswAAAAASUVORK5CYII=
-"
->
+"/>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Correlation Strength:
 f33    0.396105
@@ -2395,10 +2254,8 @@ dtype: float64
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -2410,48 +2267,31 @@ dtype: float64
 <strong>Step 3:</strong> Repeat this process until either (1) we've reached the target feature count, or (2) we've run out strongly correlated features.</p>
 <p><em>Those interested could encode this heuristic into an algorithm without too much difficulty.</em></p>
 <p>Following this heuristic, I get the below features:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f33&#39;</span><span class="p">,</span><span class="s1">&#39;f23&#39;</span><span class="p">,</span><span class="s1">&#39;f42&#39;</span><span class="p">,</span><span class="s1">&#39;f41&#39;</span><span class="p">,</span><span class="s1">&#39;f31&#39;</span><span class="p">]</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'f33'</span><span class="p">,</span><span class="s1">'f23'</span><span class="p">,</span><span class="s1">'f42'</span><span class="p">,</span><span class="s1">'f41'</span><span class="p">,</span><span class="s1">'f31'</span><span class="p">]</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;seaborn.axisgrid.PairGrid at 0xa82ea90&gt;</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAIUCAYAAABYRlVrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4815,58 +4655,44 @@ BOAmAB0JIfeKr91LKS1pvktq3SCE/BvAdQAchJATAB6glBY382Vd61AdQ4CWFw+NpqpBgwYNGjRo
 aHRoWyQaNGjQoEGDhkaHlmBo0KBBgwYNGhodWoKhQYMGDRo0aGh0aAmGBg0aNGjQoKHRoSUYGjRo
 0KBBg4ZGh5ZgaNCgQYMGDRoaHVqCoUGDBg0aNGhodGgJhgYNGjRo0KCh0fH/AV0ee4CTzsLlAAAA
 AElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that this list of features is not simply the highest correlated features.  Let's run the clustermap one more time to see if we've missed any major clusters.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
 
-<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
+<span class="n">linkage</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">correlations_array</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'average'</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span><span class="n">row_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span><span class="n">col_linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>\
-                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens&#39;</span><span class="p">)</span>
+                   <span class="n">row_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">col_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'Greens'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_majorticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">label_order</span> <span class="o">=</span> <span class="n">corr_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">g</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">reordered_ind</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAFpCAYAAABnHGgVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -4964,15 +4790,11 @@ TwSeC3x+uEnHt9TPX5JNwA3AtVX13kGHnDD33GfTG4AnAX/U/Tf2SFWdARwLvDPJHAu/mK+vqnVx
 mt1yknwcOBXYkmQfcElV3TLwWON6KXBRkm8DDwIXVncAdx1v10G3KckzgDcnKRbO3Pr9qrpzyEEn
 4GXA84EnJbm4W3ZxVd0x3EiT4RWqktQgD8tIUoOMuyQ1yLhLUoOMuyQ1yLhLUoOMuyQ1yLhLUoOM
 uyQ16H8BalMrepKW/l0AAAAASUVORK5CYII=
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -4981,49 +4803,32 @@ uyQ16H8BalMrepKW/l0AAAAASUVORK5CYII=
 <p>Looks generally pretty good.  There is some residual covariance between features, so we haven't achieved orthogonal nirvana, but we're pretty close.</p>
 <p>Thus far, we've only used a simple correlation statistic across the full time period.  This is a good place to start but, in my opinion, is a dangerous place to stop.  Financial time series data suffers from non-stationarity and regime change, so a relationship which <em>on average</em> has existed may have been wildly unstable over time.</p>
 <p>To check, we'll plot the rolling correlation of these selected features.</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outcome_scaled</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
-<span class="n">tmp</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>\
-<span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Correlation of Features to Outcome</span><span class="se">\n</span><span class="s1"> (by quarter)&#39;</span><span class="p">)</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">selected_features</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outcome_scaled</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>\
+<span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Correlation of Features to Outcome</span><span class="se">\n</span><span class="s1"> (by quarter)'</span><span class="p">)</span>
 <span class="c1"># shows time stability</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
 <div class="output_text output_subarea output_execute_result">
 <pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xec89630&gt;</pre>
 </div>
-
 </div>
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
-
-
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAElCAYAAAAfhqICAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
@@ -5810,22 +5615,17 @@ WaFIeNSCquJ64nfAHwoh0gLKjnsD2zOAzoBk6x9N23848BxS0+ZuFkLcD5oKoBCiNn5DVyiiQ8Xc
 FdcV0xZUL6Mp8Z1Da1TxxcC200CGlPIBIcQu4N+AceBdaF2kHkXrl2kGfiyl/ErcjVAodKCcu0Kh
 UCQhKiyjUCgUSYhy7gqFQpGEKOeuUCgUSYhy7gqFQpGEKOeuUCgUSYhy7gqFQpGEKOeuUCgUScj/
 B5gCY8aRDfuMAAAAAElFTkSuQmCC
-"
->
-</div>
-
-</div>
-
+"/>
 </div>
 </div>
-
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As expected, since the data wasn't modeled with any non-stationarity, our features all appear to be robust over time.  This gives increased confidence that the relationship we've found is likely to persist.</p>
-
 </div>
 </div>
 </div>
@@ -5833,7 +5633,7 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h3>
+<h3 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h3>
 </div>
 </div>
 </div>
@@ -5843,7 +5643,6 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This installment of the tutorial series has walked through a systematic approach for selecting a subset of features from a universe of many overlapping (collinear) features.  At this point, we're ready to model!</p>
 <p>In the <a href="">next post</a>, I'll walk through an approach for training models in a "walk forward" basis - highly useful when working with ordered (e.g., time series) datasets.</p>
-
 </div>
 </div>
 </div>
@@ -5851,14 +5650,11 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">&#182;</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
+<h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
 <p>Finally, take a minute to leave a comment below - either to discuss this post or to offer an idea for future posts.  Thanks for reading!</p>
-
 </div>
 </div>
 </div>
- 
-
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -5897,10 +5693,10 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
     </span>
   </span>
 <time datetime="2018-07-12T20:03:00-07:00" pubdate>Thu 12 July 2018</time>  <span class="categories">
-    <a class='category' href='./category/blog.html'>Blog</a>
+    <a class='category' href='https://alphascientist.com/category/blog.html'>Blog</a>
   </span>
   <span class="categories">
-    <a class="category" href="./tag/tutorial.html">tutorial</a>,    <a class="category" href="./tag/feature-engineering.html">feature engineering</a>  </span>
+    <a class="category" href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a class="category" href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>  </span>
 </p><div class="sharing">
     <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
 </div>    </footer>
@@ -5916,13 +5712,16 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="./feature_selection.html">Stock Prediction with ML: Feature Selection</a>
+          <a href="https://alphascientist.com/sell_in_may.html">Sell in May and Go Away?</a>
       </li>
       <li class="post">
-          <a href="./feature_engineering.html">Stock Prediction with ML: Feature Engineering</a>
+          <a href="https://alphascientist.com/feature_selection.html">Stock Prediction with ML: Feature Selection</a>
       </li>
       <li class="post">
-          <a href="./data_management.html">Stock Prediction with ML: Data Management</a>
+          <a href="https://alphascientist.com/feature_engineering.html">Stock Prediction with ML: Feature Engineering</a>
+      </li>
+      <li class="post">
+          <a href="https://alphascientist.com/data_management.html">Stock Prediction with ML: Data Management</a>
       </li>
     </ul>
   </section>
@@ -5930,14 +5729,14 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
       
     <h1>Categories</h1>
     <ul id="recent_posts">
-        <li><a href="./category/blog.html">Blog</a></li>
+        <li><a href="https://alphascientist.com/category/blog.html">Blog</a></li>
     </ul>
   </section>
  
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/tutorial.html">tutorial</a>,    <a href="./tag/feature-engineering.html">feature engineering</a>,    <a href="./tag/pandas.html">pandas</a>,    <a href="./tag/data.html">data</a>  </section>
+    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>  </section>
 
 
     <section>
@@ -6038,13 +5837,23 @@ B5gCY8aRDfuMAAAAAElFTkSuQmCC
     Copyright &copy;  2018  Chad Gray &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  <script src="./theme/js/modernizr-2.0.js"></script>
-  <script src="./theme/js/ender.js"></script>
-  <script src="./theme/js/octopress.js" type="text/javascript"></script>
+  <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>
+  <script src="https://alphascientist.com/theme/js/ender.js"></script>
+  <script src="https://alphascientist.com/theme/js/octopress.js" type="text/javascript"></script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-121434821-1', 'auto');
+
+    ga('send', 'pageview');
+    </script>
   <script type="text/javascript">
     var disqus_shortname = 'alphascientist-com';
     var disqus_identifier = '/feature_selection.html';
-    var disqus_url = './feature_selection.html';
+    var disqus_url = 'https://alphascientist.com/feature_selection.html';
     var disqus_title = 'Stock Prediction with ML: Feature Selection';
     (function() {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
