@@ -1,7 +1,7 @@
 <aside class="sidebar">
   {% if SIDEBAR_IMAGE %}
   <section>
-	  <img src="{{ SITEURL }}/{{ SIDEBAR_IMAGE }}" alt="{{ SIDEBAR_IMAGE_ALT}}" width="{{SIDEBAR_IMAGE_WIDTH}}"/> 
+	  <img src="{{ SITEURL }}/{{ SIDEBAR_IMAGE }}" alt="{{ SIDEBAR_IMAGE_ALT}}" width="{{SIDEBAR_IMAGE_WIDTH}}"/>
   </section>
   {% endif %}
   <section>
@@ -14,17 +14,6 @@
       {% endfor %}
     </ul>
   </section>
-  {% if categories %}
-  <section>
-      
-    <h1>Categories</h1>
-    <ul id="recent_posts">
-      {% for category, articles in categories %}
-        <li><a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a></li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %} 
 
   <section>
   <h1>Tags</h1>
@@ -33,12 +22,18 @@
   {% endfor %}
   </section>
 
-  {% include '_includes/github.html' %}
-  {% include '_includes/social.html' %}
-  {% include '_includes/links.html' %}
-  {% include '_includes/twitter_sidebar.html' %}
-  {% include '_includes/gplus_sidebar.html' %}
-  
+  {% if DISPLAY_CATEGORIES_ON_MENU and categories %}
+  <section>
+
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+      {% for category, articles in categories %}
+        <li><a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
   <section>
 <!-- Begin MailChimp Signup Form -->
 <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
@@ -69,7 +64,14 @@
 </form>
 </div>
 <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
-<!--End mc_embed_signup-->  
-</section>  
-  
+<!--End mc_embed_signup-->
+</section>
+
+  {% include '_includes/github.html' %}
+  {% include '_includes/social.html' %}
+  {% include '_includes/twitter_sidebar.html' %}
+  {% include '_includes/links.html' %}
+  {% include '_includes/gplus_sidebar.html' %}
+
+
 </aside>
