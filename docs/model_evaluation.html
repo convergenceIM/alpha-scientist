@@ -4,9 +4,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ML for Stock Market Prediction (part 5): Model Evaluation &mdash; The Alpha Scientist</title>
+  <title>Stock Prediction with ML: Model Evaluation &mdash; The Alpha Scientist</title>
   <meta name="author" content="Chad Gray">
 
+  <link href="https://alphascientist.com/feeds/atom.xml" type="application/atom+xml" rel="alternate"
+        title="The Alpha Scientist Atom Feed" />
+  <link href="https://alphascientist.com/feeds/rss.xml" type="application/rss+xml" rel="alternate"
+        title="The Alpha Scientist RSS Feed" />
 
 
 
@@ -18,9 +22,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link href="./favicon.png" rel="icon">
+    <link href="https://alphascientist.com/images/favicon.png" rel="icon">
 
-  <link href="./theme/css/main.css" media="screen, projection"
+  <link href="https://alphascientist.com/theme/css/main.css" media="screen, projection"
         rel="stylesheet" type="text/css">
 
   <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
@@ -31,28 +35,39 @@
 
 <body>
   <header role="banner"><hgroup>
-  <h1><a href="./">The Alpha Scientist</a></h1>
-    <h2>Generating stock market alpha using data science</h2>
+  <table>
+  <tr>
+  <td>
+  <a href="https://alphascientist.com/"><img src="https://alphascientist.com/images/logo.png" height="100" width="100"></a>
+  </td>
+  <td>&nbsp;
+  </td>
+  <td>
+  <h1><a href="https://alphascientist.com/">The Alpha Scientist</a></h1>
+    <h2>Discovering alpha in the stock market using data science</h2>
+  </td>
+  </tr>
+  </table>  
+  
 </hgroup></header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="https://alphascientist.com/feeds/atom.xml" rel="subscribe-atom">Atom</a></li>
+  <li><a href="https://alphascientist.com/feeds/rss.xml" rel="subscribe-rss">RSS</a></li>
 </ul>
 
 
 <ul class="main-navigation">
-      <li><a href="./pages/about-the-alpha-scientist.html">About The Alpha Scientist</a></li>
-      <li><a href="./pages/consulting.html">Consulting</a></li>
-      <li class="active">
-        <a href="./category/blog.html">Blog</a>
-      </li>
+      <li><a href="https://alphascientist.com/pages/about.html">About</a></li>
+      <li><a href="https://alphascientist.com/pages/consulting.html">Consulting</a></li>
 </ul></nav>
   <div id="main">
     <div id="content">
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">ML for Stock Market Prediction (part 5): Model Evaluation</h1>
+      <h1 class="entry-title">Stock Prediction with ML: Model Evaluation</h1>
     <p class="meta">
-<time datetime="2018-06-15T20:04:00-07:00" pubdate>Fri 15 June 2018</time>    </p>
+<time datetime="2018-08-09T20:04:00-07:00" pubdate>Thu 09 August 2018</time>    </p>
 </header>
 
   <div class="entry-content"><style type="text/css">/*!
@@ -1027,141 +1042,97 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h3><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
+<p>However, these financial ML explorers are learning that there are many ways in which using ML to predict financial time series differs greatly from labeling cat pictures or flagging spam.  Among these differences is that traditional model performance metrics (RSQ, MSE, accuracy, F1, etc...) can be misleading and incomplete.</p>
+<p>Over the past several years, I've developed a set of metrics which have proved useful for comparing and optimizing financial time series models.  These metrics attempt to measure models' <em>predictive power</em> but also their <em>trade-ability</em>, critically important for those who actually intend to <em>use</em> their models in the real world.</p>
+<p>In this post, I will present a general outline of my approach and will demonstrate a few of the most useful metrics I've added to my standard "scorecard".  I look forward to hearing how others may think to extend the concept.  If you'd like to replicate and experiment with the below code, <em>you can download the source notebook for this post by right-clicking on the below button and choosing "save link as"</em></p>
+<p><a href="https://github.com/convergenceIM/alpha-scientist/blob/master/content/05_model_scoring.ipynb" style="text-align: center;"><img src="images/button_ipynb-notebook.png" title="download ipynb"/></a></p>
+<p>If you haven't already checked out the previous four installments in this tutorial, you may want review those first.  Many of the coding patterns used below are discussed at length:</p>
+<ul>
+<li><a href="data_management.html">Part 1: Data Management</a></li>
+<li><a href="feature_engineering.html">Part 2: Feature Engineering</a></li>
+<li><a href="feature_selection.html">Part 3: Feature Selection</a></li>
+<li><a href="walk_forward_model_building.html">Part 4: Walk-forward model building</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Preparing-sample-data">Preparing sample data<a class="anchor-link" href="#Preparing-sample-data">¶</a></h3><p>I will illustrate this metrics methodology using a simple example of synthetically generated data (see previous posts in this tutorial for explanations of the below method of creating data).</p>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#ignore</span>
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Remove / Replace this code with a link to your quandl key, if you have one</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/anaconda/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/anaconda/'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">config</span>
-
-<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;style&gt;</span><span class="si">{}</span><span class="s1">&lt;/style&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">CSS</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
+<span class="n">quandl_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">quandl_key</span>
 
 
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[18]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<style>
-body {
-    margin: 0;
-    font-family: Helvetica
-    ;
-}
-table.dataframe {
-    border-collapse: collapse;
-    border: none;
-}
-table.dataframe tr {
-    border: none;
-}
-table.dataframe td, table.dataframe th {
-    margin: 0;
-    border: 2px solid #B0ACAC;
-    padding-left: 0.25em;
-    padding-right: 0.25em;
-}
-table.dataframe th:not(:empty) {
-    background-color: #EFEDED;
-    text-align: left;
-    font-weight: normal;
-}
-table.dataframe tr:nth-child(2) th:empty {
-    border-left: none;
-    border-right: 1px dashed #888;
-}
-table.dataframe td {
-    border: 1px solid #B0ACAC;
-    background-color: #F7FBFC;
-}
-</style>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
-<p>These financial ML explorers are learning that there are many ways in which using ML to predict financial time series differs greatly from labeling cat pictures or flagging spam.  Application of machine learning to financial time series prediction is made especially difficult due to (1) non-stationarity, (2) low signal-to-noise, and (3) strong feature collinearity within financial data.</p>
-<p>As a consequence, even the most expertly designed ML models will achieve accuracy levels which would seem wholly inadequate in other domains.  It's hard to get excited about an RSQ of 0.10 or a classification accuracy of 0.60, but that is often the reality of well-built models in the domain of asset price prediction.</p>
-<p>In my view, the generic model performance metrics (RSQ, MSE, accuracy, F1, etc...) are not tremendously useful when working in this domain.  Similarly, the traditional quantitative finance metrics (CAGR, sharpe, maxDD, etc...) do not provide as much insight into the models themselves as they do into the particular time period of data used.</p>
-<p>Over the years, I've developed a set of metrics which have proved useful for comparing and optimizing models.  These metrics attempt to measure model performance in terms of <em>predictive power</em> but also in terms of <em>practicality</em>, a critically important dimension for those who actually intend to <em>use</em> their models in the real world.</p>
-<p>In this post, I will present a general outline of my approach and will demonstrate a few of the most useful metrics I've added to my standard "scorecard".  I look forward to hearing how others may think to extend the concept.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Creating-dummy-data">Creating dummy data<a class="anchor-link" href="#Creating-dummy-data">&#182;</a></h3><p>I will illustrate the usefulness of this metrics methodology using a simple example of synthetically generated data (see previous posts in this tutorial for explanations of the below method of creating data).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> <span class="c1"># remove once updated pandas-datareader issue is fixed</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> 
+<span class="c1"># May be necessary to fix below issue</span>
 <span class="c1"># https://github.com/pydata/pandas-datareader/issues/534</span>
 <span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 
-<span class="k">def</span> <span class="nf">get_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">data_source</span><span class="p">,</span> <span class="n">begin_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">get_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">data_source</span><span class="p">,</span> <span class="n">quandl_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">begin_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)[[</span><span class="s1">&#39;AdjOpen&#39;</span><span class="p">,</span><span class="s1">&#39;AdjHigh&#39;</span><span class="p">,</span><span class="s1">&#39;AdjLow&#39;</span><span class="p">,</span><span class="s1">&#39;AdjClose&#39;</span><span class="p">,</span><span class="s1">&#39;AdjVolume&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="s1">&#39;high&#39;</span><span class="p">,</span><span class="s1">&#39;low&#39;</span><span class="p">,</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="c1">#my convention: always lowercase</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add a new column which contains the symbol so we can keep multiple symbols in the same dataframe</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;symbol&#39;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">DataReader</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>\
+        <span class="p">[[</span><span class="s1">'AdjOpen'</span><span class="p">,</span><span class="s1">'AdjHigh'</span><span class="p">,</span><span class="s1">'AdjLow'</span><span class="p">,</span><span class="s1">'AdjClose'</span><span class="p">,</span><span class="s1">'AdjVolume'</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'open'</span><span class="p">,</span><span class="s1">'high'</span><span class="p">,</span><span class="s1">'low'</span><span class="p">,</span><span class="s1">'close'</span><span class="p">,</span><span class="s1">'volume'</span><span class="p">]</span> 
+        <span class="n">df</span><span class="p">[</span><span class="s1">'symbol'</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span> <span class="c1"># add symbol col so we can keep all in the same dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out</span><span class="p">,</span><span class="n">df</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#stacks on top of previously collected data</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
         
-<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;CSCO&#39;</span><span class="p">,</span><span class="s1">&#39;AMZN&#39;</span><span class="p">,</span><span class="s1">&#39;YHOO&#39;</span><span class="p">,</span><span class="s1">&#39;MSFT&#39;</span><span class="p">],</span><span class="n">data_source</span><span class="o">=</span><span class="s1">&#39;quandl&#39;</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;2012-01-01&#39;</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="c1"># note, we&#39;re only using real price data to get an accurate date/symbol index set.  </span>
+<span class="n">prices</span> <span class="o">=</span> <span class="n">get_symbols</span><span class="p">([</span><span class="s1">'AAPL'</span><span class="p">,</span><span class="s1">'CSCO'</span><span class="p">,</span><span class="s1">'AMZN'</span><span class="p">,</span><span class="s1">'YHOO'</span><span class="p">,</span><span class="s1">'MSFT'</span><span class="p">],</span>\
+                     <span class="n">data_source</span><span class="o">=</span><span class="s1">'quandl'</span><span class="p">,</span><span class="n">quandl_key</span><span class="o">=</span><span class="n">quandl_key</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2012-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="c1"># Note: we're only using real price data to generate an index set.  </span>
+<span class="c1"># We will make synthetic features and outcomes below instead of deriving from price</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The below code generates several features then <em>synthetically generates</em> an outcome series from them (along with noise).  This guarantees that the features will be informative, since the outcome has been constructed to ensure a relationship.</p>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">add_memory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">n_days</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">memory_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; adds autoregressive behavior to series of data&#39;&#39;&#39;</span>
-    <span class="n">add_ewm</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">memory_strength</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">memory_strength</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;symbol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add_ewm</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_memory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">n_days</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">mem_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="sd">''' adds autoregressive behavior to series of data'''</span>
+    <span class="n">add_ewm</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">mem_strength</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">mem_strength</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add_ewm</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
 
 <span class="c1"># generate feature data</span>
@@ -1178,260 +1149,185 @@ table.dataframe td {
 
 <span class="c1">## now, create response variable such that it is related to features</span>
 <span class="c1"># f01 becomes increasingly important, f02 becomes decreasingly important,</span>
-<span class="c1"># f03 oscillates in importance, f04 is stationary, finally a noise component is added</span>
+<span class="c1"># f03 oscillates in importance, f04 is stationary, </span>
+<span class="c1"># and finally a noise component is added</span>
 
 <span class="n">outcome</span> <span class="o">=</span>   <span class="n">f01</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="n">num_obs</span><span class="p">)</span> <span class="o">+</span> \
             <span class="n">f02</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="n">num_obs</span><span class="p">)</span> <span class="o">+</span> \
             <span class="n">f03</span> <span class="o">*</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_obs</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">f03</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> \
             <span class="n">f04</span> <span class="o">+</span> \
             <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span> 
-<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;outcome&#39;</span>
+<span class="n">outcome</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'outcome'</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evaluating-Models">Evaluating Models<a class="anchor-link" href="#Evaluating-Models">&#182;</a></h2><p>Imagine that we created a simple linear model (such as below) and wanted to measure its effectiveness at prediction.</p>
+<h3 id="Generating-models-and-predictions">Generating models and predictions<a class="anchor-link" href="#Generating-models-and-predictions">¶</a></h3><p>Imagine that we created a simple linear model (such as below) and wanted to measure its effectiveness at prediction.</p>
 <blockquote><p>Note: we'll follow the walk-forward modeling process described in the <a href="walk_forward_model_building.html">previous post</a>.  If you don't understand the below code snippet (and want to...) please check out that post.</p>
 </blockquote>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
 
-<span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
+<span class="c1">## fit models for each timestep on a walk-forward basis</span>
+<span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
-    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
     <span class="n">models</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
-    
+
+<span class="c1">## predict values walk-forward (all predictions out of sample)</span>
 <span class="n">begin_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span>
-<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">&#39;2099-12-31&#39;</span><span class="p">]))</span>
+<span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">'2099-12-31'</span><span class="p">]))</span>
 
 <span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="p">):</span> <span class="c1">#loop thru each models object in collection</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">begin_dates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">predictions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>So we've got a model, we've got a sizeable set of (out of sample) predictions.  Is the model any good?  Should we junk it, tune it, or trade it?</p>
-<p>Since this is a regression model, I'll throw our data into <code>scikit-learn</code>'s metrics package.</p>
-
+<h3 id="Traditional-model-evaluation">Traditional model evaluation<a class="anchor-link" href="#Traditional-model-evaluation">¶</a></h3><p>So we've got a model, we've got a sizeable set of (out of sample) predictions.  Is the model any good?  Should we junk it, tune it, or trade it?  Since this is a regression model, I'll throw our data into <code>scikit-learn</code>'s metrics package.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
 
 <span class="c1"># make sure we have 1-for-1 mapping between pred and true</span>
 <span class="n">common_idx</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">y_true</span> <span class="o">=</span> <span class="n">outcome</span><span class="p">[</span><span class="n">common_idx</span><span class="p">]</span>
-<span class="n">y_true</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y_true&#39;</span>
+<span class="n">y_true</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_true'</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">common_idx</span><span class="p">]</span>
-<span class="n">y_pred</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y_pred&#39;</span>
+<span class="n">y_pred</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_pred'</span>
 
 <span class="n">standard_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
 
-<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;explained variance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">explained_variance_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;MSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;MedAE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">median_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;RSQ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'explained variance'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">explained_variance_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'MAE'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'MSE'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'MedAE'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">median_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">standard_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'RSQ'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">standard_metrics</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
 <div class="prompt"></div>
-
-
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>explained variance    0.254564
-MAE                   2.498770
-MSE                   9.792810
-MedAE                 2.122572
-RSQ                   0.254545
+<pre>explained variance    0.251057
+MAE                   2.491337
+MSE                   9.784733
+MedAE                 2.098055
+RSQ                   0.251051
 dtype: float64
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="images/confused_scientist.jpg" width="400"></p>
+<p><img src="images/confused_scientist.jpg" width="400"/></p>
 <p>These stats don't really tell us much by themselves.  You may have an intuition for r-squared so that may give you a level of confidence in the models.  However, even this metric <a href="https://onlinecourses.science.psu.edu/stat501/node/258/">has problems</a> not to mention does not tell us much about the practicality of this signal from a trading point of view.</p>
 <p>True, we could construct some trading rules around this series of predictions and perform a formal backtest on that.  However, that is quite time consuming and introduces a number of extraneous variables into the equation.</p>
-
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="A-better-way...">A better way...<a class="anchor-link" href="#A-better-way...">&#182;</a></h3><p>Below is a method and code framework for evaluating models along several useful dimensions.  Below I'll work through an example of creating a "scorecard" with about a half dozen metrics as a starting point.</p>
-<p>You can feel free to extend this into a longer scorecard which is suited to your needs and beliefs.  In my own trading, I use about 25 metrics in a standard "scorecard" each time I evaluate a model.  You may prefer to use more (or different) metrics but the procedure should be applicable.</p>
+<h3 id="A-better-way...--Creating-custom-metrics">A better way...  Creating custom metrics<a class="anchor-link" href="#A-better-way...--Creating-custom-metrics">¶</a></h3><p>Instead of relying on generic ML metrics, we will create several custom metrics that will hopefully give a more complete picture of strength, reliability, and practicality of these models.</p>
+<p>I'll work through an example of creating an extensible <em>scorecard</em> with about a half dozen custom-defined <em>metrics</em> as a starting point.  You can feel free to extend this into a longer scorecard which is suited to your needs and beliefs.  In my own trading, I use about 25 metrics in a standard "scorecard" each time I evaluate a model.  You may prefer to use more, fewer, or different metrics but the process should be applicable.</p>
 <p>I'll focus only on regression-oriented metrics (i.e., those which use a continuous prediction rather than a binary or classification prediction).  It's trivial to re-purpose the same framework to a classification-oriented environment.</p>
-<p>In this approach, we'll create an extensible <em>scorecard</em> which can contain many custom-defined <em>metrics</em>.  These metrics can be combined and adapted in many different ways, some of which I'll lay out in the later part of this example.</p>
-
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Preparing-our-data">Preparing our data<a class="anchor-link" href="#Preparing-our-data">&#182;</a></h3><p>However, before implementing specific metrics we need to do some data pre-processing.  It'll become clear why doing this initially will save considerable time later when calculating aggregate metrics.</p>
+<h3 id="Step-1:-Preprocess-data-primitives">Step 1: Preprocess data primitives<a class="anchor-link" href="#Step-1:-Preprocess-data-primitives">¶</a></h3><p>Before implementing specific metrics we need to do some data pre-processing.  It'll become clear why doing this first will save considerable time later when calculating aggregate metrics.</p>
 <p>To create these intermediate values, you'll need the following inputs:</p>
 <ul>
 <li><strong>y_pred:</strong> the <em>continuous variable</em> prediction made by your model for each timestep, for each symbol</li>
 <li><strong>y_true:</strong> the <em>continuous variable</em> actual outcome for each timestep, for each symbol.  </li>
 <li><strong>index:</strong> this is the unique identifier for each prediction or actual result.  If working with a single instrument, then you can simply use date (or time or whatever).  If you're using multiple instruments, a multi-index with (date/symbol) is necessary. </li>
 </ul>
-<p>In other words, if your model is predicting one-day price changes, you'd want your y_pred to be the model's predictions made as of March 9th (for the coming day), indexed as <code>2017-03-09</code> and you'd want the actual <em>future</em> outcome which will play out in the next day also aligned to Mar 9th.  This "peeking" convention is very useful for working with large sets of data across different time horizons.  It is described ad nauseum in <a href="">this post</a>.</p>
+<p>In other words, if your model is predicting one-day price changes, you'd want your y_pred to be the model's predictions made as of March 9th (for the coming day), indexed as <code>2017-03-09</code> and you'd want the actual <em>future</em> outcome which will play out in the next day also aligned to Mar 9th.  This "peeking" convention is very useful for working with large sets of data across different time horizons.  It is described ad nauseum in <a href="data_management.html">Part 1: Data Management</a>.</p>
 <p>The raw input data we need to provide might look something like this:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-<div class="prompt output_prompt">Out[23]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>y_pred</th>
-      <th>y_true</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-03-26</th>
-      <th>MSFT</th>
-      <td>3.426700</td>
-      <td>-0.902567</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2018-03-27</th>
-      <th>AAPL</th>
-      <td>-3.119849</td>
-      <td>-1.202957</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>-0.085898</td>
-      <td>0.067246</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>0.621322</td>
-      <td>1.129399</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>-2.856826</td>
-      <td>-2.503098</td>
-    </tr>
-  </tbody>
-</table>
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                     y_pred    y_true
+date       symbol                    
+2018-03-26 MSFT    0.707500  1.693673
+2018-03-27 AAPL    1.744680 -1.830242
+           AMZN    0.594976 -2.302375
+           CSCO   -2.838380 -2.462017
+           MSFT   -0.417073 -1.586291
+</pre>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1444,53 +1340,282 @@ dtype: float64
 <li><strong>is_predicted:</strong> 1 if the model has made a valid prediction, 0 if not.  This is important if models only emit predictions when they have a certain level of confidence</li>
 <li><strong>result:</strong> the profit (loss) resulting from betting one unit in the direction of the sign_pred.  This is the continuous variable result of following the model</li>
 </ul>
-<p>With this set of intermediate variables already calculated, we can easily calculate the three core metrics of accuracy, edge, and noise as simple one-liners.  For instance:</p>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_df</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
-    <span class="n">y_pred</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y_pred&#39;</span>
-    <span class="n">y_true</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y_true&#39;</span>
+    <span class="n">y_pred</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_pred'</span>
+    <span class="n">y_true</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_true'</span>
     
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sign_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sign_true&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_correct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_true</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">,</span><span class="s1">&#39;is_correct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># only registers 1 when prediction was made AND it was correct</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_incorrect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_true</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span><span class="s1">&#39;is_incorrect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># only registers 1 when prediction was made AND it was wrong</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_predicted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">is_incorrect</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span> 
+    <span class="n">df</span><span class="p">[</span><span class="s1">'sign_pred'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'sign_true'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'is_correct'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_true</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">,</span><span class="s1">'is_correct'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># only registers 1 when prediction was made AND it was correct</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'is_incorrect'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_true</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span><span class="s1">'is_incorrect'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># only registers 1 when prediction was made AND it was wrong</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'is_predicted'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">is_incorrect</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'result'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span> 
     <span class="k">return</span> <span class="n">df</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">make_df</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">make_df</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                     y_pred    y_true  sign_pred  sign_true  is_correct  \
+date       symbol                                                         
+2018-03-26 MSFT    0.707500  1.693673        1.0        1.0           1   
+2018-03-27 AAPL    1.744680 -1.830242        1.0       -1.0           0   
+           AMZN    0.594976 -2.302375        1.0       -1.0           0   
+           CSCO   -2.838380 -2.462017       -1.0       -1.0           1   
+           MSFT   -0.417073 -1.586291       -1.0       -1.0           1   
 
-<div class="prompt output_prompt">Out[24]:</div>
+                   is_incorrect  is_predicted    result  
+date       symbol                                        
+2018-03-26 MSFT               0             1  1.693673  
+2018-03-27 AAPL               1             1 -1.830242  
+           AMZN               1             1 -2.302375  
+           CSCO               0             1  2.462017  
+           MSFT               0             1  1.586291  
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Defining-our-metrics">Defining our metrics<a class="anchor-link" href="#Defining-our-metrics">¶</a></h3><p>With this set of intermediate variables pre-processed, we can more easily calculate metrics.  The metrics we'll start with here include things like:</p>
+<ul>
+<li><strong>Accuracy:</strong> Just as the name suggests, this measures the percent of predictions that were <em>directionally</em> correct vs. incorrect.</li>
+<li><strong>Edge:</strong> perhaps the most useful of all metrics, this is the expected value of the prediction over a sufficiently large set of draws.  Think of this like a blackjack card counter who knows the expected profit on each dollar bet when the odds are at a level of favorability</li>
+<li><strong>Noise:</strong> critically important but often ignored, the noise metric estimates how dramatically the model's predictions vary from one day to the next.  As you might imagine, a model which abruptly changes its mind every few days is much harder to follow (and much more expensive to trade) than one which is a bit more steady.    </li>
+</ul>
+<p>The below function takes in our pre-processed data primitives and returns a scorecard with <code>accuracy</code>, <code>edge</code>, and <code>noise</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+    <span class="c1"># building block metrics</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'noise'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">scorecard</span>    
 
+<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[8]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>accuracy    67.075999
+edge         1.438081
+noise        2.387606
+dtype: float64</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Much better.  I now know that we've been directionally correct about two-thirds of the time, and that following this signal would create an edge of ~1.5 units per time period.</p>
+<p>Let's keep going.  We can now easily combine and transform things to derive new metrics.  The below function shows several examples, including:</p>
+<ul>
+<li><strong>y_true_chg</strong> and <strong>y_pred_chg:</strong> The average magnitude of change (per period) in y_true and y_pred.  </li>
+<li><strong>prediction_calibration:</strong> A simple ratio of the magnitude of our predictions vs. magnitude of truth.  This gives some indication of whether our model is properly tuned to the size of movement in addition to the direction of it.  </li>
+<li><strong>capture_ratio:</strong> Ratio of the "edge" we gain by following our predictions vs. the actual daily change.  100 would indicate that we were <em>perfectly</em> capturing the true movement of the target variable.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+    <span class="c1"># building block metrics</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'noise'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
+    <span class="c1"># derived metrics</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_pred_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'prediction_calibration'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_pred_chg'</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'capture_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
 
+    <span class="k">return</span> <span class="n">scorecard</span>    
+
+<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[9]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>accuracy                  67.075999
+edge                       1.438081
+noise                      2.387606
+y_true_chg                 2.888443
+y_pred_chg                 1.689327
+prediction_calibration     0.584857
+capture_ratio             49.787427
+dtype: float64</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Additionally, metrics can be easily calculated for only long or short predictions (for a two-sided model) or separately for positions which ended up being winners and losers.</p>
+<ul>
+<li><strong>edge_long</strong> and <strong>edge_short:</strong> The "edge" for only long signals or for short signals.</li>
+<li><strong>edge_win</strong> and <strong>edge_lose:</strong> The "edge" for only winners or for only losers.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+    <span class="c1"># building block metrics</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'noise'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># derived metrics</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_pred_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'prediction_calibration'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_pred_chg'</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'capture_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'y_true_chg'</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+
+    <span class="c1"># metrics for a subset of predictions</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge_long'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge_short'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge_win'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">is_correct</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'edge_lose'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">is_incorrect</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">scorecard</span>    
+
+<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[10]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>accuracy                  67.075999
+edge                       1.438081
+noise                      2.387606
+y_true_chg                 2.888443
+y_pred_chg                 1.689327
+prediction_calibration     0.584857
+capture_ratio             49.787427
+edge_long                  1.409962
+edge_short                 1.361946
+edge_win                   3.173426
+edge_lose                 -2.254256
+dtype: float64</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From this slate of metrics, we've gained much more insight than we got from MSE, R-squared, etc...</p>
+<ul>
+<li>The model is predicting with a strong directional accuracy</li>
+<li>We are generating about 1.4 units of "edge" (expected profit) each prediction,  which is about half of the total theoretical profit </li>
+<li>The model makes more on winners than it loses on losers</li>
+<li>The model is equally valid on both long and short predictions  </li>
+</ul>
+<p>If this were real data, I would be rushing to put this model into production!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Metrics-over-time">Metrics over time<a class="anchor-link" href="#Metrics-over-time">¶</a></h3><p>Critically important when considering using a model in live trading is to understand (a) how consistent the model's performance has been, and (b) whether its current performance has degraded from its past.  Markets have a way of discovering and eliminating past sources of edge.</p>
+<p>Here, a two line function will calculate each metric by year:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_year</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">year</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'year'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calc_scorecard</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">scorecard_by_year</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[11]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<style scoped>
+<style scoped="">
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
     }
@@ -1504,334 +1629,301 @@ dtype: float64
     }
 </style>
 <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>y_pred</th>
-      <th>y_true</th>
-      <th>sign_pred</th>
-      <th>sign_true</th>
-      <th>is_correct</th>
-      <th>is_incorrect</th>
-      <th>is_predicted</th>
-      <th>result</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th>symbol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2017-12-28</th>
-      <th>MSFT</th>
-      <td>-0.881376</td>
-      <td>-0.936810</td>
-      <td>-1.0</td>
-      <td>-1.0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0.936810</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">2017-12-29</th>
-      <th>AAPL</th>
-      <td>2.621066</td>
-      <td>-0.899449</td>
-      <td>1.0</td>
-      <td>-1.0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>-0.899449</td>
-    </tr>
-    <tr>
-      <th>AMZN</th>
-      <td>-2.078197</td>
-      <td>1.453741</td>
-      <td>-1.0</td>
-      <td>1.0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>-1.453741</td>
-    </tr>
-    <tr>
-      <th>CSCO</th>
-      <td>-1.183695</td>
-      <td>-5.843348</td>
-      <td>-1.0</td>
-      <td>-1.0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>5.843348</td>
-    </tr>
-    <tr>
-      <th>MSFT</th>
-      <td>-0.589583</td>
-      <td>0.535396</td>
-      <td>-1.0</td>
-      <td>1.0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>-0.535396</td>
-    </tr>
-  </tbody>
+<thead>
+<tr style="text-align: right;">
+<th>year</th>
+<th>2012</th>
+<th>2013</th>
+<th>2014</th>
+<th>2015</th>
+<th>2016</th>
+<th>2017</th>
+<th>2018</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>accuracy</th>
+<td>73.723404</td>
+<td>67.539683</td>
+<td>64.761905</td>
+<td>69.761905</td>
+<td>65.873016</td>
+<td>61.814915</td>
+<td>67.372881</td>
+</tr>
+<tr>
+<th>edge</th>
+<td>2.059936</td>
+<td>1.461567</td>
+<td>1.231334</td>
+<td>1.543369</td>
+<td>1.426360</td>
+<td>1.021169</td>
+<td>1.406294</td>
+</tr>
+<tr>
+<th>noise</th>
+<td>2.719877</td>
+<td>2.821616</td>
+<td>2.399404</td>
+<td>2.120782</td>
+<td>2.267517</td>
+<td>2.087404</td>
+<td>2.153034</td>
+</tr>
+<tr>
+<th>y_true_chg</th>
+<td>3.084964</td>
+<td>2.936447</td>
+<td>2.745874</td>
+<td>2.979032</td>
+<td>2.913586</td>
+<td>2.730181</td>
+<td>2.739057</td>
+</tr>
+<tr>
+<th>y_pred_chg</th>
+<td>1.936173</td>
+<td>1.941289</td>
+<td>1.703139</td>
+<td>1.557748</td>
+<td>1.587378</td>
+<td>1.466882</td>
+<td>1.583027</td>
+</tr>
+<tr>
+<th>prediction_calibration</th>
+<td>0.627616</td>
+<td>0.661102</td>
+<td>0.620254</td>
+<td>0.522904</td>
+<td>0.544820</td>
+<td>0.537284</td>
+<td>0.577946</td>
+</tr>
+<tr>
+<th>capture_ratio</th>
+<td>66.773413</td>
+<td>49.773313</td>
+<td>44.843048</td>
+<td>51.807720</td>
+<td>48.955474</td>
+<td>37.402987</td>
+<td>51.342271</td>
+</tr>
+<tr>
+<th>edge_long</th>
+<td>1.967572</td>
+<td>1.430635</td>
+<td>1.233274</td>
+<td>1.538225</td>
+<td>1.364924</td>
+<td>1.025613</td>
+<td>1.266355</td>
+</tr>
+<tr>
+<th>edge_short</th>
+<td>1.952401</td>
+<td>1.763385</td>
+<td>1.250856</td>
+<td>1.383851</td>
+<td>0.832610</td>
+<td>1.089456</td>
+<td>1.572209</td>
+</tr>
+<tr>
+<th>edge_win</th>
+<td>3.389715</td>
+<td>3.387355</td>
+<td>3.081384</td>
+<td>3.159226</td>
+<td>2.976300</td>
+<td>3.070849</td>
+<td>3.072564</td>
+</tr>
+<tr>
+<th>edge_lose</th>
+<td>-2.050069</td>
+<td>-2.140338</td>
+<td>-2.138265</td>
+<td>-2.456018</td>
+<td>-2.496835</td>
+<td>-2.201292</td>
+<td>-2.046276</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Defining-our-metrics">Defining our metrics<a class="anchor-link" href="#Defining-our-metrics">&#182;</a></h3><p>The metrics we'll start with here include things like:</p>
-<ul>
-<li><strong>Accuracy:</strong> Just as the name suggests, this measures the percent of predictions that were <em>directionally</em> correct vs. incorrect.</li>
-<li><strong>Edge:</strong> perhaps the most useful of all metrics, this is the expected value of the prediction over a sufficiently large set of draws.  Think of this like a blackjack card counter who knows the expected profit on each dollar bet when the odds are at a level of favorability</li>
-<li><strong>Noise:</strong> critically important but often ignored, the noise metric estimates how dramatically the model's predictions vary from one day to the next.  As you might imagine, a model which abruptly changes its mind every few days is much harder to follow (and much more expensive to follow) than one which is a bit more steady.    </li>
-</ul>
-
+<p>It's just as simple to compare performance across symbols (or symbol groups, if you've defined those):</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
-    <span class="c1"># building block metrics</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;noise&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    
-    <span class="k">return</span> <span class="n">scorecard</span>    
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_symbol</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calc_scorecard</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
-<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">scorecard_by_symbol</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
+<div class="prompt output_prompt">Out[12]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<div class="prompt output_prompt">Out[25]:</div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>accuracy    66.445792
-edge         1.468143
-noise        2.234209
-dtype: float64</pre>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>symbol</th>
+<th>AAPL</th>
+<th>AMZN</th>
+<th>CSCO</th>
+<th>MSFT</th>
+<th>YHOO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>accuracy</th>
+<td>66.688830</td>
+<td>65.359043</td>
+<td>66.312292</td>
+<td>68.504983</td>
+<td>68.726163</td>
+</tr>
+<tr>
+<th>edge</th>
+<td>1.416872</td>
+<td>1.346539</td>
+<td>1.324442</td>
+<td>1.538295</td>
+<td>1.582845</td>
+</tr>
+<tr>
+<th>noise</th>
+<td>2.345282</td>
+<td>2.325754</td>
+<td>2.264191</td>
+<td>2.469043</td>
+<td>2.395625</td>
+</tr>
+<tr>
+<th>y_true_chg</th>
+<td>2.898475</td>
+<td>2.829595</td>
+<td>2.807877</td>
+<td>2.953369</td>
+<td>2.962400</td>
+</tr>
+<tr>
+<th>y_pred_chg</th>
+<td>1.698427</td>
+<td>1.671211</td>
+<td>1.632399</td>
+<td>1.741992</td>
+<td>1.704562</td>
+</tr>
+<tr>
+<th>prediction_calibration</th>
+<td>0.585973</td>
+<td>0.590618</td>
+<td>0.581364</td>
+<td>0.589832</td>
+<td>0.575399</td>
+</tr>
+<tr>
+<th>capture_ratio</th>
+<td>48.883363</td>
+<td>47.587700</td>
+<td>47.168825</td>
+<td>52.086091</td>
+<td>53.431158</td>
+</tr>
+<tr>
+<th>edge_long</th>
+<td>1.498012</td>
+<td>1.273866</td>
+<td>1.292711</td>
+<td>1.441065</td>
+<td>1.574297</td>
+</tr>
+<tr>
+<th>edge_short</th>
+<td>1.291853</td>
+<td>1.232207</td>
+<td>1.210812</td>
+<td>1.569954</td>
+<td>1.538143</td>
+</tr>
+<tr>
+<th>edge_win</th>
+<td>3.208012</td>
+<td>3.102369</td>
+<td>3.044073</td>
+<td>3.241324</td>
+<td>3.280251</td>
+</tr>
+<tr>
+<th>edge_lose</th>
+<td>-2.251305</td>
+<td>-2.233005</td>
+<td>-2.273472</td>
+<td>-2.283530</td>
+<td>-2.232134</td>
+</tr>
+</tbody>
+</table>
 </div>
-
-</div>
-
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Much better.  I now know that we've been directionally correct 68% of the time, and that following this signal would create an edge of 1.5 units per time period.</p>
-<p>Let's keep going.  We can now easily combine and transform things to derive new metrics.  The below function shows several examples, including:</p>
-<ul>
-<li><strong>y_true_chg</strong> and <strong>y_pred_chg:</strong> The average magnitude of change (per period) in y_true and y_pred.  </li>
-<li><strong>prediction_calibration:</strong> A simple ratio of the magnitude of our predictions vs. magnitude of truth.  This gives some indication of whether our model is properly tuned to the size of movement in addition to the direction of it.  </li>
-<li><strong>capture_ratio:</strong> Ratio of the "edge" we gain by naively following our predictions vs. the actual daily change.  100 would indicate that we were <em>perfectly</em> capturing the true movement of the target variable.</li>
-</ul>
-
+<h3 id="Comparing-models">Comparing models<a class="anchor-link" href="#Comparing-models">¶</a></h3><p>The added insight we get from this methodology comes when wanting to make comparisons between models, periods, segments, etc...</p>
+<p>To illustrate, let's say that we're comparing two models, a linear regression vs. a random forest, for performance on a training set and a testing set (pretend for a moment that we didn't adhere to <a href="walk_forward_model_building.html">Walk-forward model building</a> practices...).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
-    <span class="c1"># building block metrics</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;noise&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-    <span class="c1"># derived metrics</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_pred_chg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;prediction_calibration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_pred_chg&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;capture_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-
-    <span class="k">return</span> <span class="n">scorecard</span>    
-
-<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[26]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>accuracy                  66.445792
-edge                       1.468143
-noise                      2.234209
-y_true_chg                 2.892018
-y_pred_chg                 1.563096
-prediction_calibration     0.540486
-capture_ratio             50.765334
-dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Additionally, metrics can be easily calculated for only long or short predictions (for a two-sided model) or separately for positions which ended up being winners and losers.</p>
-<ul>
-<li><strong>edge_long</strong> and <strong>edge_short:</strong> The "edge" for only long signals or for short signals.</li>
-<li><strong>edge_win</strong> and <strong>edge_lose:</strong> The "edge" for only winners or for only losers.</li>
-</ul>
-<p>If you've added categorical information to your data (such as industry classification), you can also run these metrics on each category of holdings in your data.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
-    <span class="c1"># building block metrics</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;noise&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-    <span class="c1"># derived metrics</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_pred_chg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_pred</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;prediction_calibration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_pred_chg&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;capture_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;y_true_chg&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-
-    <span class="c1"># metrics for a subset of predictions</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge_long&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge_short&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">sign_pred</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge_win&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">is_correct</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;edge_lose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">is_incorrect</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">scorecard</span>    
-
-<span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[27]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>accuracy                  66.445792
-edge                       1.468143
-noise                      2.234209
-y_true_chg                 2.892018
-y_pred_chg                 1.563096
-prediction_calibration     0.540486
-capture_ratio             50.765334
-edge_long                  1.458985
-edge_short                 1.389849
-edge_win                   3.233302
-edge_lose                 -2.156629
-dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>From this toy example, we'd see that the model is predicting with a strong directional accuracy, is capturing about half of the total theoretical profit to be made, makes more on winners than it loses on losers, and is equally valid on both long and short predictions.  If this were real data, I would be rushing to put this model into production!</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Comparing-models">Comparing models<a class="anchor-link" href="#Comparing-models">&#182;</a></h3><p>The true usefulness of this methodology comes when wanting to make comparisons.  Model A vs Model B.  Last year vs. this year.  Small cap vs. large cap.</p>
-<p>To illustrate, let's say that we're comparing two models, a linear regression vs. a random forest, for performance on a training set and a testing set (pretend for a moment that we didn't adhere to <a href="">walk-forward modeling</a> practices...).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
-<div class="inner_cell">
-    <div class="input_area">
+<div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">ElasticNetCV</span><span class="p">,</span><span class="n">Lasso</span><span class="p">,</span><span class="n">Ridge</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestRegressor</span>
@@ -1854,177 +1946,93 @@ dtype: float64</pre>
 <span class="n">model2_test_df</span> <span class="o">=</span> <span class="n">make_df</span><span class="p">(</span><span class="n">model2_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
 
 <span class="n">s1</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">model1_train_df</span><span class="p">)</span>
-<span class="n">s1</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model1_train&#39;</span>
+<span class="n">s1</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'model1_train'</span>
 <span class="n">s2</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">model1_test_df</span><span class="p">)</span>
-<span class="n">s2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model1_test&#39;</span>
+<span class="n">s2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'model1_test'</span>
 <span class="n">s3</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">model2_train_df</span><span class="p">)</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model2_train&#39;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'model2_train'</span>
 <span class="n">s4</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">model2_test_df</span><span class="p">)</span>
-<span class="n">s4</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model2_test&#39;</span>
+<span class="n">s4</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'model2_test'</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">,</span><span class="n">s4</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">,</span><span class="n">s4</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-
 <div class="output_wrapper">
 <div class="output">
-
-
 <div class="output_area">
-
-<div class="prompt output_prompt">Out[28]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>model1_train</th>
-      <th>model1_test</th>
-      <th>model2_train</th>
-      <th>model2_test</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>accuracy</th>
-      <td>67.893962</td>
-      <td>63.089005</td>
-      <td>89.281623</td>
-      <td>56.609948</td>
-    </tr>
-    <tr>
-      <th>edge</th>
-      <td>1.581639</td>
-      <td>1.102090</td>
-      <td>2.742843</td>
-      <td>0.701342</td>
-    </tr>
-    <tr>
-      <th>noise</th>
-      <td>2.237280</td>
-      <td>2.210308</td>
-      <td>3.267224</td>
-      <td>2.559933</td>
-    </tr>
-    <tr>
-      <th>y_true_chg</th>
-      <td>2.931868</td>
-      <td>2.742105</td>
-      <td>2.931868</td>
-      <td>2.742105</td>
-    </tr>
-    <tr>
-      <th>y_pred_chg</th>
-      <td>1.561431</td>
-      <td>1.552230</td>
-      <td>2.279767</td>
-      <td>1.799437</td>
-    </tr>
-    <tr>
-      <th>prediction_calibration</th>
-      <td>0.532572</td>
-      <td>0.566072</td>
-      <td>0.777582</td>
-      <td>0.656225</td>
-    </tr>
-    <tr>
-      <th>capture_ratio</th>
-      <td>53.946453</td>
-      <td>40.191398</td>
-      <td>93.552749</td>
-      <td>25.576768</td>
-    </tr>
-    <tr>
-      <th>edge_long</th>
-      <td>1.569808</td>
-      <td>1.034822</td>
-      <td>2.746943</td>
-      <td>0.685295</td>
-    </tr>
-    <tr>
-      <th>edge_short</th>
-      <td>1.519366</td>
-      <td>1.101855</td>
-      <td>2.665131</td>
-      <td>0.644772</td>
-    </tr>
-    <tr>
-      <th>edge_win</th>
-      <td>3.287072</td>
-      <td>3.010787</td>
-      <td>3.141117</td>
-      <td>3.005522</td>
-    </tr>
-    <tr>
-      <th>edge_lose</th>
-      <td>-2.139632</td>
-      <td>-2.257437</td>
-      <td>-0.918646</td>
-      <td>-2.387506</td>
-    </tr>
-  </tbody>
-</table>
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                        model1_train  model1_test  model2_train  model2_test
+accuracy                   68.417608    62.434555     89.461627    60.732984
+edge                        1.545181     1.071990      2.730365     0.913076
+noise                       2.200392     2.123827      3.259833     2.551081
+y_true_chg                  2.926529     2.739687      2.926529     2.739687
+y_pred_chg                  1.563175     1.509218      2.291515     1.796541
+prediction_calibration      0.534139     0.550873      0.783015     0.655747
+capture_ratio              52.799120    39.128174     93.297057    33.327736
+edge_long                   1.496996     1.063473      2.664405     0.910637
+edge_short                  1.436163     1.038296      2.640406     0.873405
+edge_win                    3.190281     3.031532      3.083960     2.986226
+edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
+</pre>
 </div>
 </div>
-
-</div>
-
 </div>
 </div>
-
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This quick and dirty scorecard comparison gives us a great deal of useful information.  We learn that:</p>
 <ul>
-<li>The relatively simple linear regression (model1) does a good (unrealistically good...) job of prediction, ciorrect about 68% of the time and capturing about 53% of available price movement (this is very good) during training</li>
-<li>Model1 holds up very well out of sample, performing almost as well on test as train</li>
+<li>The relatively simple linear regression (model1) does a very good job of prediction, correct about 68% of the time, capturing &gt;50% of available price movement (this is very good) during training</li>
+<li>Model1 holds up very well out of sample, performing nearly as well on test as train</li>
 <li>Model2, a more complex random forest ensemble model, appears <em>far</em> superior on the training data, capturing 90%+ of available price action, but appears quite overfit and does not perform nearly as well on the test set.</li>
 </ul>
-
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h3><p>In this tutorial, we've covered a framework for evaluating models in a market prediction context  and have demonstrated a few useful metrics.  However, the approach can be extended much further to suit your needs.  You can consider:</p>
+<h3 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h3><p>In this tutorial, we've covered a framework for evaluating models in a market prediction context  and have demonstrated a few useful metrics.  However, the approach can be extended much further to suit your needs.  You can consider:</p>
 <ul>
 <li>Adding new metrics to the standard scorecard</li>
 <li>Comparing scorecard metrics for subsets of the universe.  For instance, each symbol or grouping of symbols  </li>
 <li>Calculating and plotting performance metrics across time to validate robustness or to identify trends</li>
 </ul>
-<p>In the next (and final) <a href="ensemble_modeling.html">post of this series</a>, I'll present a unique framework for creating an <em>ensemble model</em> to blend together the results of your many different forecasting models.</p>
+<p>In the final post of this series, I'll present a unique framework for creating an <em>ensemble model</em> to blend together the results of your many different forecasting models.</p>
 <p>Please feel free to add to the comment section with your good ideas for useful metrics, with questions/comments on this post, and topic ideas for future posts.</p>
-
 </div>
 </div>
 </div>
- 
-
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
+<p>Finally, take a minute to leave a comment below - either to discuss this post or to offer an idea for future posts.  Thanks for reading!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2062,11 +2070,11 @@ dtype: float64</pre>
         Chad Gray
     </span>
   </span>
-<time datetime="2018-06-15T20:04:00-07:00" pubdate>Fri 15 June 2018</time>  <span class="categories">
-    <a class='category' href='./category/blog.html'>Blog</a>
+<time datetime="2018-08-09T20:04:00-07:00" pubdate>Thu 09 August 2018</time>  <span class="categories">
+    <a class='category' href='https://alphascientist.com/category/blog.html'>Blog</a>
   </span>
   <span class="categories">
-    <a class="category" href="./tag/tutorial.html">tutorial</a>  </span>
+    <a class="category" href="https://alphascientist.com/tag/tutorial.html">tutorial</a>  </span>
 </p><div class="sharing">
     <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
 </div>    </footer>
@@ -2082,39 +2090,67 @@ dtype: float64</pre>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="./ensemble_modeling.html">ML for Stock Market Prediction (part 6): Ensemble Modeling</a>
+          <a href="https://alphascientist.com/model_evaluation.html">Stock Prediction with ML: Model Evaluation</a>
       </li>
       <li class="post">
-          <a href="./model_evaluation.html">ML for Stock Market Prediction (part 5): Model Evaluation</a>
+          <a href="https://alphascientist.com/impact_of_usd.html">We Are All FX Traders Now</a>
       </li>
       <li class="post">
-          <a href="./walk_forward_model_building.html">ML for Stock Market Prediction (part 4): Walk-forward Modeling</a>
+          <a href="https://alphascientist.com/walk_forward_model_building.html">Stock Prediction with ML: Walk-forward Modeling</a>
       </li>
       <li class="post">
-          <a href="./feature_selection.html">ML for Stock Market Prediction (part 3): Feature Selection</a>
+          <a href="https://alphascientist.com/sell_in_may.html">Sell in May and Go Away?</a>
       </li>
       <li class="post">
-          <a href="./feature_engineering.html">ML for Stock Market Prediction (part 2): Feature Engineering</a>
+          <a href="https://alphascientist.com/feature_selection.html">Stock Prediction with ML: Feature Selection</a>
       </li>
     </ul>
   </section>
-  <section>
-      
-    <h1>Categories</h1>
-    <ul id="recent_posts">
-        <li><a href="./category/blog.html">Blog</a></li>
-    </ul>
-  </section>
- 
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/tutorial.html">Tutorial</a>  </section>
+    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>  </section>
+
+
+  <section>
+<!-- Begin MailChimp Signup Form -->
+<link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+</style>
+<div id="mc_embed_signup">
+<form action="https://alphascientist.us18.list-manage.com/subscribe/post?u=f1d0cbc21090d63aef6eb4d97&amp;id=f4cfc5aa1e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+    <div id="mc_embed_signup_scroll">
+	<h2>Receive email notifications for future posts</h2>
+<div class="mc-field-group">
+	<label for="mce-EMAIL">Email Address </label>
+	<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+</div>
+<div class="mc-field-group">
+	<label for="mce-FNAME">First Name </label>
+	<input type="text" value="" name="FNAME" class="" id="mce-FNAME">
+</div>
+	<div id="mce-responses" class="clear">
+		<div class="response" id="mce-error-response" style="display:none"></div>
+		<div class="response" id="mce-success-response" style="display:none"></div>
+	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f1d0cbc21090d63aef6eb4d97_f4cfc5aa1e" tabindex="-1" value=""></div>
+    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    </div>
+</form>
+</div>
+<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+<!--End mc_embed_signup-->
+</section>
 
 
     <section>
         <h1>Social</h1>
         <ul>
+            <li><a href="https://alphascientist.com/feeds/rss.xml" type="application/rss+xml" rel="alternate">RSS</a></li>
+            <li><a href="https://alphascientist.com/feeds/atom.xml" type="application/atom+xml" rel="alternate">Atom</a></li>
             <li><a href="https://www.linkedin.com/in/chadgraycfa/" target="_blank">Linkedin</a></li>
             <li><a href="https://twitter.com/data2alpha" target="_blank">Twitter</a></li>
         </ul>
@@ -2158,20 +2194,44 @@ dtype: float64</pre>
   <script src="/theme/js/twitter.js" type="text/javascript"> </script>
     <p>Follow <a href="http://twitter.com/data2alpha">@data2alpha</a></p>
 </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://quantocracy.com/" target="_blank">Quantocracy</a></li>
+            <li><a href="https://robotwealth.com/blog/" target="_blank">Robot Wealth</a></li>
+            <li><a href="https://www.quantstart.com/articles" target="_blank">QuantStart</a></li>
+            <li><a href="http://www.simonouellette.com/" target="_blank">Simon Ouellette</a></li>
+            <li><a href="http://www.quantresearch.info/" target="_blank">Marcos Lopez de Prado</a></li>
+            <li><a href="http://www.financial-hacker.com" target="_blank">Financial Hacker</a></li>
+            <li><a href="http://www.mov37.com/ex-machina/" target="_blank">Ex Machina</a></li>
+        </ul>
+    </section>
+
+
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
     Copyright &copy;  2018  Chad Gray &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
-  <script src="./theme/js/modernizr-2.0.js"></script>
-  <script src="./theme/js/ender.js"></script>
-  <script src="./theme/js/octopress.js" type="text/javascript"></script>
+  <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>
+  <script src="https://alphascientist.com/theme/js/ender.js"></script>
+  <script src="https://alphascientist.com/theme/js/octopress.js" type="text/javascript"></script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-121434821-1', 'auto');
+
+    ga('send', 'pageview');
+    </script>
   <script type="text/javascript">
     var disqus_shortname = 'alphascientist-com';
     var disqus_identifier = '/model_evaluation.html';
-    var disqus_url = './model_evaluation.html';
-    var disqus_title = 'ML for Stock Market Prediction (part 5): Model Evaluation';
+    var disqus_url = 'https://alphascientist.com/model_evaluation.html';
+    var disqus_title = 'Stock Prediction with ML: Model Evaluation';
     (function() {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
       dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
