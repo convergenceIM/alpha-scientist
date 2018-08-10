@@ -34,7 +34,7 @@ LINKS = (('Quantocracy', 'http://quantocracy.com/'),
 SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
           ('Twitter', 'https://twitter.com/data2alpha'),)
 
-SOCIAL_IMAGE = '/images/profile.jpg'
+SOCIAL_IMAGE = 'content/images/logo.jpg'
 
 DEFAULT_PAGINATION = False
 

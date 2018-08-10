@@ -1,6 +1,0 @@
-Title: ML for Stock Market Prediction (part 5): Model Evaluation
-Slug: model_evaluation
-Date: 2018-07-20 20:04
-Category: Blog
-Tags: tutorial
-Summary: This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.  The overriding objective of the methods described here is to overcome the issues inherent in traditional cross validation approachs.
