@@ -3,7 +3,6 @@ Slug: investor_flows
 Date: 2018-08-21 20:03
 Category: Blog
 Tags: ETFs,market anomaly
-SOCIAL_IMAGE = '/content/images/burning_money.jpg'
-TWITTER_SITE = '@data2alpha'
-Summary: We've all had the feeling - buying or selling at the worst possible time.  Rest assured, you're not alone.  The average investor significanlty underperforms the market indices because the market consistently lures them into buying high and selling low.  This post delves into the data and finds that typical ETF investors underperform the funds they use by 1 to 4% per year.
-description: The average investor significanlty underperforms the market indices by 1 to 4% per year because they systematially buy high and sell low.  This post delves into the data and finds that typical ETF investors underperform the funds they use.
+SOCIAL_IMAGE: '/content/images/burning_money.jpg'
+TWITTER_SITE: '@data2alpha'
+Summary: We've all had the feeling - buying or selling at the worst possible time.  Rest assured, you're not alone.  The average investor significantly underperforms the market indices because the market consistently lures them into buying high and selling low.  This post delves into the data and finds that typical ETF investors underperform the funds they use by 1 to 4% per year.
