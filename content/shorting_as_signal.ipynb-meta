@@ -1,0 +1,6 @@
+Title: Listening to the Short Sellers
+Slug: shorting_as_signal
+Date: 2018-09-21 20:03
+Category: Blog
+Tags: data, feature engineering
+Summary: Short sellers are often thought to be among the most informed market participants.  Can a systematic, quantitative trader find meaningful edge following (or fading) the actions of short sellers?  This article crunches the numbers for 2000 stocks across a full year of daily data to find signal inside of shorting.
