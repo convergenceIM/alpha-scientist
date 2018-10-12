@@ -1042,8 +1042,7 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1095,7 +1094,7 @@ h6:hover .anchor-link {
 <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">display</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Image</span>
 
 <span class="n">path_to_data</span> <span class="o">=</span> <span class="s1">'E:/Dropbox/Dropbox/alphascientist/short_data/'</span>
 </pre></div>
@@ -1103,8 +1102,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1119,8 +1117,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1135,15 +1132,16 @@ h6:hover .anchor-link {
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># gets price (adjusted for splits/divs) and volume data</span>
 
-<span class="n">symbols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="o">+</span><span class="s1">'Russell_2000_Jan2016.txt'</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">symbols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span> <span class="o">+</span> <span class="s1">'Russell_2000_Jan2016.txt'</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="o">+</span><span class="s1">'ohlcv_2016.csv'</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span> <span class="o">+</span> <span class="s1">'ohlcv_2016.csv'</span><span class="p">)</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-<span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'symbol'</span><span class="p">])</span>
 
 <span class="n">prices</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">'close_adj'</span><span class="p">]</span>
 <span class="n">volumes</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">'volume'</span><span class="p">]</span>
-<span class="n">avg_volumes</span> <span class="o">=</span> <span class="n">volumes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'avg_vol'</span><span class="p">)</span>
+<span class="n">avg_volumes</span> <span class="o">=</span> <span class="n">volumes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'avg_vol'</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
@@ -1185,9 +1183,9 @@ date       symbol
 <span class="c1"># Example: the price_10 for ZUMZ on 12/23 indicates how much the price will change</span>
 <span class="c1"># in the *next 10 trading days* after 12/23</span>
 
-<span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="o">+</span><span class="s1">'outcomes_2016.csv'</span><span class="p">)</span>
+<span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span> <span class="o">+</span> <span class="s1">'outcomes_2016.csv'</span><span class="p">)</span>
 <span class="n">outcomes</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">outcomes</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-<span class="n">outcomes</span> <span class="o">=</span> <span class="n">outcomes</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
+<span class="n">outcomes</span> <span class="o">=</span> <span class="n">outcomes</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'symbol'</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1211,8 +1209,7 @@ date       symbol
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1227,9 +1224,9 @@ date       symbol
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Loads dataset of borrow rates and available quantity</span>
 
-<span class="n">sbl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="o">+</span><span class="s1">'sbl_2016.csv'</span><span class="p">)</span>
+<span class="n">sbl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span> <span class="o">+</span> <span class="s1">'sbl_2016.csv'</span><span class="p">)</span>
 <span class="n">sbl</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-<span class="n">sbl</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
+<span class="n">sbl</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'symbol'</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1253,8 +1250,7 @@ date       symbol
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1268,28 +1264,27 @@ date       symbol
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sbl</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">avg_volumes</span><span class="p">)</span>
-<span class="n">sbl</span><span class="o">.</span><span class="n">avg_vol</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">avg_vol</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span> <span class="c1"># cleans up weekends</span>
-
+<span class="n">sbl</span><span class="o">.</span><span class="n">avg_vol</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">avg_vol</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>  <span class="c1"># cleans up weekends</span>
 
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">fee_rate</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span><span class="o">-</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_prior</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span> <span class="o">-</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_prior</span>
 
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_log_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">fee_rate_log</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_log</span><span class="o">-</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_log_prior</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_log</span> <span class="o">-</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_log_prior</span>
 
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'available_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'available_log_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">available_log</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available_log</span><span class="o">-</span><span class="n">sbl</span><span class="o">.</span><span class="n">available_log_prior</span>
-
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_log'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available_log</span> <span class="o">-</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available_log_prior</span>
 
 <span class="c1">## add volume, normalize share counts by avg volume</span>
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'available_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">available</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="o">-</span><span class="n">sbl</span><span class="o">.</span><span class="n">available_prior</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span> <span class="o">-</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available_prior</span>
 
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="o">/</span><span class="n">sbl</span><span class="o">.</span><span class="n">avg_vol</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">days_available</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_days_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">days_available</span><span class="o">-</span><span class="n">sbl</span><span class="o">.</span><span class="n">days_available_prior</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span> <span class="o">/</span> <span class="n">sbl</span><span class="o">.</span><span class="n">avg_vol</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available_prior'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">days_available</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_days_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">days_available</span> <span class="o">-</span> <span class="n">sbl</span><span class="o">.</span><span class="n">days_available_prior</span>
 
 <span class="c1">## Moving averages and ratios to moving avg</span>
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_fee_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span>\
@@ -1297,23 +1292,42 @@ date       symbol
 <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_available'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span>\
 <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate'</span><span class="p">]</span> <span class="o">-</span>  <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_fee_rate'</span><span class="p">]</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'available'</span><span class="p">]</span> <span class="o">/</span>  <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_available'</span><span class="p">]</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate'</span><span class="p">]</span> <span class="o">-</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_fee_rate'</span><span class="p">]</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'available'</span><span class="p">]</span> <span class="o">/</span> <span class="n">sbl</span><span class="p">[</span><span class="s1">'avg_available'</span><span class="p">]</span>
 
 <span class="c1">## add bins</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">days_available</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_fee_rate</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_available</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_days_available_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_days_available</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_log_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_available_log</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">available</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'days_available_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">days_available</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_fee_rate</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_available</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_days_available_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_days_available</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'chg_available_log_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">chg_available_log</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_ratio_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_ratio</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_ratio_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">available_ratio</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'fee_rate_ratio_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">fee_rate_ratio</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">sbl</span><span class="p">[</span><span class="s1">'available_ratio_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">sbl</span><span class="o">.</span><span class="n">available_ratio</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="c1">#shorten to only 2016</span>
-<span class="n">sbl</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="s1">'2016-01-01'</span><span class="p">,</span><span class="s1">'2016-12-31'</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sbl</span> <span class="o">=</span> <span class="n">sbl</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="s1">'2016-01-01'</span><span class="p">,</span> <span class="s1">'2016-12-31'</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span> <span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># merge with outcomes data (price changes *following* that date)</span>
 <span class="n">df1</span> <span class="o">=</span> <span class="n">outcomes</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sbl</span><span class="p">)</span>
@@ -1398,8 +1412,7 @@ date       symbol
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1415,10 +1428,10 @@ date       symbol
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Loads semi-monthly short interest data as reported by exchanges</span>
 <span class="c1"># Note, date shows date reported by exchanges, not the measurement date</span>
 
-<span class="n">short_interest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="o">+</span><span class="s1">'short_interest_2016.csv'</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'monthly_chg'</span><span class="p">,</span><span class="s1">'dtc'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">short_interest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span> <span class="o">+</span> <span class="s1">'short_interest_2016.csv'</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">'monthly_chg'</span><span class="p">,</span> <span class="s1">'dtc'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">short_interest</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-<span class="n">short_interest</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span><span class="s1">'symbol'</span><span class="p">])</span>
-
+<span class="n">short_interest</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'symbol'</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
@@ -1453,10 +1466,12 @@ date       symbol
 <span class="c1">## add volume, normalize share counts by avg volume</span>
 
 <span class="n">short_interest</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">avg_volumes</span><span class="p">)</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span><span class="o">/</span><span class="n">short_interest</span><span class="o">.</span><span class="n">avg_vol</span>
+<span class="n">short_interest</span><span class="p">[</span>
+    <span class="s1">'days_si'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span> <span class="o">/</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">avg_vol</span>
 <span class="n">short_interest</span><span class="p">[</span><span class="s1">'chg_days_si'</span><span class="p">]</span> <span class="o">=</span> \
 <span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span><span class="o">-</span><span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest_prior</span><span class="p">)</span><span class="o">/</span><span class="n">short_interest</span><span class="o">.</span><span class="n">avg_vol</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span><span class="o">/</span><span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest_prior</span><span class="o">*</span><span class="mi">100</span><span class="o">-</span><span class="mi">100</span>
+<span class="n">short_interest</span><span class="p">[</span>
+    <span class="s1">'si_chg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span> <span class="o">/</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest_prior</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">-</span> <span class="mi">100</span>
 
 <span class="c1">## Moving averages and ratios to moving avg</span>
 <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_si'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">short_interest</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span>\
@@ -1464,18 +1479,39 @@ date       symbol
 <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_days_si'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">days_si</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span>\
 <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'short_interest'</span><span class="p">]</span> <span class="o">/</span>  <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_si'</span><span class="p">]</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si'</span><span class="p">]</span> <span class="o">/</span>  <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_days_si'</span><span class="p">]</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'short_interest'</span><span class="p">]</span> <span class="o">/</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_si'</span><span class="p">]</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si'</span><span class="p">]</span> <span class="o">/</span> <span class="n">short_interest</span><span class="p">[</span><span class="s1">'avg_days_si'</span><span class="p">]</span>
 
 <span class="c1">## add bins</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'pct_float_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">pct_float</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_chg_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">si_chg</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">days_si</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_ratio_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">si_ratio</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_ratio_bin'</span><span class="p">]</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">days_si_ratio</span><span class="p">),</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'pct_float_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">pct_float</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_chg_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">si_chg</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">days_si</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'si_ratio_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">si_ratio</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">short_interest</span><span class="p">[</span><span class="s1">'days_si_ratio_bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">days_si_ratio</span><span class="p">),</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s1">'drop'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="c1">#shorten to only 2016</span>
-<span class="n">short_interest</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="s1">'2016-01-01'</span><span class="p">,</span><span class="s1">'2016-12-31'</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">short_interest</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span>
+    <span class="nb">slice</span><span class="p">(</span><span class="s1">'2016-01-01'</span><span class="p">,</span> <span class="s1">'2016-12-31'</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span> <span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">df2</span> <span class="o">=</span> <span class="n">short_interest</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outcomes</span><span class="p">)</span>
 
@@ -1532,15 +1568,14 @@ date       symbol
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## merge sbl and short_interest data to evaluate possible interaction effects</span>
-<span class="c1">#  Fill forward the lower frequency short interest data to every day with borrow/loan data </span>
+<span class="c1">#  Fill forward the lower frequency short interest data to every day with borrow/loan data</span>
 <span class="n">df3</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">short_interest</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">'avg_vol'</span><span class="p">))</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1554,7 +1589,7 @@ date       symbol
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'days_si_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span><span class="s1">'price_10'</span><span class="p">,</span><span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'days_si_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span> <span class="s1">'price_10'</span><span class="p">,</span> <span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="c1">## lowest decile is 2 days to cover, highest is 87 days to cover</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'days_si_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">days_si</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
@@ -1596,7 +1631,7 @@ Name: days_si, dtype: float64
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'pct_float_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span><span class="s1">'price_10'</span><span class="p">,</span><span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'pct_float_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span> <span class="s1">'price_10'</span><span class="p">,</span> <span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="c1">## Lowest decile is 1.5% of float, highest is 31% of float</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'pct_float_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">pct_float</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
@@ -1633,8 +1668,7 @@ Name: pct_float, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1647,7 +1681,7 @@ Name: pct_float, dtype: float64
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'si_chg_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span><span class="s1">'price_10'</span><span class="p">,</span><span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'si_chg_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span> <span class="s1">'price_10'</span><span class="p">,</span> <span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1675,7 +1709,7 @@ Name: pct_float, dtype: float64
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'si_ratio_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span><span class="s1">'price_10'</span><span class="p">,</span><span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'si_ratio_bin'</span><span class="p">)[[</span><span class="s1">'price_5'</span><span class="p">,</span> <span class="s1">'price_10'</span><span class="p">,</span> <span class="s1">'price_20'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'si_ratio_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">si_ratio</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1711,8 +1745,7 @@ Name: si_ratio, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1725,7 +1758,7 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span><span class="s1">'price_2'</span><span class="p">,</span><span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span> <span class="s1">'price_2'</span><span class="p">,</span> <span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1753,11 +1786,11 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&gt;=</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_5</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_5</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_5</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_5</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">any_si</span> <span class="o">=</span> <span class="n">df3</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_5</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span><span class="n">high_si</span><span class="p">,</span><span class="s1">'low_si'</span><span class="p">:</span><span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span> <span class="n">high_si</span><span class="p">,</span> <span class="s1">'low_si'</span><span class="p">:</span> <span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1780,8 +1813,7 @@ Name: si_ratio, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1794,7 +1826,8 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span><span class="s1">'price_2'</span><span class="p">,</span><span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span> <span class="s1">'price_2'</span><span class="p">,</span>
+                                 <span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1822,10 +1855,15 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">expensive_borrow</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">fee_rate_bin</span><span class="o">&gt;=</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">cheap_borrow</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">fee_rate_bin</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">expensive_borrow</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">fee_rate_bin</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="s1">'chg_fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">cheap_borrow</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">fee_rate_bin</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="s1">'chg_fee_rate_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'expensive_borrow'</span><span class="p">:</span><span class="n">expensive_borrow</span><span class="p">,</span><span class="s1">'cheap_borrow'</span><span class="p">:</span><span class="n">cheap_borrow</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'expensive_borrow'</span><span class="p">:</span> <span class="n">expensive_borrow</span><span class="p">,</span>
+    <span class="s1">'cheap_borrow'</span><span class="p">:</span> <span class="n">cheap_borrow</span>
+<span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1848,8 +1886,7 @@ Name: si_ratio, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1862,7 +1899,7 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span><span class="s1">'price_2'</span><span class="p">,</span><span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span> <span class="s1">'price_2'</span><span class="p">,</span> <span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1890,10 +1927,10 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&gt;=</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span><span class="n">high_si</span><span class="p">,</span><span class="s1">'low_si'</span><span class="p">:</span><span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span> <span class="n">high_si</span><span class="p">,</span> <span class="s1">'low_si'</span><span class="p">:</span> <span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1916,8 +1953,7 @@ Name: si_ratio, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1930,7 +1966,8 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span><span class="s1">'price_2'</span><span class="p">,</span><span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)[[</span><span class="s1">'price_1'</span><span class="p">,</span> <span class="s1">'price_2'</span><span class="p">,</span>
+                                  <span class="s1">'price_5'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1958,10 +1995,10 @@ Name: si_ratio, dtype: float64
 <div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&gt;=</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span><span class="o">&lt;=</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">high_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">low_si</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">days_si_bin</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'chg_available_bin'</span><span class="p">)</span><span class="o">.</span><span class="n">price_1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span><span class="n">high_si</span><span class="p">,</span><span class="s1">'low_si'</span><span class="p">:</span><span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'high_si'</span><span class="p">:</span> <span class="n">high_si</span><span class="p">,</span> <span class="s1">'low_si'</span><span class="p">:</span> <span class="n">low_si</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1984,8 +2021,7 @@ Name: si_ratio, dtype: float64
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2067,6 +2103,9 @@ Name: si_ratio, dtype: float64
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
       </li>
       <li class="post">
@@ -2078,15 +2117,12 @@ Name: si_ratio, dtype: float64
       <li class="post">
           <a href="https://alphascientist.com/impact_of_usd.html">We Are All FX Traders Now</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/walk_forward_model_building.html">Stock Prediction with ML: Walk-forward Modeling</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>  </section>
+    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>  </section>
 
 
   <section>
