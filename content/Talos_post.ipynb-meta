@@ -1,0 +1,6 @@
+Title: Towards Better Keras Modeling
+Slug: hyperparameter_optimization_with_talos
+Date: 2019-02-08 08:03
+Category: Blog
+Tags: modeling, keras
+Summary: If deep learning is part art and part science, one of the more "artistic" aspects must be model topology design.  Deep learning books and courses are generally vague on the subject.  Practitioners are often forced to resort to tedious trial and error.  In this post, I'll walk through `talos`, a package which aims to automate the process of hyperparameter optimization for keras models.     
