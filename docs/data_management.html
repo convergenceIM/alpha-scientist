@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[1]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <style> </style>
 </div>
@@ -1069,8 +1069,8 @@ h6:hover .anchor-link {
 <ul>
 <li>Part 2: <a href="feature_engineering.html">Feature engineering</a></li>
 <li>Part 3: <a href="feature_selection.html">Feature selection</a></li>
-<li>Part 4: Walk-forward modeling and out-of-sample testing</li>
-<li>Part 5: Evaluating model performance</li>
+<li>Part 4: <a href="walk_forward_model_building.html">Walk-forward modeling</a></li>
+<li>Part 5: <a href="model_evaluation">Evaluating model performance</a></li>
 <li>Part 6: Building ensemble models to combine many models and factors into an overall prediction</li>
 </ul>
 <p>In future, I also plan to make tutorials on:</p>
@@ -1124,7 +1124,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1161,7 +1161,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -1179,7 +1179,7 @@ h6:hover .anchor-link {
 <span class="n">features</span><span class="p">[</span><span class="s1">'day_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">day</span>
 
 <span class="n">features</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">features</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1187,132 +1187,34 @@ h6:hover .anchor-link {
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                   volume_change_ratio  momentum_5_day  intraday_chg  \
+date       symbol                                                      
+2016-12-23 AAPL              -0.453747        0.004743      0.008046   
+           CSCO              -0.291298       -0.001961     -0.000327   
+2016-12-27 AAPL               0.284036        0.005316      0.006351   
+           CSCO               0.546260       -0.002276      0.001305   
+2016-12-28 AAPL               0.142595       -0.001625     -0.006467   
+           CSCO              -0.151900       -0.004581     -0.009121   
+2016-12-29 AAPL              -0.280609       -0.002819      0.002404   
+           CSCO              -0.085396        0.001315      0.002963   
+2016-12-30 AAPL               1.033726       -0.004042     -0.007115   
+           CSCO               0.836194       -0.007879     -0.011126   
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>volume_change_ratio</th>
-<th>momentum_5_day</th>
-<th>intraday_chg</th>
-<th>day_of_week</th>
-<th>day_of_month</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th rowspan="2" valign="top">2016-12-23</th>
-<th>AAPL</th>
-<td>-0.453747</td>
-<td>0.004743</td>
-<td>0.008046</td>
-<td>4</td>
-<td>23</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.291298</td>
-<td>-0.001961</td>
-<td>-0.000327</td>
-<td>4</td>
-<td>23</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-27</th>
-<th>AAPL</th>
-<td>0.284036</td>
-<td>0.005316</td>
-<td>0.006351</td>
-<td>1</td>
-<td>27</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.546260</td>
-<td>-0.002276</td>
-<td>0.001305</td>
-<td>1</td>
-<td>27</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-28</th>
-<th>AAPL</th>
-<td>0.142595</td>
-<td>-0.001625</td>
-<td>-0.006467</td>
-<td>2</td>
-<td>28</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.151900</td>
-<td>-0.004581</td>
-<td>-0.009121</td>
-<td>2</td>
-<td>28</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-29</th>
-<th>AAPL</th>
-<td>-0.280609</td>
-<td>-0.002819</td>
-<td>0.002404</td>
-<td>3</td>
-<td>29</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.085396</td>
-<td>0.001315</td>
-<td>0.002963</td>
-<td>3</td>
-<td>29</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-30</th>
-<th>AAPL</th>
-<td>1.033726</td>
-<td>-0.004042</td>
-<td>-0.007115</td>
-<td>4</td>
-<td>30</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.836194</td>
-<td>-0.007879</td>
-<td>-0.011126</td>
-<td>4</td>
-<td>30</td>
-</tr>
-</tbody>
-</table>
-</div>
+                   day_of_week  day_of_month  
+date       symbol                             
+2016-12-23 AAPL              4            23  
+           CSCO              4            23  
+2016-12-27 AAPL              1            27  
+           CSCO              1            27  
+2016-12-28 AAPL              2            28  
+           CSCO              2            28  
+2016-12-29 AAPL              3            29  
+           CSCO              3            29  
+2016-12-30 AAPL              4            30  
+           CSCO              4            30  
+</pre>
 </div>
 </div>
 </div>
@@ -1328,7 +1230,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -1343,7 +1245,7 @@ h6:hover .anchor-link {
 <span class="n">outcomes</span><span class="p">[</span><span class="s1">'close_5'</span><span class="p">]</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">close</span>\
 <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func_five_day_ahead</span><span class="p">)</span>
 
-<span class="p">(</span><span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">outcomes</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">15</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1351,141 +1253,26 @@ h6:hover .anchor-link {
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th></th>
-<th>open_1</th>
-<th>close_1</th>
-<th>close_5</th>
-</tr>
-<tr>
-<th>date</th>
-<th>symbol</th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2016-12-20</th>
-<th>CSCO</th>
-<td>0.004254</td>
-<td>0.004602</td>
-<td>0.004602</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-21</th>
-<th>AAPL</th>
-<td>-0.006065</td>
-<td>0.006621</td>
-<td>0.002827</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.000657</td>
-<td>-0.001313</td>
-<td>-0.001313</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-22</th>
-<th>AAPL</th>
-<td>-0.006019</td>
-<td>-0.001974</td>
-<td>0.004058</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.002626</td>
-<td>-0.002293</td>
-<td>0.007942</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-23</th>
-<th>AAPL</th>
-<td>0.000000</td>
-<td>-0.006311</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.003603</td>
-<td>-0.004889</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-27</th>
-<th>AAPL</th>
-<td>0.002217</td>
-<td>0.004282</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.000652</td>
-<td>0.008547</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-28</th>
-<th>AAPL</th>
-<td>-0.002655</td>
-<td>0.000257</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>-0.001644</td>
-<td>-0.001313</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-29</th>
-<th>AAPL</th>
-<td>-0.000685</td>
-<td>0.007857</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>0.003283</td>
-<td>0.007942</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th rowspan="2" valign="top">2016-12-30</th>
-<th>AAPL</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>CSCO</th>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                     open_1   close_1   close_5
+date       symbol                              
+2016-12-20 CSCO    0.004254  0.004602  0.004602
+2016-12-21 AAPL   -0.006065  0.006621  0.002827
+           CSCO   -0.000657 -0.001313 -0.001313
+2016-12-22 AAPL   -0.006019 -0.001974  0.004058
+           CSCO    0.002626 -0.002293  0.007942
+2016-12-23 AAPL    0.000000 -0.006311       NaN
+           CSCO    0.003603 -0.004889       NaN
+2016-12-27 AAPL    0.002217  0.004282       NaN
+           CSCO    0.000652  0.008547       NaN
+2016-12-28 AAPL   -0.002655  0.000257       NaN
+           CSCO   -0.001644 -0.001313       NaN
+2016-12-29 AAPL   -0.000685  0.007857       NaN
+           CSCO    0.003283  0.007942       NaN
+2016-12-30 AAPL         NaN       NaN       NaN
+           CSCO         NaN       NaN       NaN
+</pre>
 </div>
 </div>
 </div>
@@ -1502,7 +1289,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first, create y (a series) and X (a dataframe), with only rows where </span>
@@ -1541,7 +1328,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
@@ -1551,7 +1338,7 @@ h6:hover .anchor-link {
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Model RSQ: "</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Coefficients: "</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1563,18 +1350,13 @@ h6:hover .anchor-link {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Model RSQ: 0.01598347165537528
 Coefficients: 
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>intraday_chg           0.150482
+intraday_chg           0.150482
 volume_change_ratio    0.000976
 day_of_month           0.000036
 day_of_week           -0.000427
 momentum_5_day        -0.005543
-dtype: float64</pre>
+dtype: float64
+</pre>
 </div>
 </div>
 </div>
@@ -1591,7 +1373,7 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestRegressor</span>
@@ -1609,8 +1391,8 @@ dtype: float64</pre>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Model Score: "</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Feature Importance: "</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>\
-<span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>\
+<span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1622,20 +1404,23 @@ dtype: float64</pre>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(996,)
 (996, 5)
-Model Score: 0.7963938902121673
+Model Score: 0.7640516995438571
 Feature Importance: 
+intraday_chg           0.347469
+volume_change_ratio    0.237988
+momentum_5_day         0.211114
+day_of_month           0.146615
+day_of_week            0.056814
+dtype: float64
 </pre>
 </div>
 </div>
 <div class="output_area">
-<div class="prompt output_prompt">Out[8]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>intraday_chg           0.285079
-momentum_5_day         0.274290
-volume_change_ratio    0.265878
-day_of_month           0.110968
-day_of_week            0.063785
-dtype: float64</pre>
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\Anaconda2\envs\blog\lib\site-packages\sklearn\ensemble\forest.py:248: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
+  "10 in version 0.20 to 100 in 0.22.", FutureWarning)
+</pre>
 </div>
 </div>
 </div>
@@ -1662,10 +1447,10 @@ dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1673,20 +1458,21 @@ dtype: float64</pre>
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
-<div class="output_text output_subarea output_execute_result">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
 <pre>date        symbol
-2016-12-22  AAPL     -0.003580
-            CSCO      0.002147
-2016-12-23  AAPL      0.001546
-            CSCO      0.003360
-2016-12-27  AAPL     -0.001172
-            CSCO     -0.003555
-2016-12-28  AAPL     -0.002217
-            CSCO     -0.001567
-2016-12-29  AAPL      0.003620
-            CSCO      0.000772
-dtype: float64</pre>
+2016-12-22  AAPL     -0.005515
+            CSCO      0.001538
+2016-12-23  AAPL     -0.000649
+            CSCO      0.003587
+2016-12-27  AAPL      0.003226
+            CSCO      0.005280
+2016-12-28  AAPL     -0.003042
+            CSCO     -0.001504
+2016-12-29  AAPL     -0.000526
+            CSCO      0.002091
+dtype: float64
+</pre>
 </div>
 </div>
 </div>
@@ -1788,17 +1574,17 @@ dtype: float64</pre>
           <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
       </li>
       <li class="post">
-          <a href="https://alphascientist.com/investor_flows.html">Our Own Worst Enemy</a>
+          <a href="https://alphascientist.com/model_evaluation.html">Stock Prediction with ML: Model Evaluation</a>
       </li>
       <li class="post">
-          <a href="https://alphascientist.com/model_evaluation.html">Stock Prediction with ML: Model Evaluation</a>
+          <a href="https://alphascientist.com/walk_forward_model_building.html">Stock Prediction with ML: Walk-forward Modeling</a>
       </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>  </section>
+    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
