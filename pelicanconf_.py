@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Chad'
+#AUTHOR = 'Chad'
 SITENAME = 'Alpha scientist'
 SITEURL = 'alphascientist.com'
 
@@ -23,8 +23,10 @@ AUTHOR_FEED_RSS = None
 #LINKS = (('Pelican', 'http://getpelican.com/'), )
 
 # Social widget
-SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
-          ('Twitter', 'https://twitter.com/data2alpha'),)
+# SOCIAL = (('Linkedin', 'https://www.linkedin.com/in/chadgraycfa/'),
+#           ('Twitter', 'https://twitter.com/data2alpha'),)
+SOCIAL = (('Twitter', 'https://twitter.com/data2alpha'),)
+
 
 DEFAULT_PAGINATION = False
 
