@@ -61,6 +61,10 @@ DISQUS_SITENAME = 'alphascientist-com'
 
 DISPLAY_PAGES_ON_MENU = True
 DISPLAY_CATEGORIES_ON_MENU = False
+MENUITEMS = (
+    ('Blogs', '/index.html'),
+    ('Authors', '/authors.html'),
+    )
 
 FAVICON_FILENAME = 'images/favicon.png'
 
