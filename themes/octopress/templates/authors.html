@@ -9,6 +9,7 @@
 
 	{% for author, articles in authors|sort %}
 		<p><a href="{{ SITEURL }}/{{ author.url }}">{{ author.name }}</a> ({{ articles|count }})</p>
+		<footer class="bio-text">{{ articles[0].bio }}</footer>
 	{% endfor %}
 	</article>
 </div>

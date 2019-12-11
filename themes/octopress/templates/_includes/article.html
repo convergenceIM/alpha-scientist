@@ -7,6 +7,9 @@
     {% else %}
       <h1 class="entry-title">{{ article.title|striptags }}</h1>
     {% endif %}
+    {% if not index %}
+      <p class="author-tag">Author: {{ article.author }}</p>
+    {% endif %}
     <p class="meta">
       {% include '_includes/article_time.html' %}
       {% include '_includes/article_stats.html' %}
@@ -18,6 +21,8 @@
   {% if article.summary != article.content %}
   <footer>
     <a rel="full-article" href="{{ SITEURL }}/{{ article.url }}">Read On &crarr;</a>
+    <p class="author-tag">Author: {{ article.author }}</p>
+    
   </footer>
   {% endif %}
 {% else %}
