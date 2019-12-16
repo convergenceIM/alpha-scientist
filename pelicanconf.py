@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Chad Gray'
+#AUTHOR = 'Chad Gray'
 SITENAME = 'The Alpha Scientist'
 SITEURL = 'https://alphascientist.com'
 

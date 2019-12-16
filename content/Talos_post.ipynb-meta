@@ -3,4 +3,6 @@ Slug: hyperparameter_optimization_with_talos
 Date: 2019-02-08 08:03
 Category: Blog
 Tags: modeling, keras
-Summary: If deep learning is part art and part science, one of the more "artistic" aspects must be model topology design.  Deep learning books and courses are generally vague on the subject.  Practitioners are often forced to resort to tedious trial and error.  In this post, I'll walk through `talos`, a package which aims to automate the process of hyperparameter optimization for keras models.     
+Summary: If deep learning is part art and part science, one of the more "artistic" aspects must be model topology design.  Deep learning books and courses are generally vague on the subject.  Practitioners are often forced to resort to tedious trial and error.  In this post, I'll walk through `talos`, a package which aims to automate the process of hyperparameter optimization for keras models.
+Author: Chad Gray
+Bio: I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.\n[LinkedIn](https://www.linkedin.com/in/chadgraycfa/) | [Twitter](https://www.twitter.com/data2alpha)

@@ -3,4 +3,6 @@ Slug: ensemble_modeling
 Date: 2019-02-14 07:31
 Category: Blog
 Tags: tutorial, modeling
+Author: Chad Gray
+Bio: Chad is a full-time quantitative trader who has been working on data analytics since before it was cool.  He has long balanced his interest in computer science (MS in EE/CS from MIT) with a fascination in markets (CFA designation in 2009).  Prior to becoming a full-time quant, he built analytics products and managed teams at software companies across Silicon Valley.  Find him at https://www.linkedin.com/in/chadgraycfa/
 Summary: This final post in the six-part tutorial series presents an ensemble modeling technique called "stacked generalization".  This technique focuses on improving out-of-sample generalization of models, making it extremely well suited to messy, non-stationary, regime shifting markets.  Like the prior five parts of the series, this presents a practical framework for applying ML to real-world financial time series prediction problems.   

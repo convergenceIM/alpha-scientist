@@ -3,6 +3,8 @@ Slug: october_flows
 Date: 2018-10-11 22:03
 Category: Blog
 Tags: ETFs,market anomaly
+Author: Chad Gray
+Bio: I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.
 SOCIAL_IMAGE: '/content/images/burning_money.jpg'
 TWITTER_SITE: '@data2alpha'
 Summary: October 2018 has started with a frenzy of activity in the markets.  This post explores which way the funds have been flowing in October so far.  It is a follow-up to a [prior post](https://alphascientist.com/investor_flows.html) which found that fund flows can provide a contra-indicator of future market direction.  

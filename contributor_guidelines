@@ -1,0 +1,29 @@
+This is an overview document for contributors to the Alpha Scientist blog.  It covers guidelines and logistics.
+
+OBJECTIVE
+This blog is focused on providing *practical* and *uncomplicated* advice on applying data science methods to quant investing.  It is targeted at experienced quantitative traders (retail or professional) seeking to incorporate data science methods.
+
+The typical reader is familiar with market theory, quant metehods, backtesting etc... but have limited experience with data science.  They are assumed to have experience with python (or R) and can install packages, read/write code at a basic level, etc.
+
+ARTICLE GUIDELINES
+* All articles are written in jupyter notebooks.  They are, ideally, a mix of narrative text, code snippets, and graph/table outputs.
+* The source notebooks will be available for download from github, which the reader is encouraged to do.  The notebooks should be totally replicable by the reader, meaning if they are executed from top to bottom they should generate the same results.
+* Each article should focus on a central motivating question or concept which should be reflected in the title.  Articles should be 5-10 minute reads.
+* Strike a tone of "consciously opinionated", meaning: take a clear point of view on the "right" way to answer the question, but do so recognizing that others will disagree.
+
+SUBJECT AREAS
+While not meant to be constraining, it may be useful to define a few subject areas:
+* Data - interesting data sets, tutorials on how to get, prepare, and use it,
+* Methods - dissect a favorite technique for modeling, a bit of theory and explanation, simple example, do’s and don’ts,
+* Tools - reviews of favored packages, service providers (Floyd Hub, paper space),
+* Anomalies / Ideas - explore hypothesis (original or existing) on areas of trading research.
+* Resource Reviews - Papers, MOOCs, books, competitions, podcasts, etc...
+
+
+LOGISTICS
+* Contributor submits 1-2 sentence summary, draft title, and ideally a bullet point outline via email to thealphascientist@gmail.com for review and comment.
+* Upon acceptance, contributor drafts the article in .ipynb file and article meta information in a .ipynb-meta file (*identically* named to the article file - see github for examples)
+* When final, contributor submits a pull request via github containing the .ipynb and .ipynb-meta files
+* Articles are read and replicated (i.e., re-run) by Chad. If required, changes are proposed.
+* When ready for publication, Chad will rebuild the html files and push to the blog
+* If Contributor wants to participate in the comment section, they should create a Disqus account and it will be granted moderator access (needed to approve anonymous comments)

@@ -3,4 +3,6 @@ Slug: model_evaluation
 Date: 2018-08-09 20:04
 Category: Blog
 Tags: tutorial
+Author: Chad Gray
+Bio: I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.
 Summary: This post is going to delve into the mechanics of walk-forward modeling which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.  The overriding objective of the methods described here is to overcome the issues inherent in traditional cross validation approachs.

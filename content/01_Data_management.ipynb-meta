@@ -3,4 +3,6 @@ Slug: data_management
 Date: 2018-07-05 20:00
 Category: Blog
 Tags: tutorial,data,pandas
+Author: Chad Gray
+Bio: Chad is a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, he built products and managed teams at software companies across Silicon Valley.  Chad has had a long-standing interest in finance (earned my CFA designation in 2008) and has dedicated himself to the challenge of applying data science to financial markets.  https://www.linkedin.com/in/chadgraycfa/
 Summary: This first post of a tutorial on machine learning in finance will present a framework for organizing and working with data. Perhaps not the most electrifying of topics, but it's the foundation for later modeling tutorials. It's also of critical significance and importance. I've heard it said that 90% of time in real-world quant finance is spent on data rather than models.

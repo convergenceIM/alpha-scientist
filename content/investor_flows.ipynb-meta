@@ -5,4 +5,6 @@ Category: Blog
 Tags: ETFs,market anomaly
 SOCIAL_IMAGE: '/content/images/burning_money.jpg'
 TWITTER_SITE: '@data2alpha'
+Author: Chad Gray
+Bio: I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.
 Summary: We've all had the feeling - buying or selling at the worst possible time.  Rest assured, you're not alone.  The average investor significantly underperforms the market indices because the market consistently lures them into buying high and selling low.  This post delves into the data and finds that typical ETF investors underperform the funds they use by 1 to 4% per year.
