@@ -1,0 +1,8 @@
+Title: COVID By The Numbers
+Slug: covid_by_the_numbers
+Date: 2021-08-17 20:03
+Category: Blog
+Tags: COVID,data
+SOCIAL_IMAGE: '/content/images/burning_money.jpg'
+TWITTER_SITE: '@data2alpha'
+Summary: During the past 18 months of the COVID pandmeic, we’ve all become armchair epidemiologists. Those with quantitative minds and python capabilities may want to “crunch the numbers” in a way that goes beyond widely-used web dashboards. This post walks through how to download, prepare, and analyze a rich historical dataset using the COVID Act Now API.
