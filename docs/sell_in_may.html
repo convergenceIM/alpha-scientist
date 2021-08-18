@@ -76,9 +76,124 @@
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -157,12 +272,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -175,27 +298,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -391,7 +526,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -401,11 +538,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -653,6 +803,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -691,7 +844,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -813,6 +966,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -829,16 +986,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -854,6 +1019,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -904,8 +1074,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -937,8 +1114,13 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -1005,47 +1187,8 @@ h6:hover .anchor-link {
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-</style>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Key-Takeaways">Key Takeaways<a class="anchor-link" href="#Key-Takeaways">¶</a></h2><ul>
 <li>The "sell in May and go away" myth has been alive and well for the past 25 years.  Average returns in "winter" months have been more than 2x returns in "summer" months</li>
@@ -1056,8 +1199,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>Most investors have heard the adage "Sell in May and go away" which reflects the common wisdom that markets perform less well during the summer months than during the winter.  This anomaly is well described <a href="https://www.investopedia.com/news/truth-about-sell-may-and-go-away/">here</a>.</p>
 <p>Many widely held beliefs go away, precisely because they're widely held and get priced into the market.  I'd like to test the "sell in May" myth to see how well it has held up.  This is also a great case example to illustrate seasonality analysis - something which I believe gets too little attention because it seems "too simple" to work.</p>
@@ -1074,13 +1216,13 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">display</span>
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="c1">## The below imports interface to my (proprietary)</span>
 <span class="c1">## price database.  Replace this code with your own</span>
@@ -1090,7 +1232,7 @@ h6:hover .anchor-link {
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/anaconda/'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">config</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">REPO_ROOT</span><span class="o">+</span><span class="s1">'data/'</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">prices.eod</span> <span class="k">import</span> <span class="n">read</span>
+<span class="kn">from</span> <span class="nn">prices.eod</span> <span class="kn">import</span> <span class="n">read</span>
 
 
 <span class="c1">## Load Data</span>
@@ -1123,8 +1265,7 @@ Name: SPY, dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Sell-in-May?">Sell in May?<a class="anchor-link" href="#Sell-in-May?">¶</a></h3><p>We'll start analyzing the data by calculating average log returns by calendar month.  Note that, since we're using div/split adjusted prices, these are <em>total</em> returns:</p>
 </div>
@@ -1135,7 +1276,7 @@ Name: SPY, dtype: float64
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
 <span class="n">by_month</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'BM'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">by_month</span><span class="p">[</span><span class="s1">'month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span>
 
@@ -1157,7 +1298,7 @@ Name: SPY, dtype: float64
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX8AAAEZCAYAAAB/6SUgAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAHohJREFUeJzt3Xm4XFWZ7/HvjwQCmEDQBEgYEkVU
@@ -1305,8 +1446,7 @@ ViAnfzOzAjn5m5kVyMnfzKxATv5mZgVy8jczK5CTv5lZgf4XM4qOQzizQn0AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Wow, maybe there's some truth to this myth!  It appears that there is a strong difference between the summer months (June to September) and the rest.</p>
 <p>From the above chart, it appears than we'd be well advised to sell on June 1st and buy back on September 30th.  However, to follow the commonly used interpretation of selling on May 1st and repurchasing on Oct 31st.  I'll group the data into those two periods and calculate the monthly average:</p>
@@ -1318,7 +1458,7 @@ ViAnfzOzAjn5m5kVyMnfzKxATv5mZgVy8jczK5CTv5lZgf4XM4qOQzizQn0AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_month</span><span class="p">[</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_month</span><span class="p">[</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'may_oct'</span>
 <span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_month</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="s1">'season'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'nov_apr'</span>
 
@@ -1339,7 +1479,7 @@ ViAnfzOzAjn5m5kVyMnfzKxATv5mZgVy8jczK5CTv5lZgf4XM4qOQzizQn0AAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAFFCAYAAAAXcq1YAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XmcXFWd9/HPlyRsgkRMdAiBBASE
@@ -1502,8 +1642,7 @@ BXK4m5kVyOFuZlYgh7uZWYH+P3oUo8s88OVEAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A significant difference.  The "winter" months are more than double the average return of the summer months.  But has this anomaly been taken out of the market by genius quants and vampire squid?  Let's look at this breakout by year:</p>
 </div>
@@ -1514,7 +1653,7 @@ BXK4m5kVyOFuZlYgh7uZWYH+P3oUo8s88OVEAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_month</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_month</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
 
 <span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%): </span><span class="se">\n</span><span class="s1">May-Oct vs Nov-Apr (1993-present)'</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'season'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
@@ -1533,7 +1672,7 @@ BXK4m5kVyOFuZlYgh7uZWYH+P3oUo8s88OVEAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAElCAYAAADwRMk8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd4VFX6xz9n0nsPEEghJIHQexOp
@@ -2003,8 +2142,7 @@ Sqkwoz12pZQKMxrYlVIqzGhgV0qpMKOBXSmlwowGdqWUCjP/H9N2vyQIj/ztAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's a bit noisy, so let's make a four year rolling average):</p>
 </div>
@@ -2015,7 +2153,7 @@ Sqkwoz12pZQKMxrYlVIqzGhgV0qpMKOBXSmlwowGdqWUCjP/H9N2vyQIj/ztAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%) by Season</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">title</span><span class="o">=</span><span class="s1">'Avg Monthly Log Return (%) by Season</span><span class="se">\n</span><span class="s1">Four Year Moving Average (1993-present)'</span>
 <span class="n">by_month</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_month</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_month</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'season'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -2033,7 +2171,7 @@ Sqkwoz12pZQKMxrYlVIqzGhgV0qpMKOBXSmlwowGdqWUCjP/H9N2vyQIj/ztAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAElCAYAAADwRMk8AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd4VUXawH+THtJDEiCB0EIPvYXe
@@ -2471,8 +2609,7 @@ DexKKeVlNLArpZSX0cCulFJe5v8BAL6XhSzcW2UAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It appears that the effect hasn't gone away at all!  If anything, it's had a resurgence in the past 10 years.</p>
 <p>One theory I've seen floated is that this is predominantly driven by presidential elections - and the market uncertainty thereof.  To test that, I'll group data into election years and non-election years:</p>
@@ -2484,7 +2621,7 @@ DexKKeVlNLArpZSX0cCulFJe5v8BAL6XhSzcW2UAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">election_years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'1996'</span><span class="p">,</span><span class="s1">'2000'</span><span class="p">,</span><span class="s1">'2004'</span><span class="p">,</span><span class="s1">'2008'</span><span class="p">,</span><span class="s1">'2012'</span><span class="p">,</span><span class="s1">'2016'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">election_years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'1996'</span><span class="p">,</span><span class="s1">'2000'</span><span class="p">,</span><span class="s1">'2004'</span><span class="p">,</span><span class="s1">'2008'</span><span class="p">,</span><span class="s1">'2012'</span><span class="p">,</span><span class="s1">'2016'</span><span class="p">]</span>
 <span class="n">by_month</span><span class="p">[</span><span class="s1">'election_year'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">by_month</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_month</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">election_years</span><span class="p">),</span><span class="s1">'election_year'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -2506,7 +2643,7 @@ DexKKeVlNLArpZSX0cCulFJe5v8BAL6XhSzcW2UAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb4AAAEnCAYAAADW5CZiAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XmcVmX9//HXhwFZXBABDUUWDQVh
@@ -2728,8 +2865,7 @@ Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed, there does appear to be <em>more</em> truth to the axiom in election years, but it remains significantly valid in off years as well.  Mark Hulbert <a href="https://www.marketwatch.com/story/heres-the-real-story-behind-sell-in-may-and-go-away-2017-04-25">analyzed this theory</a> back to 1897 and sees similar results.</p>
 <h3 id="Day-of-Week">Day of Week<a class="anchor-link" href="#Day-of-Week">¶</a></h3><p>Now that we've validated our first pattern, I'd like to test for other calendar patterns.  Let's first look at days of week, looking at the average return by day of week:</p>
@@ -2741,7 +2877,7 @@ Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spy</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pct_chg'</span><span class="p">)</span>
 <span class="n">by_day</span> <span class="o">=</span> <span class="n">df</span>
 <span class="n">by_day</span><span class="p">[</span><span class="s1">'day_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">weekday</span><span class="o">+</span> <span class="mi">1</span>
 
@@ -2761,7 +2897,7 @@ Kkp8IiKSKkp8IiKSKkp8IiKSKv8flLOKTaJCje4AAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAEUCAYAAADN8orUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3Xu8VVW99/HPFxC8ESru8gIIimlY
@@ -2925,8 +3061,7 @@ EjAzK7H/BZKgZNPaxkj/AAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems promising.  Monday to Weds seems significantly better than Thurs and Friday.  Anyone care to hypothesize why?</p>
 <p>I'll follow the same code pattern as with the "sell in May" analysis and group the days into these two halves, calculate in total as well as on a four-year-rolling basis.</p>
@@ -2938,7 +3073,7 @@ EjAzK7H/BZKgZNPaxkj/AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&lt;=</span><span class="mi">3</span><span class="p">,</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'mon_weds'</span>
 <span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span><span class="s1">'part_of_week'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'thu_fri'</span>
 
@@ -2965,7 +3100,7 @@ EjAzK7H/BZKgZNPaxkj/AAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX0AAAFRCAYAAACYF30cAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XmcXFWd9/HPl0QCQgyS9KCsYVMM
@@ -3136,7 +3271,7 @@ oW9mVpD/D2/GlY0DRSh1AAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAElCAYAAAD3KtVsAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd4VUXawH9vOoSQQBJqgNBrIPQa
@@ -3647,8 +3782,7 @@ AElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The average daily return (log) for Mon to Weds is considerably more than 2x the daily return of Thursdays and Fridays.</p>
 <p>It also appears to be a good bit less stable than the "sell-in-May" results.   I'd be hesitant to say that the anomaly is dead, however.  Just periodically dormant.</p>
@@ -3661,7 +3795,7 @@ AElFTkSuQmCC
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'day_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'day_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span> 
 
 <span class="n">title</span><span class="o">=</span><span class="s1">'Avg Daily Log Return (%): by Day of Month (1993-present)'</span>
 
@@ -3681,7 +3815,7 @@ AElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYUAAAEXCAYAAABCjVgAAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd8Y2eV939HXbJVbMvdHtuZlkxL
@@ -4063,8 +4197,7 @@ RERPvn0UERE9SQoREdGTpBARET1JChER0fMfp2TYOhJkYUcAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It seems pretty clear that there are some parts of the month which, on average, have much better/worse returns.  By my eye, it appears that the change of month (from about the 28th to the 5th) as well as the early/mid-part of month (say 11th thru 18th) are the "good" days and the rest are not.</p>
 <p>I'll follow the same approach and group the data into the "good days" (28-5, 11-18) and the "other days":</p>
@@ -4076,7 +4209,7 @@ RERPvn0UERE9SQoREdGTpBARET1JChER0fMfp2TYOhJkYUcAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">by_day</span><span class="p">[</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">good_days</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">]</span>
 <span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'good_days'</span>
 <span class="n">by_day</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">by_day</span><span class="o">.</span><span class="n">day_of_month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">good_days</span><span class="p">),</span><span class="s1">'part_of_month'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'other_days'</span>
@@ -4103,7 +4236,7 @@ RERPvn0UERE9SQoREdGTpBARET1JChER0fMfp2TYOhJkYUcAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAFTCAYAAAA9c6t5AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3Xu8VVW5//HPV1DMGyhiJqiomYam
@@ -4294,7 +4427,7 @@ EbihyfFYG/NYSbbKkzQYuD4idmxxKGarBR9KMjOzErcYzAoknQ/sXTX7BxFxSQfr9QdurrFoeES8
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAElCAYAAADgCEWlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnWd4VcXWgN+VUEKABJLQQpCE3gKh
@@ -4744,8 +4877,7 @@ qcACgzHGmAosMBhjjKng/wE4CzTJW3U1DAAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Systematic investing in the 90's and 00's must have been easy!  Even since the spread between the good days vs. the other days has narrowed, it is still quite significant.  The below table shows the past 5 years' returns.  It's not even close...</p>
 <p>I'm quite interested in hypotheses for this anomaly in particular, since it's so persistent over time - and undeniably still in effect.  Possibilities:</p>
@@ -4763,7 +4895,7 @@ qcACgzHGmAosMBhjjKng/wE4CzTJW3U1DAAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'part_of_month'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">by_day</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'part_of_month'</span><span class="p">])</span><span class="o">.</span><span class="n">pct_chg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4787,8 +4919,7 @@ year
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>As irrational as it may seem, there are some major seasonality effects remaining in even the most liquid markets.  Quite honestly, this is <strong>much</strong> more significant than I expected to find.  If any of my fellow skeptics want to replicate this on their own datasets, please message me with your results.</p>
 <p>If the future looks anything like the past (insert standard disclaimer about past performance...) then rules of thumb might be:</p>
@@ -4862,6 +4993,9 @@ year
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/covid_by_the_numbers.html">COVID By The Numbers</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/call_for_submissions.html">Contribute to The Alpha Scientist blog!</a>
       </li>
       <li class="post">
@@ -4873,15 +5007,12 @@ year
       <li class="post">
           <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
+    <a href="https://alphascientist.com/tag/covid.html">COVID</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
@@ -4983,7 +5114,7 @@ year
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018&ndash;2019   &mdash;
+    Copyright &copy;  2018&ndash;2021   &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>

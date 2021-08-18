@@ -76,9 +76,124 @@
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -157,12 +272,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -175,27 +298,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -391,7 +526,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -401,11 +538,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -653,6 +803,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -691,7 +844,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -813,6 +966,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -829,16 +986,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -854,6 +1019,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -904,8 +1074,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -937,8 +1114,13 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -1005,47 +1187,8 @@ h6:hover .anchor-link {
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-</style>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Key-Takeaways">Key Takeaways<a class="anchor-link" href="#Key-Takeaways">¶</a></h2><ul>
 <li>ETF investors appear to be consistently bad at timing their purchases and sales.  In aggregate, they tend to "buy high and sell low".  </li>
@@ -1073,8 +1216,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Step-1:-Load-Data">Step 1: Load Data<a class="anchor-link" href="#Step-1:-Load-Data">¶</a></h2><p>OK, onto the analysis.  First, I'll define the functions needed to load and split/dividend adjust the ETF price data, as well as the daily shares outstanding data (aka "SO").  This shares outstanding data is critical because it allows us to infer the daily capital flows into or out of the funds.</p>
 </div>
@@ -1085,7 +1227,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1099,8 +1241,8 @@ h6:hover .anchor-link {
 <span class="kn">import</span> <span class="nn">config</span> <span class="c1">## TODO: place file called config.py in the /anaconda2/ folder</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">REPO_ROOT</span><span class="o">+</span><span class="s1">'data/'</span><span class="p">)</span> <span class="c1">#Chad: Home</span>
-<span class="kn">from</span> <span class="nn">prices.eod</span> <span class="k">import</span> <span class="n">iqfeed</span>
-<span class="kn">from</span> <span class="nn">prices.eod.read</span> <span class="k">import</span> <span class="n">get_adjustment_factors</span>
+<span class="kn">from</span> <span class="nn">prices.eod</span> <span class="kn">import</span> <span class="n">iqfeed</span>
+<span class="kn">from</span> <span class="nn">prices.eod.read</span> <span class="kn">import</span> <span class="n">get_adjustment_factors</span>
 
 <span class="c1">## Function to load prices and adjust dividends</span>
 <span class="k">def</span> <span class="nf">make_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span><span class="n">begin_date</span><span class="o">=</span><span class="s1">'2009-01-01'</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="s1">'2017-12-31'</span><span class="p">):</span>
@@ -1163,8 +1305,7 @@ date       symbol
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that fund flows are, in theory, independent from fund returns.  Net creations or redemptions do not directly impact share price or investor returns.  Below, for example, is the share count and price for XLE at each daily close from 2011 to 2017.</p>
 </div>
@@ -1175,7 +1316,7 @@ date       symbol
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Example: Shares Outstanding </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Example: Shares Outstanding </span>
 <span class="n">symbol</span> <span class="o">=</span> <span class="s1">'XLE'</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">([</span><span class="n">symbol</span><span class="p">])</span>
 <span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)[</span><span class="s1">'2011'</span><span class="p">:]</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'shares_outstanding'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1194,7 +1335,7 @@ date       symbol
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf0AAAEMCAYAAADOAm80AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd4FcXawH9vekgDQq+h995EQEEF
@@ -1850,7 +1991,7 @@ JxihbzAYDAZDnPD/k3cLpdwY6CwAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Distribution of daily changes </span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Distribution of daily changes </span>
 <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)[</span><span class="s1">'2011'</span><span class="p">:]</span><span class="o">.</span><span class="n">flow</span><span class="o">*</span><span class="mf">100.</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">61</span><span class="p">,</span>
 <span class="n">title</span><span class="o">=</span><span class="s1">'</span><span class="si">{}</span><span class="s1">: Daily Change in Shares (%)'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 </pre></div>
@@ -1867,7 +2008,7 @@ JxihbzAYDAZDnPD/k3cLpdwY6CwAAAAASUVORK5CYII=
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAm8AAAEICAYAAAAJLxP3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAHkFJREFUeJzt3XuUZGV97vHvIwheIFxkQDKAg3Fi
@@ -2014,8 +2155,7 @@ jxjeJEmSesTwJkmS1COGN0mSpB75/2AZZfhfoWhuAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Step-2:-Define-the-return-formulas">Step 2: Define the return formulas<a class="anchor-link" href="#Step-2:-Define-the-return-formulas">¶</a></h2><p>Next, I'll define the formulas for "investment return" (i.e., time-weighted) and "investor return" (i.e., money-weighted).</p>
 <p><code>calc_investment_return</code> is straight forward.  <code>calc_investor_return</code> is a bit more involved.  First, flows are normalized to the market capitalization at the beginning of the period (day 0), which we'll use as our base currency.  Then, we will simulate a hypothetical investor who contributes and redeems capital exactly in proportion to the market as a whole.  This hypothetical investor's <code>basis</code> (i.e., cost basis) is calculated.</p>
@@ -2030,7 +2170,7 @@ jxjeJEmSesTwJkmS1COGN0mSpB75/2AZZfhfoWhuAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Time-Weighted Return (aka Investment Return)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Time-Weighted Return (aka Investment Return)</span>
 <span class="c1"># Calculate average daily log return, annualize assuming 252 day year</span>
 <span class="c1"># convert to simple returns</span>
 
@@ -2080,8 +2220,7 @@ jxjeJEmSesTwJkmS1COGN0mSpB75/2AZZfhfoWhuAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Step-3:-Apply-to-ETF-Data">Step 3: Apply to ETF Data<a class="anchor-link" href="#Step-3:-Apply-to-ETF-Data">¶</a></h2><p>Now that we have the formulas defined, we'll start by applying to various groupings of ETFs - beginning with four major equity index ETFs.  For each, we'll calculate an annualized return for the investment (time-weighted) and annualized reutrn for investors (money-weighted), then difference these two values into the column <code>results['behavior_gap']</code>.</p>
 <p>A positive <code>behavior gap</code> means that investors, on average, actually beat the index by being more heavily allocated during upswings than declines.</p>
@@ -2093,7 +2232,7 @@ jxjeJEmSesTwJkmS1COGN0mSpB75/2AZZfhfoWhuAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SPY'</span><span class="p">,</span><span class="s1">'IWM'</span><span class="p">,</span><span class="s1">'QQQ'</span><span class="p">,</span><span class="s1">'VT'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SPY'</span><span class="p">,</span><span class="s1">'IWM'</span><span class="p">,</span><span class="s1">'QQQ'</span><span class="p">,</span><span class="s1">'VT'</span><span class="p">]</span>
 
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
@@ -2131,8 +2270,7 @@ VT     11.8944  11.5737    -0.320743
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, we see significant behavior gaps for all funds, with possible exception of Vanguard Total World Index (VT).  Taking SPY as an example, the fund's annualized rate of return (net of fees, including dividends) was 15.17%.  However, the aggregate return of investors in SPY was 13.59%, a -1.58% difference!</p>
 <p>We can drill into this data by measuring each year's behavior gap.  In other words, the amount that investors, in aggregate, over/underperformed the fund's performance due to timing of inflows and outflows <em>within that year</em>.</p>
@@ -2144,7 +2282,7 @@ VT     11.8944  11.5737    -0.320743
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plot by year</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># plot by year</span>
 <span class="n">by_year</span> <span class="o">=</span> <span class="n">compare_annual</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">timing_impact</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">by_year</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">by_year</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
 <span class="n">title</span> <span class="o">=</span> <span class="s1">'"Behavior Gap" By Fund (%)'</span>
@@ -2164,7 +2302,7 @@ VT     11.8944  11.5737    -0.320743
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAEWCAYAAAB2X2wCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzs3Xd8FMX7wPHPkxAIJCGQQkJRQUAR
@@ -2528,8 +2666,7 @@ AABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The negative behavior gap is fairly consistent, even when looking at the impact of flows <em>within</em> a single year. This is, in my opinion, an important validation check which addresses <a href="https://www.kitces.com/blog/does-the-dalbar-study-grossly-overstate-the-behavior-gap-guest-post/">the major criticism</a> of the DALBAR methodology: that it's skewed by long term trends in market returns.</p>
 <p>The astute observer will notice that the overall behavior gap is considerably higher than the average of the years.  For instance, SPY has an annualized behavior gap of -1.58% overall but no single year had a gap this wide.  Why? Because the by-year calculations only consider the flow of funds <em>within</em> a given year, not across years.</p>
@@ -2543,7 +2680,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vt_daily_flow_abs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">'VT'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s1">'2011'</span><span class="p">:]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'VT'</span><span class="p">)</span> <span class="o">*</span><span class="mi">100</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">vt_daily_flow_abs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">'VT'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s1">'2011'</span><span class="p">:]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'VT'</span><span class="p">)</span> <span class="o">*</span><span class="mi">100</span>
 <span class="n">spy_daily_flow_abs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">'SPY'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s1">'2011'</span><span class="p">:]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'SPY'</span><span class="p">)</span> <span class="o">*</span><span class="mi">100</span>
 
 <span class="n">title</span> <span class="o">=</span> <span class="s1">'Mean Absolute Daily Fund Flows (%)'</span>
@@ -2563,7 +2700,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAEWCAYAAACdaNcBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsvXd8XNWZ//8+6l2yii333jEY0zHF
@@ -3061,8 +3198,7 @@ n0AT8G2MlZwew1gf0wdYo5T67aB/CY3GCbRx12g0miGIdstoNBrNEEQbd41GoxmCaOOu0Wg0QxBt
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Industry-Sector">Industry Sector<a class="anchor-link" href="#Industry-Sector">¶</a></h3><p>With the largest broad-market index funds as a reference, I'm interested in other groupings of funds</p>
 <p>It's not uncommon for active investors to "rotate" between sectors based on perceived value or economic cycle.  Here, it appears that investor timing is much more problematic.  Sectors have, on average, a much larger behavior gap of -1.09%.</p>
@@ -3074,7 +3210,7 @@ n0AT8G2MlZwew1gf0wdYo5T67aB/CY3GCbRx12g0miGIdstoNBrNEEQbd41GoxmCaOOu0Wg0QxBt
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'XLY'</span><span class="p">,</span><span class="s1">'XLK'</span><span class="p">,</span><span class="s1">'XLB'</span><span class="p">,</span><span class="s1">'XLE'</span><span class="p">,</span><span class="s1">'XLV'</span><span class="p">,</span><span class="s1">'XLU'</span><span class="p">,</span><span class="s1">'XLI'</span><span class="p">,</span><span class="s1">'XLP'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'XLY'</span><span class="p">,</span><span class="s1">'XLK'</span><span class="p">,</span><span class="s1">'XLB'</span><span class="p">,</span><span class="s1">'XLE'</span><span class="p">,</span><span class="s1">'XLV'</span><span class="p">,</span><span class="s1">'XLU'</span><span class="p">,</span><span class="s1">'XLI'</span><span class="p">,</span><span class="s1">'XLP'</span><span class="p">]</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
 
@@ -3126,7 +3262,7 @@ XLY    20.2254  14.2577     -5.96774
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAEWCAYAAAB2X2wCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnWd4FFUXgN+z6SEdUgi9l9AtIF1F
@@ -3663,8 +3799,7 @@ H+nTzqAdnKBuAAAAAElFTkSuQmCC
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The behavior gap really intensifies when looking at sector funds, with an average annualized gap of almost 3.4% across funds.</p>
 <p>XLE, for instance, shows a behavior gap of more than 5% per year, reaching the ballpark of DALBAR's extraordinary finding.  This effect is entirely driven by year-to-year differences in funds.  As the chart below shows, cash poured into the sector in 2014, just as sector performance tanked.</p>
@@ -3676,7 +3811,7 @@ H+nTzqAdnKBuAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">'XLE'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">'XLE'</span>
 <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">log_ret_adj</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span>\
 <span class="n">title</span><span class="o">=</span><span class="s1">'</span><span class="si">{}</span><span class="s1">: Yearly Net Flows vs. Yearly Returns'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
 <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'g'</span><span class="p">)</span>
@@ -3696,7 +3831,7 @@ H+nTzqAdnKBuAAAAAElFTkSuQmCC
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXwAAAEWCAYAAABliCz2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3Xd4FFX3wPHvIZTQkd6lWVCaGkC6
@@ -4006,8 +4141,7 @@ JgAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Similar to sector funds, country/regional fund investors appear to be gifted for mis-timing markets.  As is often the case, the trade which "feels right", isn't.</p>
 </div>
@@ -4018,7 +4152,7 @@ JgAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EWA'</span><span class="p">,</span><span class="s1">'EWG'</span><span class="p">,</span><span class="s1">'EWJ'</span><span class="p">,</span><span class="s1">'EWC'</span><span class="p">,</span><span class="s1">'FXI'</span><span class="p">,</span><span class="s1">'EEM'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EWA'</span><span class="p">,</span><span class="s1">'EWG'</span><span class="p">,</span><span class="s1">'EWJ'</span><span class="p">,</span><span class="s1">'EWC'</span><span class="p">,</span><span class="s1">'FXI'</span><span class="p">,</span><span class="s1">'EEM'</span><span class="p">]</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
 
@@ -4068,7 +4202,7 @@ FXI    7.77986  5.14926      -2.6306
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAEWCAYAAAB2X2wCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXdcVtUbwL8PoAKyRFauHGm4y7Iy
@@ -4549,8 +4683,7 @@ oykmaIeu0Wg0xQTt0DUajaaYoB26RqPRFBO0Q9doNJpiwv8DpwOjLuX9R/MAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, I'll test the major bond ETFs.  Investor behavior strikes again!  TLT (20+ year US treasury) is the notable exception to the rule, with investor returns meaningfully exceeding investment returns.  This is true despite the fact that TLT is among the highest inflow/outflow funds tested (almost 2x the rate of SPY).</p>
 <p>Perhaps bond investors truly are the "smart money"!</p>
@@ -4562,7 +4695,7 @@ oykmaIeu0Wg0xQTt0DUajaaYoB26RqPRFBO0Q9doNJpiwv8DpwOjLuX9R/MAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'AGG'</span><span class="p">,</span><span class="s1">'TLT'</span><span class="p">,</span><span class="s1">'IEF'</span><span class="p">,</span><span class="s1">'MUB'</span><span class="p">,</span><span class="s1">'JNK'</span><span class="p">,</span><span class="s1">'LQD'</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'AGG'</span><span class="p">,</span><span class="s1">'TLT'</span><span class="p">,</span><span class="s1">'IEF'</span><span class="p">,</span><span class="s1">'MUB'</span><span class="p">,</span><span class="s1">'JNK'</span><span class="p">,</span><span class="s1">'LQD'</span><span class="p">]</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
 
@@ -4612,7 +4745,7 @@ TLT    3.78433  5.28079      1.49646
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXQAAAElCAYAAAD0sRkBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd0FkUXh5+bAgFCCyn0IoIIAjZ6
@@ -5111,8 +5244,7 @@ aDSafII26BqNRpNP0AZdo9Fo8gnaoGs0Gk0+4f+B386pPLI24QAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h3><p>I began this post as a counterpoint to DALBAR's shocking results and questionable methodology.  After running the analysis, however, I've found evidence of a shockingly large and consistent behavior gap for ETF investors.</p>
 <p>The most basic takeaway of this analysis is "Don't follow the herd".  The popular trade is, more often than not, the wrong trade.  This appears to be true with regard to overall market timing (risk-on, risk-off) and especially true of sector and asset class rotation strategies.</p>
@@ -5127,7 +5259,7 @@ aDSafII26BqNRpNP0AZdo9Fo8gnaoGs0Gk0+4f+B386pPLI24QAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SPY'</span><span class="p">,</span><span class="s1">'IWM'</span><span class="p">,</span><span class="s1">'QQQ'</span><span class="p">,</span><span class="s1">'VT'</span><span class="p">,</span><span class="s1">'AGG'</span><span class="p">,</span><span class="s1">'TLT'</span><span class="p">,</span><span class="s1">'IEF'</span><span class="p">,</span><span class="s1">'MUB'</span><span class="p">,</span>\
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SPY'</span><span class="p">,</span><span class="s1">'IWM'</span><span class="p">,</span><span class="s1">'QQQ'</span><span class="p">,</span><span class="s1">'VT'</span><span class="p">,</span><span class="s1">'AGG'</span><span class="p">,</span><span class="s1">'TLT'</span><span class="p">,</span><span class="s1">'IEF'</span><span class="p">,</span><span class="s1">'MUB'</span><span class="p">,</span>\
                <span class="s1">'JNK'</span><span class="p">,</span><span class="s1">'LQD'</span><span class="p">,</span><span class="s1">'EWA'</span><span class="p">,</span><span class="s1">'EWG'</span><span class="p">,</span><span class="s1">'EWJ'</span><span class="p">,</span><span class="s1">'EWC'</span><span class="p">,</span><span class="s1">'FXI'</span><span class="p">,</span><span class="s1">'EEM'</span><span class="p">,</span>\
                <span class="s1">'XLY'</span><span class="p">,</span><span class="s1">'XLK'</span><span class="p">,</span><span class="s1">'XLB'</span><span class="p">,</span><span class="s1">'XLE'</span><span class="p">,</span><span class="s1">'XLV'</span><span class="p">,</span><span class="s1">'XLU'</span><span class="p">,</span><span class="s1">'XLI'</span><span class="p">,</span><span class="s1">'XLP'</span><span class="p">]</span>
 
@@ -5152,7 +5284,7 @@ aDSafII26BqNRpNP0AZdo9Fo8gnaoGs0Gk0+4f+B386pPLI24QAAAABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAf0AAAGECAYAAAA84fmBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzt3XmcHVWZ//HPlwQIGpB9lRBRBCQD
@@ -5388,8 +5520,7 @@ ZmZmFeGkb2ZmVhFO+mZmZhXx/wEC1+xT1h3WhAAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post helpful, please consider subscribing to the email list to be notified of future posts (email addresses will only be used for this purpose...).</p>
 <p>You can also follow me on <a href="https://twitter.com/data2alpha">twitter</a> and forward to a friend or colleague who may find this topic interesting.</p>
@@ -5454,6 +5585,9 @@ ZmZmFeGkb2ZmVhFO+mZmZhXx/wEC1+xT1h3WhAAAAABJRU5ErkJggg==
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/covid_by_the_numbers.html">COVID By The Numbers</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/call_for_submissions.html">Contribute to The Alpha Scientist blog!</a>
       </li>
       <li class="post">
@@ -5465,15 +5599,12 @@ ZmZmFeGkb2ZmVhFO+mZmZhXx/wEC1+xT1h3WhAAAAABJRU5ErkJggg==
       <li class="post">
           <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
+    <a href="https://alphascientist.com/tag/covid.html">COVID</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
@@ -5575,7 +5706,7 @@ ZmZmFeGkb2ZmVhFO+mZmZhXx/wEC1+xT1h3WhAAAAABJRU5ErkJggg==
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018&ndash;2019   &mdash;
+    Copyright &copy;  2018&ndash;2021   &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>

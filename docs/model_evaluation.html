@@ -76,9 +76,124 @@
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -157,12 +272,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -175,27 +298,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -391,7 +526,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -401,11 +538,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -653,6 +803,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -691,7 +844,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -813,6 +966,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -829,16 +986,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -854,6 +1019,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -904,8 +1074,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -937,8 +1114,13 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -1005,47 +1187,8 @@ h6:hover .anchor-link {
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-</style>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h3><p>Use of machine learning in the quantitative investment field is, by all indications, skyrocketing.  The proliferation of easily accessible data - both traditional and alternative - along with some very approachable frameworks for machine learning models - is encouraging many to explore the arena.</p>
 <p>However, these financial ML explorers are learning that there are many ways in which using ML to predict financial time series differs greatly from labeling cat pictures or flagging spam.  Among these differences is that traditional model performance metrics (RSQ, MSE, accuracy, F1, etc...) can be misleading and incomplete.</p>
@@ -1063,8 +1206,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Preparing-sample-data">Preparing sample data<a class="anchor-link" href="#Preparing-sample-data">¶</a></h3><p>I will illustrate this metrics methodology using a simple example of synthetically generated data (see previous posts in this tutorial for explanations of the below method of creating data).</p>
 </div>
@@ -1075,14 +1217,14 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Remove / Replace this code with a link to your quandl key, if you have one</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Remove / Replace this code with a link to your quandl key, if you have one</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/anaconda/'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">config</span>
 <span class="n">quandl_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">quandl_key</span>
 
 
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> 
@@ -1113,8 +1255,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The below code generates several features then <em>synthetically generates</em> an outcome series from them (along with noise).  This guarantees that the features will be informative, since the outcome has been constructed to ensure a relationship.</p>
 </div>
@@ -1125,7 +1266,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">add_memory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">n_days</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">mem_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="sd">''' adds autoregressive behavior to series of data'''</span>
@@ -1162,8 +1303,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Generating-models-and-predictions">Generating models and predictions<a class="anchor-link" href="#Generating-models-and-predictions">¶</a></h3><p>Imagine that we created a simple linear model (such as below) and wanted to measure its effectiveness at prediction.</p>
 <blockquote><p>Note: we'll follow the walk-forward modeling process described in the <a href="walk_forward_model_building.html">previous post</a>.  If you don't understand the below code snippet (and want to...) please check out that post.</p>
@@ -1176,7 +1316,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 
 <span class="c1">## fit models for each timestep on a walk-forward basis</span>
 <span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1204,8 +1344,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Traditional-model-evaluation">Traditional model evaluation<a class="anchor-link" href="#Traditional-model-evaluation">¶</a></h3><p>So we've got a model, we've got a sizeable set of (out of sample) predictions.  Is the model any good?  Should we junk it, tune it, or trade it?  Since this is a regression model, I'll throw our data into <code>scikit-learn</code>'s metrics package.</p>
 </div>
@@ -1216,7 +1355,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
 
 <span class="c1"># make sure we have 1-for-1 mapping between pred and true</span>
 <span class="n">common_idx</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -1256,8 +1395,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><img src="images/confused_scientist.jpg" width="400"/></p>
 <p>These stats don't really tell us much by themselves.  You may have an intuition for r-squared so that may give you a level of confidence in the models.  However, even this metric <a href="https://onlinecourses.science.psu.edu/stat501/node/258/">has problems</a> not to mention does not tell us much about the practicality of this signal from a trading point of view.</p>
@@ -1266,8 +1404,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="A-better-way...--Creating-custom-metrics">A better way...  Creating custom metrics<a class="anchor-link" href="#A-better-way...--Creating-custom-metrics">¶</a></h3><p>Instead of relying on generic ML metrics, we will create several custom metrics that will hopefully give a more complete picture of strength, reliability, and practicality of these models.</p>
 <p>I'll work through an example of creating an extensible <em>scorecard</em> with about a half dozen custom-defined <em>metrics</em> as a starting point.  You can feel free to extend this into a longer scorecard which is suited to your needs and beliefs.  In my own trading, I use about 25 metrics in a standard "scorecard" each time I evaluate a model.  You may prefer to use more, fewer, or different metrics but the process should be applicable.</p>
@@ -1276,8 +1413,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Step-1:-Preprocess-data-primitives">Step 1: Preprocess data primitives<a class="anchor-link" href="#Step-1:-Preprocess-data-primitives">¶</a></h3><p>Before implementing specific metrics we need to do some data pre-processing.  It'll become clear why doing this first will save considerable time later when calculating aggregate metrics.</p>
 <p>To create these intermediate values, you'll need the following inputs:</p>
@@ -1296,7 +1432,7 @@ dtype: float64
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -1320,8 +1456,7 @@ date       symbol
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will feed this data into a simple function which will return a dataframe with the y_pred and y_true values, along with several other useful derivative values.  These derivative values include:</p>
 <ul>
@@ -1340,7 +1475,7 @@ date       symbol
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_df</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_df</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
     <span class="n">y_pred</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_pred'</span>
     <span class="n">y_true</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'y_true'</span>
     
@@ -1389,8 +1524,7 @@ date       symbol
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Defining-our-metrics">Defining our metrics<a class="anchor-link" href="#Defining-our-metrics">¶</a></h3><p>With this set of intermediate variables pre-processed, we can more easily calculate metrics.  The metrics we'll start with here include things like:</p>
 <ul>
@@ -1407,7 +1541,7 @@ date       symbol
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
     <span class="c1"># building block metrics</span>
     <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
@@ -1436,8 +1570,7 @@ dtype: float64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Much better.  I now know that we've been directionally correct about two-thirds of the time, and that following this signal would create an edge of ~1.5 units per time period.</p>
 <p>Let's keep going.  We can now easily combine and transform things to derive new metrics.  The below function shows several examples, including:</p>
@@ -1454,7 +1587,7 @@ dtype: float64</pre>
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
     <span class="c1"># building block metrics</span>
     <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
@@ -1493,8 +1626,7 @@ dtype: float64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Additionally, metrics can be easily calculated for only long or short predictions (for a two-sided model) or separately for positions which ended up being winners and losers.</p>
 <ul>
@@ -1509,7 +1641,7 @@ dtype: float64</pre>
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="n">scorecard</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
     <span class="c1"># building block metrics</span>
     <span class="n">scorecard</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">is_correct</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">is_predicted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mf">1.</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
@@ -1559,8 +1691,7 @@ dtype: float64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From this slate of metrics, we've gained much more insight than we got from MSE, R-squared, etc...</p>
 <ul>
@@ -1574,8 +1705,7 @@ dtype: float64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Metrics-over-time">Metrics over time<a class="anchor-link" href="#Metrics-over-time">¶</a></h3><p>Critically important when considering using a model in live trading is to understand (a) how consistent the model's performance has been, and (b) whether its current performance has degraded from its past.  Markets have a way of discovering and eliminating past sources of edge.</p>
 <p>Here, a two line function will calculate each metric by year:</p>
@@ -1587,7 +1717,7 @@ dtype: float64</pre>
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_year</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_year</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="n">df</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">year</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'year'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calc_scorecard</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
@@ -1633,8 +1763,7 @@ edge_lose               -2.201292  -2.046276
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's just as simple to compare performance across symbols (or symbol groups, if you've defined those):</p>
 </div>
@@ -1645,7 +1774,7 @@ edge_lose               -2.201292  -2.046276
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_symbol</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scorecard_by_symbol</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">'symbol'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calc_scorecard</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">scorecard_by_symbol</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
@@ -1677,8 +1806,7 @@ edge_lose               -2.251305  -2.233005  -2.273472  -2.283530  -2.232134
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Comparing-models">Comparing models<a class="anchor-link" href="#Comparing-models">¶</a></h3><p>The added insight we get from this methodology comes when wanting to make comparisons between models, periods, segments, etc...</p>
 <p>To illustrate, let's say that we're comparing two models, a linear regression vs. a random forest, for performance on a training set and a testing set (pretend for a moment that we didn't adhere to <a href="walk_forward_model_building.html">Walk-forward model building</a> practices...).</p>
@@ -1690,9 +1818,9 @@ edge_lose               -2.251305  -2.233005  -2.273472  -2.283530  -2.232134
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">ElasticNetCV</span><span class="p">,</span><span class="n">Lasso</span><span class="p">,</span><span class="n">Ridge</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestRegressor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNetCV</span><span class="p">,</span><span class="n">Lasso</span><span class="p">,</span><span class="n">Ridge</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
 
 <span class="n">X_train</span><span class="p">,</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">outcome</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -1749,8 +1877,7 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This quick and dirty scorecard comparison gives us a great deal of useful information.  We learn that:</p>
 <ul>
@@ -1762,8 +1889,7 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h3><p>In this tutorial, we've covered a framework for evaluating models in a market prediction context  and have demonstrated a few useful metrics.  However, the approach can be extended much further to suit your needs.  You can consider:</p>
 <ul>
@@ -1777,11 +1903,21 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
 <p>Finally, take a minute to leave a comment below - either to discuss this post or to offer an idea for future posts.  Thanks for reading!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -1843,6 +1979,9 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/covid_by_the_numbers.html">COVID By The Numbers</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/call_for_submissions.html">Contribute to The Alpha Scientist blog!</a>
       </li>
       <li class="post">
@@ -1854,15 +1993,12 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
       <li class="post">
           <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
+    <a href="https://alphascientist.com/tag/covid.html">COVID</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
@@ -1964,7 +2100,7 @@ edge_lose                  -2.264566    -2.240729     -1.008382    -2.346892
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018&ndash;2019   &mdash;
+    Copyright &copy;  2018&ndash;2021   &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>

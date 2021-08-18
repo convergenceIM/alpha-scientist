@@ -76,9 +76,124 @@
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -157,12 +272,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -175,27 +298,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -391,7 +526,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -401,11 +538,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -653,6 +803,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -691,7 +844,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -813,6 +966,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -829,16 +986,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -854,6 +1019,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -904,8 +1074,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -937,8 +1114,13 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -1005,47 +1187,8 @@ h6:hover .anchor-link {
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-</style>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Key-Takeaways:">Key Takeaways:<a class="anchor-link" href="#Key-Takeaways:">¶</a></h2><ul>
 <li>Traditional methods of validation and cross-validation are problematic for time series prediction problems</li>
@@ -1057,8 +1200,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>This is the fourth post in my series on transforming data into alpha.  If you haven't yet see the <a href="data_management.html">framework overview</a>, <a href="feature_engineering.html">feature engineering guide</a>, or <a href="feature_selection.html">feature_selection_guide</a>, please take a minute to read those first.  This post will build on the framework and philosophy presented there.</p>
 <p>This post is going to delve into the mechanics of <em>walk-forward modeling</em> which is, in my view, the most robust way to train and apply machine learning models in inherently sequential domains like finance.  If you'd like to replicate and experiment with the below code, <em>you can download the source notebook for this post by right-clicking on the below button and choosing "save link as"</em></p>
@@ -1087,8 +1229,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="The-Solution:-Walk-forward-Train/Test">The Solution: Walk-forward Train/Test<a class="anchor-link" href="#The-Solution:-Walk-forward-Train/Test">¶</a></h3><p>But we are not stuck with either of these problematic approaches.  The better - and I think much more intuitive - approach is to simulate models in a "walk-forward" sequence, periodically re-training the model to incorporate all data available at that point in time.</p>
 <p>The below picture is worth at least 1000 words.  Say we have six years of data to train + test.  At the end of the first year (T=1) we could have built model M1, which was trained on the first year's data (the grey bar).  After the 5th year, we could use up to five years of data to train model M5.</p>
@@ -1097,8 +1238,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">¶</a></h2><p>As in prior posts, we'll begin by fetching some real stock price data and then generating from it a synthetic dataset which will make it easier to follow the principles of this tutorial.  Please refer to the previous post <a href="feature_selection.html">Feature Selection</a> for further explanation of the reasoning and mechanics of creating synthetic data.</p>
 </div>
@@ -1109,7 +1249,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/anaconda/'</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">config</span>
@@ -1140,8 +1280,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Similar to the <a href="feature_selection.html">previous post</a>, we will generate some random data to serve as features <em>and then derive</em> an outcome (response) variable from the features (to ensure that our made-up features will have ability to partially predict the target variable).</p>
 <p>However, this go around we'll add two non-random patterns to the data.  First, we will add some amount of "memory"  (autoregression) to the white noise with a short function called <code>add_memory()</code>.  This will make the data somewhat less random and more similar to actual markets - which I think we can all agree is not a purely gaussian random walk...</p>
@@ -1160,7 +1299,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">num_obs</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">add_memory</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">n_days</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">memory_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="sd">''' adds autoregressive behavior to series of data'''</span>
@@ -1194,8 +1333,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, we've now got four features which contain random and non-random elements, and we have an <code>outcome</code> target variable which can be partially explained by these features.</p>
 <p>Let's run a quick linear model to verify that this worked as expected:</p>
@@ -1207,7 +1345,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">f01</span><span class="p">,</span><span class="n">f02</span><span class="p">,</span><span class="n">f03</span><span class="p">,</span><span class="n">f04</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">features</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'f01'</span><span class="p">,</span><span class="s1">'f02'</span><span class="p">,</span><span class="s1">'f03'</span><span class="p">,</span><span class="s1">'f04'</span><span class="p">]</span>
@@ -1232,8 +1370,7 @@ Regression Coefficients: [0.97587665 1.04585218 1.01461189 0.99374324]
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Indeed.  A simple, linear model run on the entire dataset shows a remarkable (for this domain) RSQ of &gt;0.25 and approximately equal coefficients for each of the features, suggesting that they're all contributing strongly to the model.</p>
 <p>However, this overlooks the very important reality that our data is non-stationary and what matters is how the model will <em>generalize</em> to future, unseen data.</p>
@@ -1246,7 +1383,7 @@ Regression Coefficients: [0.97587665 1.04585218 1.01461189 0.99374324]
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">split_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcome</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">split_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcome</span><span class="p">))</span>
 
 <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">split_point</span><span class="p">,:]</span> 
 <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">split_point</span><span class="p">]</span> 
@@ -1278,8 +1415,7 @@ Regression Coefficients: [0.8361922  1.15876943 1.20372473 1.01599709]
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, the results tell a different story.  We see that the model's RSQ on the unseen test data degraded to only about half of the value on the training data.  Even if we were still satisfied with the degraded RSQ value, we would carry concern that perhaps the next period of time the models would degrade even further.</p>
 <p>This is where our walk-forward process comes in.</p>
@@ -1287,8 +1423,7 @@ Regression Coefficients: [0.8361922  1.15876943 1.20372473 1.01599709]
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="A-better-approach...">A better approach...<a class="anchor-link" href="#A-better-approach...">¶</a></h3><p><img src="images/keepwalking.png" width="300"/></p>
 <p>Here, I'll outline the basic design pattern for a robust approach to walk-forward modeling.  This is simplified.  In real-world usage, we'd likely add many enhancements but this will illustrate the concept.</p>
@@ -1308,7 +1443,7 @@ Regression Coefficients: [0.8361922  1.15876943 1.20372473 1.01599709]
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="c1">#print('recalc_dates:')</span>
 <span class="c1">#print(recalc_dates)</span>
 <span class="c1">#print()</span>
@@ -1367,8 +1502,7 @@ Training on the first 7403 records, through 2017-12-29 00:00:00
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To visualize how the model is changing over time, I'll create a simple plotting function of coefficients:</p>
 </div>
@@ -1379,7 +1513,7 @@ Training on the first 7403 records, through 2017-12-29 00:00:00
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_coefs</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
     <span class="n">coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
         <span class="n">model_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'f01'</span><span class="p">,</span><span class="s1">'f02'</span><span class="p">,</span><span class="s1">'f03'</span><span class="p">,</span><span class="s1">'f04'</span><span class="p">])</span> <span class="c1">#extract coefficients for model</span>
@@ -1401,7 +1535,7 @@ Training on the first 7403 records, through 2017-12-29 00:00:00
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEICAYAAABYoZ8gAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXd4VUX+/19zS3ovpAIBAkkIHQQF
@@ -1783,8 +1917,7 @@ M8lY4TfGmEnm/wEJkFUnRIBNuQAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Notice a few things about how the model's coefficients change over time:</p>
 <ul>
@@ -1803,7 +1936,7 @@ M8lY4TfGmEnm/wEJkFUnRIBNuQAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
@@ -1861,7 +1994,7 @@ Training on the most recent 248 records
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAX4AAAEICAYAAABYoZ8gAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDIuMi4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvhp/UCwAAIABJREFUeJzsnXlYVNX7wD8HGPZNBQQEQVFRcd81
@@ -2449,16 +2582,14 @@ tAEAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This approach of only considering the 90 days' data prior to each model re-training has had a big impact.  We now see that <code>f01</code> has overtaken <code>f02</code> in significance by the end of the time period, as we'd hope.  The on-again, off-again feature <code>f03</code> has risen and fallen in prominence over time, again just as we'd hope.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Using-models">Using models<a class="anchor-link" href="#Using-models">¶</a></h3><p>The second stage of the process is <em>using</em> these walk-forward models.  The process is similar and equally simple.</p>
 <p>First, we create two arrays, <code>begin_dates</code> and <code>end_dates</code>, which contain the dates on which each model is used.  For instance, for the first model (i=0), we will apply this model to features beginning on the date we trained the model (<code>recalc_date</code>) until the day the next model is trained.  The <code>end_dates</code> array therefore drops the 0th element and appends to the end a far-off date (in the year 2099).</p>
@@ -2471,7 +2602,7 @@ tAEAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">begin_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">begin_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span>
 <span class="n">end_dates</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">'2099-12-31'</span><span class="p">]))</span>
 
 <span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -2498,8 +2629,7 @@ tAEAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, this looped through each of the models we had trained at various points in time and, for each, used that model to predict the period of time until the next model became available.  It runs!</p>
 <p>Now we can confirm that the rolling model is, in fact, better than the "expanding" model by making predictions with each and comparing to truth.</p>
@@ -2511,7 +2641,7 @@ tAEAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">models_expanding_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">models_expanding_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
     <span class="n">X_train</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">y_train</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">date</span><span class="p">),</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">,</span><span class="n">drop_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2551,7 +2681,7 @@ tAEAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">r2_score</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
 
 <span class="n">common_idx</span> <span class="o">=</span> <span class="n">outcome</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">predictions_expanding_window</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">rsq_expanding</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span> <span class="o">=</span> <span class="n">outcome</span><span class="p">[</span><span class="n">common_idx</span><span class="p">],</span><span class="n">y_pred</span><span class="o">=</span><span class="n">predictions_expanding_window</span><span class="p">[</span><span class="n">common_idx</span><span class="p">])</span>
@@ -2577,16 +2707,14 @@ Rolling Window RSQ: 0.296
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Great!  All of that work added about 3 points to the RSQ, which is certainly worth the effort.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Avoiding-complexity">Avoiding complexity<a class="anchor-link" href="#Avoiding-complexity">¶</a></h3><p>The value of this walk-forward methodology is greatest when it helps you to avoid the scourge of overfitting.  The linear regression model used up to this point is relatively resistant to overfit, since it has few parameters.</p>
 <p>Let's say that, instead of a simple linear regression, we used the much more overfit-prone DecisionTree, which has tendency to "memorize the past" rather than to recognize patterns in it.</p>
@@ -2598,7 +2726,7 @@ Rolling Window RSQ: 0.296
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeRegressor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
 
 <span class="n">split_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcome</span><span class="p">))</span>
 
@@ -2630,8 +2758,7 @@ RSQ out of sample: 0.008
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This leads to overfit disaster!  Now, we'll do the same with our walk-forward framework:</p>
 </div>
@@ -2642,7 +2769,7 @@ RSQ out of sample: 0.008
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">recalc_dates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">models_rolling_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">recalc_dates</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">recalc_dates</span><span class="p">:</span>
@@ -2678,16 +2805,14 @@ RSQ out of sample: 0.008
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Much, much better.  While the RSQ result ain't great (and actually worse than the linear regression model), that's much preferred to being fooled by an extraordinarily overfitted result like above.  We could have guessed that <code>DecisionTree</code> would be a silly model type to try in this situation but it illustrates the point.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h3><p>That, in a nutshell, is the walk-forward modeling framework.  The key points to keep in mind are:</p>
 <ul>
@@ -2701,8 +2826,7 @@ RSQ out of sample: 0.008
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="One-last-thing...">One last thing...<a class="anchor-link" href="#One-last-thing...">¶</a></h3><p>If you've found this post useful, please follow <a href="https://twitter.com/data2alpha">@data2alpha</a> on twitter and forward to a friend or colleague who may also find this topic interesting.</p>
 </div>
@@ -2766,6 +2890,9 @@ RSQ out of sample: 0.008
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/covid_by_the_numbers.html">COVID By The Numbers</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/call_for_submissions.html">Contribute to The Alpha Scientist blog!</a>
       </li>
       <li class="post">
@@ -2777,15 +2904,12 @@ RSQ out of sample: 0.008
       <li class="post">
           <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
+    <a href="https://alphascientist.com/tag/covid.html">COVID</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
@@ -2887,7 +3011,7 @@ RSQ out of sample: 0.008
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018&ndash;2019   &mdash;
+    Copyright &copy;  2018&ndash;2021   &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>

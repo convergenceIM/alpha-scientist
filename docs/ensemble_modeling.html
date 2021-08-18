@@ -76,9 +76,124 @@
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -157,12 +272,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -175,27 +298,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -391,7 +526,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -401,11 +538,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -653,6 +803,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -691,7 +844,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -813,6 +966,10 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 
 
 
@@ -829,16 +986,24 @@ div.output_unrecognized a:hover {
 }
 
 
+
+
+
 .rendered_html pre,
+
 
 
 
 .rendered_html tr,
 .rendered_html th,
 
-.rendered_html td,
 
-
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 .rendered_html * + table {
   margin-top: 1em;
 }
@@ -854,6 +1019,11 @@ div.output_unrecognized a:hover {
 
 .rendered_html img.unconfined,
 
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
 div.text_cell {
   /* Old browsers */
   display: -webkit-box;
@@ -904,8 +1074,15 @@ h6:hover .anchor-link {
   display: none;
 }
 .text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -937,8 +1114,13 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -1005,45 +1187,7 @@ h6:hover .anchor-link {
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
-/* Temporary definitions which will become obsolete with Notebook release 5.0 */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-bold { font-weight: bold; }
-</style>
-<div class="cell border-box-sizing code_cell rendered">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -1057,8 +1201,7 @@ h6:hover .anchor-link {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Markets are, in my view, mostly random.  However, they're not <em>completely</em> random.  Many small inefficiencies and patterns exist in markets which can be identified and used to gain slight edge on the market.</p>
 <p>These edges are rarely large enough to trade in isolation - transaction costs and overhead can easily exceed the expected profits offered.  But when we are able to combine many such small edges together, the rewards can be great.</p>
@@ -1110,8 +1253,7 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Preparing-the-Data">Preparing the Data<a class="anchor-link" href="#Preparing-the-Data">¶</a></h2><p>For this simple example, I will create synthetic data rather than using real market prices to remove the ambiguity about what features and transformations may be necessary to extract maximum value from the model.</p>
 <p>Note: to make the dataset more realistic, I will extract an <em>index</em> from actual stock prices using quandl's API, but all features and target values will be constructed below.</p>
@@ -1127,14 +1269,14 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">is_list_like</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_list_like</span> <span class="c1"># remove once updated pandas-datareader issue is fixed</span>
 <span class="c1"># https://github.com/pydata/pandas-datareader/issues/534</span>
 <span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span>
 <span class="n">HTML</span><span class="p">(</span><span class="s1">'&lt;style&gt;</span><span class="si">{}</span><span class="s1">&lt;/style&gt;'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">CSS</span><span class="p">))</span>
 
 
@@ -1152,7 +1294,7 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 <span class="c1"># note, we're only using quandl prices to generate a realistic multi-index of dates and symbols</span>
 
 <span class="n">num_obs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
-<span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_obs</span><span class="o">*.</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_obs</span><span class="o">*</span><span class="mf">.80</span><span class="p">)</span>
 
 <span class="c1">## First, create factors hidden within feature set</span>
 <span class="n">hidden_factor_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_obs</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
@@ -1187,8 +1329,7 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h3><p>We'll avoid going too deeply into exploratory data analysis (refer to <a href="feature_engineering.html">Feature engineering</a> for more exploration of that topic).  I will, however, plot three simple views:</p>
 <ol>
@@ -1204,7 +1345,7 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Distribution of features and target</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Distribution of features and target</span>
 <span class="n">X</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">'green'</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="p">[</span><span class="s1">'orange'</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">'Distributions - Features and Target'</span><span class="p">)</span>
 <span class="n">y</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span> <span class="c1"># target</span>
 </pre></div>
@@ -1221,7 +1362,7 @@ Second - and this is less of a hard-and-fast rule - is to constrain the meta-mod
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYsAAAEICAYAAACuxNj9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzsnXd4VEXXwH+TnpBeKKGkUCTUAEEQ
@@ -2089,7 +2230,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Univariate Regressions</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Univariate Regressions</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -2125,7 +2266,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi0AAAHHCAYAAABz3mgLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzsnXl8VNX5/z+zZA8EhLC4gpYEZFEB
@@ -3336,10 +3477,10 @@ RRAEQRCEkkCEFkEQBEEQSoL/D6f1Js8PiLzgAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Feature correlations</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">## Feature correlations</span>
 
-<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="k">import</span> <span class="n">hierarchy</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">distance</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">distance</span>
 
 <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
 <span class="n">correlations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
@@ -3358,7 +3499,7 @@ RRAEQRCEkkCEFkEQBEEQSoL/D6f1Js8PiLzgAAAAAElFTkSuQmCC
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAToAAAExCAYAAADshW6fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAGqRJREFUeJzt3XtQVPf9//HXuoAQEB0vEW3j5ZcO
@@ -3489,8 +3630,7 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Making-Base-Models">Making Base Models<a class="anchor-link" href="#Making-Base-Models">¶</a></h2><p>The first step in a stacked generalization system is to generate the "base models", meaning the models which are learning from our input features.  We'll create two base models to use in our ensemble:</p>
 <ol>
@@ -3507,8 +3647,8 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">clone</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 
 
 <span class="k">def</span> <span class="nf">make_walkforward_model</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">outcome</span><span class="p">,</span><span class="n">algo</span><span class="o">=</span><span class="n">LinearRegression</span><span class="p">()):</span>
@@ -3543,8 +3683,7 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To create a series of walk-forward models, simply pass in X and y data along with a scikit estimator object.  It returns a series of models and a series of predictions.  Here, we'll create two base models on all features, one using linear regression and one with extra trees.</p>
 </div>
@@ -3555,8 +3694,8 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">ExtraTreesRegressor</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">ExtraTreesRegressor</span>
 
 <span class="n">linear_models</span><span class="p">,</span><span class="n">linear_preds</span> <span class="o">=</span> <span class="n">make_walkforward_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">algo</span><span class="o">=</span><span class="n">LinearRegression</span><span class="p">())</span>
 <span class="n">tree_models</span><span class="p">,</span><span class="n">tree_preds</span> <span class="o">=</span> <span class="n">make_walkforward_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">algo</span><span class="o">=</span><span class="n">ExtraTreesRegressor</span><span class="p">())</span>
@@ -3566,8 +3705,7 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that no predictions can be made prior to the first trained model, so it's important to <code>dropna()</code> on predictions prior to use.</p>
 </div>
@@ -3578,7 +3716,7 @@ ATAeRQfAeP8fi07VvIXk/+gAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Models:"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Models:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">linear_models</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Predictions:"</span><span class="p">)</span>
@@ -3615,8 +3753,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It can be instructive to see how the linear model coefficients evolve over time:</p>
 </div>
@@ -3627,7 +3764,7 @@ dtype: float64
 <div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">linear_models</span><span class="p">],</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">linear_models</span><span class="p">],</span>
              <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">linear_models</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Weighting Coefficients for </span><span class="se">\n</span><span class="s1">Linear Model'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3643,7 +3780,7 @@ dtype: float64
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYEAAAERCAYAAACdPxtnAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzsvXd8leX9//+8z332yDrZgwRIIEDY
@@ -4304,8 +4441,7 @@ AAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, I'll create a simple function to evaluate multiple model performance metrics, called <code>calc_scorecard</code>.  Further detail on this method of model evaluation is provided in the earlier post <a href="model_evaluation.html">Model evaluation</a>.</p>
 </div>
@@ -4316,7 +4452,7 @@ AAAASUVORK5CYII=
 <div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">r2_score</span><span class="p">,</span><span class="n">mean_absolute_error</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span><span class="n">mean_absolute_error</span>
 
 <span class="k">def</span> <span class="nf">calc_scorecard</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
     
@@ -4374,8 +4510,7 @@ Name: Linear, dtype: float64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Since we are concerned about not only average performance but also period-to-period consistency, I'll create a simple wrapper function which recalculates our metrics by quarter.</p>
 </div>
@@ -4386,7 +4521,7 @@ Name: Linear, dtype: float64</pre>
 <div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_pred</span><span class="p">,</span><span class="n">y_true</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'A'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">y_pred</span><span class="o">.</span><span class="n">name</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="n">y_true</span><span class="o">.</span><span class="n">name</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">scores</span>
@@ -4422,7 +4557,7 @@ edge_to_mae             0.154323    0.147633    0.143193
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAETCAYAAADNpUayAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3XlclOX6x/HPLOzDLiCKIKgooqa4
@@ -4665,8 +4800,7 @@ QghhgyTchRDCBkm4CyGEDZJwF0IIG/T/Dds48Pkg+skAAAAASUVORK5CYII=
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Making-the-Ensemble-Model">Making the Ensemble Model<a class="anchor-link" href="#Making-the-Ensemble-Model">¶</a></h2><p>Now that we've trained base models and generated out-of-sample predictions, it's time to train the stacked generalization ensemble model.</p>
 <p>Training the ensemble model simply requires feeding in the base models' predictions in as the X dataframe.  To clean up the data and ensure the X and y are of compatible dimensions, I've created a short data preparation function.</p>
@@ -4679,7 +4813,7 @@ QghhgyTchRDCBkm4CyGEDZJwF0IIG/T/Dds48Pkg+skAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LassoCV</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
 <span class="k">def</span> <span class="nf">prepare_Xy</span><span class="p">(</span><span class="n">X_raw</span><span class="p">,</span><span class="n">y_raw</span><span class="p">):</span>
     <span class="sd">''' Utility function to drop any samples without both valid X and y values'''</span>
     <span class="n">Xy</span> <span class="o">=</span> <span class="n">X_raw</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span><span class="kc">None</span><span class="p">})</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
@@ -4715,8 +4849,7 @@ Name: ensemble, dtype: float64
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Note that the ensemble's predictions don't begin until July, since the earliest trained ensemble model isn't available until end of Q2.  This is necessary to make sure the ensemble model is trained on out of sample data - and that its predictions are <em>also</em> out of sample.</p>
 <p>Again, we can look at the coefficients over time of the ensemble model. Keep in mind that the coefficients of the ensemble model represents how much weight is being given to each base model.  In this case, it appears that our tree model is much more useful relative to the linear model, though the linear model is gradually catching up.</p>
@@ -4728,7 +4861,7 @@ Name: ensemble, dtype: float64
 <div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">ensemble_models</span><span class="p">],</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">ensemble_models</span><span class="p">],</span>
              <span class="n">columns</span><span class="o">=</span><span class="n">X_ens</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">ensemble_models</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Weighting Coefficients for </span><span class="se">\n</span><span class="s1">Simple Two-Model Ensemble'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -4744,7 +4877,7 @@ Name: ensemble, dtype: float64
 </div>
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAERCAYAAACaUQc3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzs3Xd8lfX9///H2Tk5J3sREsIIJEwJ
@@ -5080,8 +5213,7 @@ Puw5juPCwG+CbN2hwy38KwAAAABJRU5ErkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Performance-of-Ensemble-vs.-Base-Models">Performance of Ensemble vs. Base Models<a class="anchor-link" href="#Performance-of-Ensemble-vs.-Base-Models">¶</a></h2><p>Now that we have predictions from both the base models and ensemble model, we can explore how the ensemble performs relative to base models.  Is the whole really more than the sum of the parts?</p>
 </div>
@@ -5092,7 +5224,7 @@ Puw5juPCwG+CbN2hwy38KwAAAABJRU5ErkJggg==
 <div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calculate scores for each model</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># calculate scores for each model</span>
 <span class="n">score_ens</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">ensemble_preds</span><span class="p">,</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_ens</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Ensemble'</span><span class="p">)</span>
 <span class="n">score_linear</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">linear_preds</span><span class="p">,</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_ens</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Linear'</span><span class="p">)</span>
 <span class="n">score_tree</span> <span class="o">=</span> <span class="n">calc_scorecard</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">tree_preds</span><span class="p">,</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_ens</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Tree'</span><span class="p">)</span>
@@ -5113,7 +5245,7 @@ Puw5juPCwG+CbN2hwy38KwAAAABJRU5ErkJggg==
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAD3CAYAAAAALt/WAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzt3XlcVPX+x/HXLAzbwOCOS6jhkppX
@@ -5350,6 +5482,12 @@ edge_to_mae            0.156024   0.294196   0.303727
 </div>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+</div>
+</div>
 </div>### Observations:
 * The tree model is relatively high accuracy and high "edge" - but it's very noisy (i.e., its predictions swing wildly from day to day, making it difficult to trade).  
 * The linear model has lower accuracy &amp; edge, but is much less noisy.  
@@ -5362,38 +5500,38 @@ In real-world trading, it's also very important to understand how consistenly pe
 <div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,[[</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">],[</span><span class="n">ax3</span><span class="p">,</span><span class="n">ax4</span><span class="p">]]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,[[</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">],[</span><span class="n">ax3</span><span class="p">,</span><span class="n">ax4</span><span class="p">]]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">metric</span> <span class="o">=</span> <span class="s1">'RSQ'</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">ensemble_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'ensemble'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Ensemble'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">linear_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'linear'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Linear'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">tree_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'tree'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
 
 <span class="n">metric</span> <span class="o">=</span> <span class="s1">'edge'</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">ensemble_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'ensemble'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Ensemble'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">linear_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'linear'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Linear'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">tree_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'tree'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
 
 <span class="n">metric</span> <span class="o">=</span> <span class="s1">'noise'</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">ensemble_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'ensemble'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Ensemble'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">linear_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'linear'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Linear'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">tree_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'tree'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
 
 <span class="n">metric</span> <span class="o">=</span> <span class="s1">'edge_to_noise'</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">ensemble_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'ensemble'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Ensemble'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">linear_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'linear'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'Linear'</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
 <span class="n">scores_over_time</span><span class="p">(</span><span class="n">y_pred</span><span class="o">=</span><span class="n">tree_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'tree'</span><span class="p">),</span><span class="n">y_true</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">)</span><span class="o">.</span>\
-<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">'{metric.upper()} over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> over time'</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -5405,7 +5543,7 @@ In real-world trading, it's also very important to understand how consistenly pe
 <div class="output">
 <div class="output_area">
 <div class="prompt"></div>
-<div class="output_png output_subarea ">
+<div class="output_png output_subarea">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnsAAAGkCAYAAABJtOPwAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBo
 dHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAIABJREFUeJzs3Xd8FHXi//HXbE82vfcQAkkgEEKR
@@ -6399,8 +6537,7 @@ rkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Observations:">Observations:<a class="anchor-link" href="#Observations:">¶</a></h3><ul>
 <li>We can see that the ensemble is fairly consistently more effective than either of the base models. </li>
@@ -6411,8 +6548,7 @@ rkJggg==
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Next-Steps">Next Steps<a class="anchor-link" href="#Next-Steps">¶</a></h2><p>The stacked generalization methodology is highly flexible.  There are countless directions you can take this, including:</p>
 <ul>
@@ -6493,6 +6629,9 @@ rkJggg==
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="https://alphascientist.com/covid_by_the_numbers.html">COVID By The Numbers</a>
+      </li>
+      <li class="post">
           <a href="https://alphascientist.com/call_for_submissions.html">Contribute to The Alpha Scientist blog!</a>
       </li>
       <li class="post">
@@ -6504,15 +6643,12 @@ rkJggg==
       <li class="post">
           <a href="https://alphascientist.com/october_flows.html">Swimming Against the Current</a>
       </li>
-      <li class="post">
-          <a href="https://alphascientist.com/shorting_as_signal.html">Listening to the Short Sellers</a>
-      </li>
     </ul>
   </section>
 
   <section>
   <h1>Tags</h1>
-    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
+    <a href="https://alphascientist.com/tag/covid.html">COVID</a>,    <a href="https://alphascientist.com/tag/data.html">data</a>,    <a href="https://alphascientist.com/tag/administrative.html">administrative</a>,    <a href="https://alphascientist.com/tag/tutorial.html">tutorial</a>,    <a href="https://alphascientist.com/tag/modeling.html">modeling</a>,    <a href="https://alphascientist.com/tag/keras.html">keras</a>,    <a href="https://alphascientist.com/tag/etfs.html">ETFs</a>,    <a href="https://alphascientist.com/tag/market-anomaly.html">market anomaly</a>,    <a href="https://alphascientist.com/tag/feature-engineering.html">feature engineering</a>,    <a href="https://alphascientist.com/tag/pandas.html">pandas</a>,    <a href="https://alphascientist.com/tag/seasonality.html">seasonality</a>,    <a href="https://alphascientist.com/tag/spy.html">SPY</a>  </section>
 
 
   <section>
@@ -6614,7 +6750,7 @@ rkJggg==
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018&ndash;2019   &mdash;
+    Copyright &copy;  2018&ndash;2021   &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="https://alphascientist.com/theme/js/modernizr-2.0.js"></script>
