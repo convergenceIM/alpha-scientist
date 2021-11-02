@@ -1,0 +1,10 @@
+Title: Reddit for Fun and Profit [part 1]
+Slug: reddit_part1
+Date: 2021-11-01 22:03
+Category: Blog
+Tags: data, web scraping
+Author: Chad Gray
+Bio: I'm a quant researcher, portfolio manager, and data scientist with an obsession for using alternative data and quant methods to improve investment decisions. I'm currently consulting for asset managers seeking to get more value from data and analytics. I specialize in helping fundamental hedge funds to add alpha and reduce risk with smarter use of data. Contact me at chad@alphascientist.com if you'd like to discuss how I can help.
+SOCIAL_IMAGE: '/content/images/wsb.jpg'
+TWITTER_SITE: '@data2alpha'
+Summary: The "Roaring Kitty" episode of January/February 2021 may have been the most remarkable financial story of the year. It demonstrated the amazing capacity of social media to move markets. This series of posts demonstrates the basics of how anyone can programmatically extract posts from forums like r/wallstreetbets to identify stocks which might be driven more by the internet mobs than by wall street tycoons.
