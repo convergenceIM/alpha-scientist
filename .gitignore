@@ -105,3 +105,7 @@ venv.bak/
 
 # pelican
 docs/CNAME
+
+# PRIVATE FILES - Chad Added Aug19,2021
+archives/
+content-draft/

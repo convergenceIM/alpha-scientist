@@ -1,6 +1,8 @@
 Instructions taken from this blog posT:
 https://www.dataquest.io/blog/how-to-setup-a-data-science-blog/
 
+(0) Make sure the alphascientist_v2 is activated
+
 To create a new article:
 (1) Build an .ipynb file with the article content
 (2) Create an identically named file with ipynb-meta suffix.  In that file, update the subject, date title, slugline, author etc..
@@ -8,11 +10,10 @@ To create a new article:
 - pelican
 - ...
 
-
 (4) cd to top level directory of alpha-scientist
 (5) run "pelican content".  It will build/rebuild html files into the "docs" folder
 (6) switch to the output directory (cd docs)
-(7) Run ""
+(7) Run "python3 -m pelican.server"
 (8) In a browser tab, open "localhost:8000".  Check that the content looks as wanted.
 (9) If correct, add the newly created files in the content folder AND the docs folder to the git repo.
 (10) Change back to the top-level directory.  rerun "pelican content -s publishconf.py"

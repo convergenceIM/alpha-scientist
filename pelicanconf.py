@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
+IGNORE_FILES = ['.ipynb_checkpoints'] # added Aug 2021 to address this issue: https://github.com/danielfrg/pelican-jupyter/issues/58
+
 #AUTHOR = 'Chad Gray'
 SITENAME = 'The Alpha Scientist'
 SITEURL = 'https://alphascientist.com'
