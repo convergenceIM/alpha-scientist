@@ -9,7 +9,6 @@ To create a new article:
 (3) Make sure you've activated an environment with:
 - pelican
 - ...
-
 (4) cd to top level directory of alpha-scientist
 (5) run "pelican content".  It will build/rebuild html files into the "docs" folder
 (6) switch to the output directory (cd docs)
