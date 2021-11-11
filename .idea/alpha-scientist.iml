@@ -8,8 +8,9 @@
       <excludeFolder url="file://$MODULE_DIR$/data/master" />
       <excludeFolder url="file://$MODULE_DIR$/dev" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/parafin" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6 (reddit)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (alpha-scientist)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="R User Library" level="project" />
     <orderEntry type="library" name="R Skeletons" level="application" />
@@ -23,7 +24,6 @@
     </option>
   </component>
   <component name="TestRunnerService">
-    <option name="projectConfiguration" value="Nosetests" />
     <option name="PROJECT_TEST_RUNNER" value="Nosetests" />
   </component>
 </module>
