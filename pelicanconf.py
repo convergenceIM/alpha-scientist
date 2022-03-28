@@ -14,8 +14,8 @@ TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = 'en'
 
-LOCALE = ('usa', 'jpn',      # On Windows
-           'en_US', 'ja_JP'   # On Unix/Linux
+LOCALE = ('usa',  #'jpn',      # On Windows
+           'en_US', # 'ja_JP'   # On Unix/Linux
 )
 
 # Feed generation is usually not desired when developing
@@ -23,13 +23,33 @@ FEED_ATOM = 'feeds/atom.xml'
 FEED_RSS = 'feeds/rss.xml'
 
 # Blogroll
+''' Consider value of adding to this:
+-> Alt data vendors of interest
+-> Eagle Alpha etc... influencers (comes up in their searches)
+-> Especially some crypto sources, blogs etc... 
+
+'''
 LINKS = (('Quantocracy', 'http://quantocracy.com/'),
+        ('Quant-at-Risk', 'https://quantatrisk.com/'),
          ('Robot Wealth', 'https://robotwealth.com/blog/'),
          ('QuantStart', 'https://www.quantstart.com/articles'),
          ('Simon Ouellette', 'http://www.simonouellette.com/'),
          ('Marcos Lopez de Prado', 'http://www.quantresearch.info/'),
          ('Financial Hacker', 'http://www.financial-hacker.com'),
-         ('Ex Machina', 'http://www.mov37.com/ex-machina/'),
+         ('Knoema', 'https://knoema.com/data/categories'),
+         ('AlternativeData.org', 'https://alternativedata.org'),
+         ('Eagle Alpha', 'http://www.eaglealpha.com'),
+         ('Neudata', 'https://www.neudata.co/'),
+         ('Cloudquant', 'http://www.cloudquant.com'),
+         ('Quiver Quant', 'http://www.quiverquant.com'),
+         ('Real Vision', 'https://www.realvision.com/'),
+         ('Cryptoquant', 'http://www.cloudquant.com'),
+         ('Glassnode', 'http://www.cloudquant.com'),
+         ('Diffbot', 'http://www.diffbot.com'),
+         ('TheGraph', 'http://www.thegraph.com'),
+         ('Mnemonic', 'https://www.mnemonichq.com/'),
+         ('Yewno', 'http://www.yewno.com'),
+         ('Yipit', 'https://www.yipitdata.com/'),
          )
 
 # Social widget
@@ -62,10 +82,12 @@ HIDE_AUTHORS = True
 DISQUS_SITENAME = 'alphascientist-com'
 
 DISPLAY_PAGES_ON_MENU = True
+PAGE_PATHS = ['pages']
 DISPLAY_CATEGORIES_ON_MENU = False
 MENUITEMS = (
     ('Blogs', '/index.html'),
-    ('Authors', '/authors.html'),
+    # ('Authors', '/authors.html'),
+    # ('Consulting', '/pages/consulting.html'),
     )
 
 FAVICON_FILENAME = 'images/favicon.png'

@@ -1,0 +1,8 @@
+Title: Alpha Scientist Consulting
+Slug: about_consulting
+Date: 2022-03-27 20:03
+Category: Consulting
+Tags: data, scraping, analysis
+Author: Chad Gray
+Bio: I'm a full-time quantitative trader who has been working on data analytics since before it was cool.  Prior to becoming a full-time quant, I built products and managed teams at software companies across Silicon Valley.  I've had a long-standing interest in finance (earned my CFA designation in 2008) and have dedicated myself to the challenge of applying data science to financial markets.
+Summary: This is the third post in my tutorial series on applying machine learning to stock prediction. This post is going to delve into the mechanics of feature selection - a critical step towards improving model robustness. This will cover a systematic approach for choosing between the many variations of features you've created during the feature engineering stage.
